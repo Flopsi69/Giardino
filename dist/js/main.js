@@ -251,7 +251,7 @@ $(".cart").on("click", function (e) {
     closeCart();
   }
 });
-$(".cart__head-close").on("click", function (e) {
+$(".cart__head-close, .cart__head-title").on("click", function (e) {
   e.preventDefault();
   closeCart();
 });

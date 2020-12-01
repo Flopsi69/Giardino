@@ -85,7 +85,7 @@ $(".cart").on("click", (e) => {
   }
 });
 
-$(".cart__head-close").on("click", (e) => {
+$(".cart__head-close, .cart__head-title").on("click", (e) => {
   e.preventDefault();
   closeCart();
 });
