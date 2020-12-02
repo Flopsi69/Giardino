@@ -211,12 +211,7 @@ $product_parent = $product;
                     <div class="pdp__delivery">
                         <div class="pdp-subtitle">Delivery & Returns</div>
                         <div class="pdp-text">
-                            We hope you’ll be delighted with your purchases.
-                            Everything is delivered to you pre-washed and carefully packaged.
-                            Should you wish to return your table linen, please do so within 14 days. Unfortunately we
-                            are unable to
-                            accept returns on bed linen. Please refer to our <a href="#">Delivery</a> and <a href="#">Returns
-                                page</a> for more information.
+                            <?php echo carbon_get_theme_option('grd-delret-text'); ?>
                         </div>
                     </div>
                 </div>
@@ -379,9 +374,7 @@ $product_parent = $product;
                                                             <?php $count = 0; ?>
                                                             <?php foreach ($colors as $variation_id => $color) { ?>
                                                                 <div class="pdp-look__color-option <?php echo ($count === 0 ? 'active' : ''); ?>">
-                                                                    <div class="pdp-look__color-preview">
-                                                                        <img src="<?php echo $color[$color['type']]; ?>" alt="">
-                                                                    </div>
+                                                                    <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
                                                                     <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
                                                                 </div>
                                                                 <?php $count++; ?>

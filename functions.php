@@ -152,7 +152,8 @@ add_action('rest_api_init', function () {
         'callback' => 'get_product_by_attributes'
     ));
 });
-function get_product_by_attributes()
+
+function get_product_by_attributes($params)
 {
     if (!empty($_GET)) {
         foreach ($_GET as $key => $item) {
@@ -198,11 +199,24 @@ function get_cart_items() {
     return false;
 }
 
+function get_cart_total() {
+    if (function_exists('WC')) {
+        $cart = WC()->cart;
+        return number_format($cart->get_total('woocommerce_cart_(__FUNCTION__)'), 2, ',', ' ');
+    }
+    return false;
+}
+
 function add_to_cart($product_id, $quantity = 1, $variation_id = false, $variation = false, $item_data = []) {
     if (function_exists('WC')) {
         $cart = WC()->cart;
-        $cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $item_data);
-        return true;
+        $attributes = $item_data;
+        $attributes['id'] = $product_id;
+        $product_data = get_product_by_attributes($attributes);
+        if ($product_data['id'] !== $product_id) {
+            $variation_id = $product_data['id'];
+        }
+        return $cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $item_data);
     }
     return false;
 }
@@ -210,8 +224,7 @@ function add_to_cart($product_id, $quantity = 1, $variation_id = false, $variati
 function remove_from_cart($item_key) {
     if (function_exists('WC')) {
         $cart = WC()->cart;
-        $cart->remove_cart_item($item_key);
-        return true;
+        return $cart->remove_cart_item($item_key);
     }
     return false;
 }
@@ -219,16 +232,7 @@ function remove_from_cart($item_key) {
 function change_item_cart_quantity($item_key, $quantity = 1) {
     if (function_exists('WC')) {
         $cart = WC()->cart;
-        $cart->set_quantity($item_key, $quantity);
-        return true;
-    }
-    return false;
-}
-
-function get_cart_total() {
-    if (function_exists('WC')) {
-        $cart = WC()->cart;
-        return number_format($cart->get_total('woocommerce_cart_(__FUNCTION__)'), 2, ',', ' ');
+        return $cart->set_quantity($item_key, $quantity);
     }
     return false;
 }
@@ -238,11 +242,11 @@ function cart_control() {
         $quantity = 1;
         $action = filter_var($_POST['action'], FILTER_SANITIZE_STRING);
         if (!empty($_POST['data'])) {
-            foreach ($_POST['data'] as $value) {
-                if ($value['name'] === 'product_id' || $value['name'] === 'item_key' || $value['name'] === 'quantity' || $value['name'] === 'variation_id') {
-                    ${$value['name']} = filter_var($value['value'], FILTER_SANITIZE_STRING);
+            foreach ($_POST['data'] as $key => $value) {
+                if ($key === 'product_id' || $key === 'item_key' || $key === 'quantity' || $key === 'variation_id') {
+                    ${$key} = filter_var($value, FILTER_SANITIZE_STRING);
                 } else {
-                    $data[filter_var($value['name'], FILTER_SANITIZE_STRING)] = filter_var($value['value'], FILTER_SANITIZE_STRING);
+                    $data[filter_var($key, FILTER_SANITIZE_STRING)] = filter_var($value, FILTER_SANITIZE_STRING);
                 }
             }
         }
@@ -253,7 +257,7 @@ function cart_control() {
                         add_to_cart($product_id, $quantity, $variation_id ?? false, false, $data ?? false);
                     }
                     break;
-                case 'change':
+                case 'quantity':
                     if (isset($item_key)) {
                         change_item_cart_quantity($item_key, $quantity);
                     }
@@ -261,6 +265,19 @@ function cart_control() {
                 case 'remove':
                     if (isset($item_key)) {
                         remove_from_cart($item_key);
+                    }
+                    break;
+                case 'change':
+                    if (isset($item_key)) {
+                        if (function_exists('WC')) {
+                            $cart = WC()->cart;
+                            $item = $cart->get_cart_item($item_key);
+                            if (isset($item['product_id'])) {
+                                if (!empty(add_to_cart($item['product_id'], $quantity, $variation_id ?? false, false, $data ?? false))) {
+                                    remove_from_cart($item_key);
+                                }
+                            }
+                        }
                     }
                     break;
             }

@@ -52,5 +52,29 @@ if (class_exists('Carbon_Fields\Container')) {
                 ))
         ));
 
+    Container::make('theme_options', ('Giardino'))
+        ->set_page_file('giardino')
+        ->set_page_menu_position(2)
+        ->set_icon('dashicons-edit')
+        ->add_fields(array(
+            Field::make('separator', 'grd-frontpage-hero-separator', 'Front page setting'),
+            Field::make('text', 'grd-frontpage-hero-title', 'Title'),
+            Field::make('text', 'grd-frontpage-hero-subtitle', 'Subtitle'),
+            Field::make('text', 'grd-frontpage-hero-category-button-title', 'Category Button title'),
+            Field::make('text', 'grd-frontpage-hero-category-button-link', 'Category Button link'),
+            Field::make('text', 'grd-frontpage-hero-collection-button-title', 'Collection Button title'),
+            Field::make('text', 'grd-frontpage-hero-collection-button-link', 'Collection Button link'),
+            Field::make('separator', 'grd-ymal-separate', 'You may also like'),
+            Field::make('association', 'grd-ymal-products', 'Products')
+                ->set_types(array(
+                    array(
+                        'type' => 'post',
+                        'post_type' => 'product',
+                    )
+                ))
+                ->set_duplicates_allowed(false),
+            Field::make('separator', 'grd-delret-separate', 'Delivery & returns'),
+            Field::make('rich_text', 'grd-delret-text', 'Text')
+        ));
 
 }

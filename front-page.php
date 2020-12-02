@@ -3,16 +3,15 @@
         <!-- Jumb -->
         <section class="section jumb text-center">
             <div class="container">
-                <h1 class="jumb__title upper">Finest Italian Linens Designed in Monte-Carlo</h1>
-
+                <h1 class="jumb__title upper"><?php echo carbon_get_theme_option('grd-frontpage-hero-title'); ?></h1>
                 <div class="jumb__caption">
-                    Discover true comfort and a sense of peace with delicately soft luxurious cotton.
+                    <?php echo carbon_get_theme_option('grd-frontpage-hero-subtitle'); ?>
                 </div>
-
                 <div class="jumb__buttons">
-                    <a href="/products/" class="btn btn_blue jumb__btn jumb__buttons-item">Bed linen</a>
-                    <a href="/collections/" class="btn btn_trans jumb__btn jumb__buttons-item">Explore by
-                        Collection</a>
+                    <a href="<?php echo carbon_get_theme_option('grd-frontpage-hero-category-button-link'); ?>" class="btn btn_blue jumb__btn jumb__buttons-item">
+                        <?php echo carbon_get_theme_option('grd-frontpage-hero-category-button-title'); ?></a>
+                    <a href="<?php echo carbon_get_theme_option('grd-frontpage-hero-collection-button-link'); ?>" class="btn btn_trans jumb__btn jumb__buttons-item">
+                        <?php echo carbon_get_theme_option('grd-frontpage-hero-collection-button-title'); ?></a>
                 </div>
             </div>
         </section>

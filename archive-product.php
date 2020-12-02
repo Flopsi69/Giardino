@@ -1,8 +1,22 @@
 <?php
 $current_page = (!empty($page) ? $page : 1);
-$sort = (!empty($sort) ? $sort : 'best');
+$sort = (!empty($sort) ? strval($sort) : 'best');
 switch ($sort) {
-    case 'best':
+    case 'new':
+        $orderby = array('label' => 'DESC');
+        $sort_title = 'New Arrivals';
+        break;
+    case 'asc':
+        $orderby = array('price' => 'ASC');
+        $sort_title = 'Price: Low to High';
+        break;
+    case 'desc':
+        $orderby = array('price' => 'DESC');
+        $sort_title = 'Price: High to Low';
+        break;
+    default:
+        $orderby = array('label' => 'ASC');
+        $sort_title = 'Recommendations';
         break;
 }
 get_header();
@@ -49,14 +63,14 @@ get_header();
                         </div>
                         <div class="sort__head flex a-center">
                             <div class="sort__caption">Sort By:</div>
-                            <div class="sort__value">Recommendations</div>
+                            <div class="sort__value"><?php echo $sort_title; ?></div>
                             <img class="sort__arrow" src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-right.svg" alt="">
                         </div>
                         <div class="sort__dropdown">
-                            <a class='sort__dropdown-link active' href="?sort=best">Recommendations</a>
-                            <a class='sort__dropdown-link' href="?sort=new">New Arrivals</a>
-                            <a class='sort__dropdown-link' href="?sort=asc">Price: Low to High</a>
-                            <a class='sort__dropdown-link' href="?sort=desc">Price: High to Low</a>
+                            <a class='sort__dropdown-link <?php echo ($sort === 'best' ? 'active' : ''); ?>' href="?sort=best">Recommendations</a>
+                            <a class='sort__dropdown-link <?php echo ($sort === 'new' ? 'active' : ''); ?>' href="?sort=new">New Arrivals</a>
+                            <a class='sort__dropdown-link <?php echo ($sort === 'asc' ? 'active' : ''); ?>' href="?sort=asc">Price: Low to High</a>
+                            <a class='sort__dropdown-link <?php echo ($sort === 'desc' ? 'active' : ''); ?>' href="?sort=desc">Price: High to Low</a>
                             <div class='sort__close-mob'>
                                 <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-close.svg" alt="">
                             </div>
@@ -76,9 +90,14 @@ get_header();
                                  'value' => 0,
                                  'compare' => '>',
                                  'type' => 'DECIMAL'
+                             ),
+                             'label' => array(
+                                 'key' => '_labels',
+                                 'value' => '0',
+                                 'compare' => 'NOT LIKE'
                              )
                          ),
-                         'orderby' => array('price' => 'DESC'),
+                         'orderby' => $orderby,
                          'tax_query' => array(
                              array(
                                  'taxonomy' => 'product_type',

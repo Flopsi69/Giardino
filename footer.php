@@ -5,35 +5,29 @@
             <div class="footer-nav__row row-flex">
                 <ul class="footer-nav__col footer-nav__mob-last  col">
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">About us</a>
+                        <a class='footer-nav__link' href="/about-us/">About us</a>
                     </li>
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">Contact us</a>
-                    </li>
-                    <li class='footer-nav__item'>
-                        <a class='footer-nav__link'></a>
-                    </li>
-                    <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="#">Log in</a>
+                        <a class='footer-nav__link' href="/contact-us/">Contact us</a>
                     </li>
                 </ul>
                 <ul class="footer-nav__col col">
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">Delivery</a>
+                        <a class='footer-nav__link' href="/delivery/">Delivery</a>
                     </li>
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">Return</a>
+                        <a class='footer-nav__link' href="/return/">Return</a>
                     </li>
                 </ul>
                 <ul class="footer-nav__col col">
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">Privacy policy</a>
+                        <a class='footer-nav__link' href="/privacy-policy/">Privacy policy</a>
                     </li>
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">Taxes and duties</a>
+                        <a class='footer-nav__link' href="/taxes-and-duties/">Taxes and duties</a>
                     </li>
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/simple-text-page.html">Disclaimer</a>
+                        <a class='footer-nav__link' href="/disclaimer/">Disclaimer</a>
                     </li>
                 </ul>
             </div>
@@ -43,30 +37,34 @@
 
             <div class="footer-nav__row row-flex">
                 <ul class="footer-nav__col col">
-                    <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/products.html">Bed linen</a>
-                    </li>
-                    <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/products.html">Towels</a>
-                    </li>
-                    <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/products.html">L’art de la table</a>
-                    </li>
-                    <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/products.html">Decoration</a>
-                    </li>
+                    <?php
+                    $args = array(
+                        'taxonomy' => array('product_cat'),
+                        'parent' => 0,
+                        'hide_empty' => true,
+                        'exclude' => 15
+                    );
+                    $categories = new WP_Term_Query($args);
+                    ?>
+                    <?php if (!empty($categories)) { ?>
+                        <?php foreach($categories->terms as $category) { ?>
+                        <li class='footer-nav__item'>
+                            <a class='footer-nav__link' href="<?php echo get_term_link($category); ?>"><?php echo $category->name; ?></a>
+                        </li>
+                        <?php } ?>
+                    <?php } ?>
                 </ul>
                 <ul class="footer-nav__col footer-nav__mob-last footer-nav__mob-space col">
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="/collections.html">Explore by Collection</a>
+                        <a class='footer-nav__link' href="/collections/">Explore by Collection</a>
                     </li>
                 </ul>
                 <ul class="footer-nav__col  col">
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="#">Care guide</a>
+                        <a class='footer-nav__link' href="<?php print get_theme_file_uri(); ?>/pdf/pillowcase.pdf">Care guide</a>
                     </li>
                     <li class='footer-nav__item'>
-                        <a class='footer-nav__link' href="#">Size guide</a>
+                        <a class='footer-nav__link' href="<?php print get_theme_file_uri(); ?>/pdf/pillowcase.pdf">Size guide</a>
                     </li>
                 </ul>
             </div>

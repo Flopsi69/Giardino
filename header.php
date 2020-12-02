@@ -320,9 +320,76 @@
                     </svg>
                 </a>
             </div>
+            <?php $cart_items = get_cart_items(); ?>
+            <?php if (!empty($cart_items)) { ?>
+            <div class="cart__body">
+                <!-- List -->
+                <div class="cart__products">
+                    <?php foreach ($cart_items as $key => $item) { ?>
+                        <?php $product = $item['data']; ?>
+                        <!-- Product -->
+                        <div class="cart__product" data-item-key="<?php echo $key; ?>" data-quantity="<?php echo $item['quantity']; ?>">
+                        <a href="<?php echo get_permalink($product->get_id()) ?>" class="cart__product-preview">
+                            <img src="<?php echo get_the_post_thumbnail_url($product->get_id()); ?>" alt="<?php echo $product->get_name(); ?>">
+                        </a>
+
+                        <div class="cart__product-info">
+                            <a href="<?php echo get_permalink($product->get_id()) ?>" class="cart__product-title"><?php echo $product->get_name(); ?></a>
+
+                            <?php $attributes = get_product_attributes($product); ?>
+                            <?php if (!empty($attributes)) { ?>
+                                <?php foreach ($attributes as $att_key => $attribute) { ?>
+                                    <?php if (!empty($attribute['options'])) { ?>
+                                    <div class="pdp__size">
+                                        <div class="pdp-look__caption hidden-sm">Size:</div>
+                                        <div class="pdp__size-select select">
+                                            <select>
+                                                <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                    <option data-key="<?php echo $att_key; ?>" value="<?php echo $slug; ?>" <?php echo ($item[$att_key] === $option ? 'selected' : ''); ?>><?php echo $option; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                <?php } ?>
+                            <?php } ?>
+
+                            <?php $colors = get_product_variation_colors($product); ?>
+                            <?php if (!empty($colors)) {?>
+                                <div class="colors cart__product-colors">
+                                    <div class="pdp-look__caption hidden-sm">Color:</div>
+                                    <div class="towel-colors__list">
+                                        <?php foreach ($colors as $variation_id => $color) { ?>
+                                            <div data-name="<?php echo $color['name']; ?>"
+                                                 data-value="<?php echo $color['slug']; ?>"
+                                                 data-key="pa_color"
+                                                 class="towel-colors__item <?php echo ($item['pa_color'] === $color['slug'] ? 'active' : ''); ?>"
+                                                 style="<?php echo $color['background']; ?>"></div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            <?php } ?>
+
+                            <div class="cart__product-buy">
+                                <div class="count">
+                                    <button class="btn count__btn count__btn_small count__minus">-</button>
+                                    <input class="count__value" type="number" value="<?php echo $item['quantity']; ?>" min="1" max="1000">
+                                    <button class="btn count__btn count__btn_small count__plus">+</button>
+                                </div>
+                                <div class="cart__product-price pdp-look__caption"><?php echo $item['line_total']; ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                <a href="#" class="cart__product-cancel">
+                                    <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-close.svg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <?php } ?>
 
             <div class="cart__footer">
-                <a href='/checkout.html' class="cart__footer-checkout btn btn_blue w-100">Checkout</a>
+                <a href="/checkout/" class="cart__footer-checkout btn btn_blue w-100">Checkout</a>
                 <div class="cart__footer-divider text-center hidden-md">Or</div>
                 <div class="cart__footer-buttons flex j-between">
                     <button class="cart__footer-pay btn btn_trans w-100"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></button>
