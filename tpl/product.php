@@ -58,10 +58,12 @@ $product_parent = wc_get_product(get_the_ID());
                         <?php if (!empty($options)) { ?>
                             <table class="pdp-params">
                                 <?php foreach ($options as $option) { ?>
+                                    <?php if (!empty($option['option_key'])) { ?>
                                     <tr>
                                         <td class='pdp-params__left'><?php echo $option['option_key']; ?>:</td>
                                         <td class='pdp-params__right'><?php echo $option['option_value']; ?></td>
                                     </tr>
+                                    <?php } ?>
                                 <?php } ?>
                             </table>
                         <?php } ?>

@@ -50,7 +50,9 @@
                         <?php
                         $args = array(
                             'taxonomy' => array('product_cat'),
-                            'parent' => 0
+                            'parent' => 0,
+                            'hide_empty' => true,
+                            'exclude' => 15
                         );
                         $categories = new WP_Term_Query($args);
                         ?>
@@ -63,7 +65,9 @@
                                 <?php
                                 $args = array(
                                     'taxonomy' => array('product_cat'),
-                                    'parent' => $category->term_id
+                                    'parent' => $category->term_id,
+                                    'hide_empty' => true,
+                                    'exclude' => 15
                                 );
                                 $subcategories = new WP_Term_Query($args);
                                 ?>

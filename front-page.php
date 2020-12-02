@@ -20,7 +20,9 @@
         <?php
         $args = array(
             'taxonomy' => array('product_cat'),
-            'parent' => 0
+            'parent' => 0,
+            'hide_empty' => true,
+            'exclude' => 15
         );
         $categories = new WP_Term_Query($args);
         ?>
@@ -57,7 +59,7 @@
                         'limit' => 4,
                         'status' => 'publish',
                         'type' => array('simple', 'variable'),
-                        'category' => $category->ID
+                        'category' => $category->slug
                     );
                     $products = wc_get_products($args);
                     ?>
@@ -123,18 +125,20 @@
                     <a href="<?php echo get_permalink($collection->get_id()); ?>" class="collection collections__item col">
                         <?php $labels = get_carbon_field('labels', $collection->get_id()); ?>
                         <?php if (is_array($labels)) { ?>
-                            <?php if (in_array('best', $labels)) { ?>
-                                <div class="collection__best">Best seller</div>
-                            <?php } ?>
-                            <?php if (in_array('new', $labels)) { ?>
-                                <div class="collection__new">New</div>
-                            <?php } ?>
-                            <?php if (in_array('cotton', $labels)) { ?>
-                                <div class="collection__cotton flex a-center">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
-                                    100% cotton
-                                </div>
-                            <?php } ?>
+                            <div class="product__label">
+                                <?php if (in_array('best', $labels)) { ?>
+                                    <div class="product__label-item product__label_best">Best seller</div>
+                                <?php } ?>
+                                <?php if (in_array('new', $labels)) { ?>
+                                    <div class="product__label-item product__label_new">New</div>
+                                <?php } ?>
+                                <?php if (in_array('cotton', $labels)) { ?>
+                                    <div class="product__label-item product__label_coton flex a-center">
+                                        <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
+                                        100% cotton
+                                    </div>
+                                <?php } ?>
+                            </div>
                         <?php } ?>
                         <img class="collection__image" src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="<?php echo $collection->get_name(); ?>">
                         <div class="collection__inner text-center">

@@ -56,29 +56,36 @@ function get_product_variation_colors($product) {
     if ($product->get_parent_id() !== 0) {
         $product = wc_get_product($product->get_parent_id());
     }
-    if ($product->get_type() !== 'variable') {
-        return [];
-    }
-    $variations = $product->get_available_variations();
-    if (!empty($variations)) {
-        foreach ($variations as $variation) {
-            $color = $variation['attributes']['attribute_pa_color'];
-            if (isset($color)) {
-                $term = get_term_by('slug', $color, 'pa_color');
+    $terms = wc_get_product_terms($product->get_id(), 'pa_color', array('fields' => 'all'));
 
-                $data[$variation['variation_id']] = array(
-                    'name' => $color,
+//    $match_attributes =  array(
+//        "attribute_pa_color" => 'white',
+//    );
+//
+//    $data_store   = WC_Data_Store::load( 'product' );
+//    $variation_id = $data_store->find_matching_product_variation(
+//        new \WC_Product( $product),$match_attributes
+//    );
+//    print_r($variation_id);
+
+    if (!empty($terms)) {
+        if ($terms) {
+            $name = get_taxonomy('pa_color')->labels->singular_name;
+            foreach ($terms as $key => $term) {
+                $data[$key] = array(
+                    'name' => $term->name,
+                    'slug' => $term->slug,
                     'type' => carbon_get_term_meta($term->term_id, 'type'),
                     'hex' => carbon_get_term_meta($term->term_id, 'color_hex'),
                     'image' =>  wp_get_attachment_image_url(carbon_get_term_meta($term->term_id, 'color_image'), 'thumbnail'),
                     'background' => ''
                 );
-                switch ($data[$variation['variation_id']]['type']) {
+                switch ($data[$key]['type']) {
                     case 'hex':
-                        $data[$variation['variation_id']]['background'] = "background-color: " . $data[$variation['variation_id']]['hex'] . ";";
+                        $data[$key]['background'] = "background-color: " . $data[$key]['hex'] . ";";
                         break;
                     case 'image':
-                        $data[$variation['variation_id']]['background'] = "background-image: url(" . $data[$variation['variation_id']]['image'] . ");";
+                        $data[$key]['background'] = "background-image: url(" . $data[$key]['image'] . ");";
                         break;
                 }
             }

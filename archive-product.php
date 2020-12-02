@@ -11,7 +11,8 @@ get_header();
         <?php
         $args = array(
             'taxonomy' => array('product_cat'),
-            'parent' => 0
+            'parent' => 0,
+            'exclude' => 15
         );
         $categories = new WP_Term_Query($args);
         ?>

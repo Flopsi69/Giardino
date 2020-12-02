@@ -58,10 +58,12 @@ $product_parent = wc_get_product(get_the_ID());
                         <?php if (!empty($options)) { ?>
                             <table class="pdp-params">
                                 <?php foreach ($options as $option) { ?>
-                                    <tr>
-                                        <td class='pdp-params__left'><?php echo $option['option_key']; ?>:</td>
-                                        <td class='pdp-params__right'><?php echo $option['option_value']; ?></td>
-                                    </tr>
+                                    <?php if (!empty($option['option_key'])) { ?>
+                                        <tr>
+                                            <td class='pdp-params__left'><?php echo $option['option_key']; ?>:</td>
+                                            <td class='pdp-params__right'><?php echo $option['option_value']; ?></td>
+                                        </tr>
+                                    <?php } ?>
                                 <?php } ?>
                             </table>
                         <?php } ?>
@@ -95,22 +97,38 @@ $product_parent = wc_get_product(get_the_ID());
                                            target='_blank'><?php echo $collection_product->get_name(); ?></a>
                                         <input class='checkbox__input' type="checkbox">
                                         <span class="checkbox__mark"></span>
-                                        <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
-                                        <?php if (!empty($includes)) { ?>
-                                            <div class="tooltip">
-                                                <div class="tooltip__icon">
-                                                    <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
+                                        <div class="tooltip">
+                                            <div class="tooltip__icon">
+                                                <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
+                                            </div>
+                                            <div class="tooltip__info">
+                                                <div class="tooltip__image">
+                                                    <img src="<?php echo get_the_post_thumbnail_url($collection_product->get_id()) ?>" alt="">
                                                 </div>
-                                                <div class="tooltip__info">
+                                                <div class="tooltip__body">
                                                     <table>
-                                                        <tr>
-                                                            <td>What’s included:</td>
-                                                            <td><?php echo $includes; ?></td>
-                                                        </tr>
+                                                        <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
+                                                        <?php if (!empty($includes)) { ?>
+                                                            <tr>
+                                                                <td>What’s included:</td>
+                                                                <td><?php echo $includes; ?></td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                        <?php $options = get_carbon_field('options'); ?>
+                                                        <?php if (!empty($options)) { ?>
+                                                            <?php foreach ($options as $option) { ?>
+                                                                <?php if (!empty($option['option_key'])) { ?>
+                                                                    <tr>
+                                                                        <td><?php echo $option['option_key']; ?>:</td>
+                                                                        <td><?php echo $option['option_value']; ?></td>
+                                                                    </tr>
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        <?php } ?>
                                                     </table>
                                                 </div>
                                             </div>
-                                        <?php } ?>
+                                        </div>
                                     </label>
                                     <?php $attributes = get_product_attributes($collection_product); ?>
                                     <?php if (!empty($attributes)) { ?>
@@ -276,12 +294,36 @@ $product_parent = wc_get_product(get_the_ID());
                                                                         <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
                                                                     </div>
                                                                     <div class="tooltip__info">
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td>What’s included:</td>
-                                                                                <td><?php echo $includes; ?></td>
-                                                                            </tr>
-                                                                        </table>
+                                                                        <div class="tooltip__icon">
+                                                                            <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
+                                                                        </div>
+                                                                        <div class="tooltip__info">
+                                                                            <div class="tooltip__image">
+                                                                                <img src="<?php echo get_the_post_thumbnail_url($collection_product->get_id()) ?>" alt="">
+                                                                            </div>
+                                                                            <div class="tooltip__body">
+                                                                                <table>
+                                                                                    <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
+                                                                                    <?php if (!empty($includes)) { ?>
+                                                                                        <tr>
+                                                                                            <td>What’s included:</td>
+                                                                                            <td><?php echo $includes; ?></td>
+                                                                                        </tr>
+                                                                                    <?php } ?>
+                                                                                    <?php $options = get_carbon_field('options'); ?>
+                                                                                    <?php if (!empty($options)) { ?>
+                                                                                        <?php foreach ($options as $option) { ?>
+                                                                                            <?php if (!empty($option['option_key'])) { ?>
+                                                                                                <tr>
+                                                                                                    <td><?php echo $option['option_key']; ?>:</td>
+                                                                                                    <td><?php echo $option['option_value']; ?></td>
+                                                                                                </tr>
+                                                                                            <?php } ?>
+                                                                                        <?php } ?>
+                                                                                    <?php } ?>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             <?php } ?>
