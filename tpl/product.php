@@ -84,7 +84,7 @@ $product_parent = wc_get_product(get_the_ID());
                                     <div class="pdp-look__color-list text-center">
                                         <?php foreach ($colors as $variation_id => $color) { ?>
                                             <div class="pdp-look__color-option <?php echo ($variation_id === $product->get_id() ? 'active' : ''); ?>">
-                                                <div class="pdp-look__color-preview" style='background-image: <?php echo $color[$color['type']]; ?>'></div>
+                                                <div class="pdp-look__color-preview" style='background-image: url(<?php echo $color[$color['type']]; ?>)'></div>
                                                 <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
                                             </div>
                                         <?php } ?>
