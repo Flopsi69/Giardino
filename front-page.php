@@ -1,0 +1,155 @@
+<?php get_header(); ?>
+    <main class="main">
+        <!-- Jumb -->
+        <section class="section jumb text-center">
+            <div class="container">
+                <h1 class="jumb__title upper">Finest Italian Linens Designed in Monte-Carlo</h1>
+
+                <div class="jumb__caption">
+                    Discover true comfort and a sense of peace with delicately soft luxurious cotton.
+                </div>
+
+                <div class="jumb__buttons">
+                    <a href="/products/" class="btn btn_blue jumb__btn jumb__buttons-item">Bed linen</a>
+                    <a href="/collections/" class="btn btn_trans jumb__btn jumb__buttons-item">Explore by
+                        Collection</a>
+                </div>
+            </div>
+        </section>
+
+        <?php
+        $args = array(
+            'taxonomy' => array('product_cat'),
+            'parent' => 0
+        );
+        $categories = new WP_Term_Query($args);
+        ?>
+        <?php if (!empty($categories)) { ?>
+        <!-- Directions -->
+        <section class="section directions text-center">
+            <div class="container directions__container">
+                <div class="directions__list row-flex">
+                    <?php foreach($categories->terms as $category) { ?>
+                    <!-- Item -->
+                    <div class="direction directions__item col">
+                        <a href="<?php echo get_term_link($category); ?>" class="direction__preview">
+                            <img src="<?php echo wp_get_attachment_image_url(get_term_meta($category->term_id, 'thumbnail_id', true), 'large') ?>" alt="<?php echo $category->name; ?>">
+                        </a>
+                        <a href="<?php echo get_term_link($category); ?>" class="direction__name"><?php echo $category->name; ?></a>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </section>
+            <?php $count = 0; ?>
+            <?php foreach($categories->terms as $category) { ?>
+            <!-- Products -->
+            <section class="section products <?php echo ($count % 2 === 0 ? '' : 'bg-gray'); ?>">
+                <div class="container">
+                    <div class="section__head row-flex j-between a-center">
+                        <!-- Title -->
+                        <h2 class="products__title section__title col"><?php echo $category->name; ?></h2>
+                        <!-- Show more -->
+                        <a href="<?php echo get_term_link($category); ?>" class="products__more more-btn col hidden-sm">See all bed linen</a>
+                    </div>
+                    <?php
+                    $args = array(
+                        'limit' => 4,
+                        'status' => 'publish',
+                        'type' => array('simple', 'variable'),
+                        'category' => $category->ID
+                    );
+                    $products = wc_get_products($args);
+                    ?>
+                    <?php if ($products) { ?>
+                    <!-- List -->
+                    <div class="products__list row-flex">
+                        <?php foreach ($products as $product) { ?>
+                        <!-- Product -->
+                        <div class="product products__item col">
+                            <?php $labels = get_carbon_field('labels', $product->get_id()); ?>
+                            <?php if (is_array($labels)) { ?>
+                                <div class="product__label">
+                                    <?php if (in_array('best', $labels)) { ?>
+                                        <div class="product__label-item product__label_best">Best seller</div>
+                                    <?php } ?>
+                                    <?php if (in_array('new', $labels)) { ?>
+                                        <div class="product__label-item product__label_new">New</div>
+                                    <?php } ?>
+                                    <?php if (in_array('cotton', $labels)) { ?>
+                                        <div class="product__label-item product__label_coton flex a-center">
+                                            <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
+                                            100% cotton
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+                            <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__preview">
+                                <img src="<?php echo get_the_post_thumbnail_url($product->get_id()); ?>" alt="<?php echo $product->get_name(); ?>">
+                            </a>
+                            <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__name"><?php echo $product->get_name(); ?></a>
+                            <div class="product__descr"><?php echo $product->get_short_description(); ?></div>
+                            <div class="product__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
+
+                    <!-- Show more Mobile -->
+                    <a href="<?php echo get_term_link($category); ?>" class="products__more more-btn more-btn_mobile">See all bed linen</a>
+                </div>
+            </section>
+                <?php $count++; ?>
+            <?php } ?>
+        <?php } ?>
+
+        <!-- Collections -->
+        <?php $collections = get_product_collections(0, 4); ?>
+        <?php if (!empty($collections)) { ?>
+        <section class="section collections">
+            <div class="container">
+                <div class="section__head row-flex j-between a-center">
+                    <!-- Title -->
+                    <h2 class="products__title section__title col">Explore by COLLECTION</h2>
+
+                    <!-- Show more -->
+                    <a href="/collections/" class="products__more more-btn col hidden-sm">See all collections </a>
+                </div>
+
+                <!-- List -->
+                <div class="collections__list row-flex">
+                    <?php foreach ($collections as $collection) { ?>
+                    <!-- Collection -->
+                    <a href="<?php echo get_permalink($collection->get_id()); ?>" class="collection collections__item col">
+                        <?php $labels = get_carbon_field('labels', $collection->get_id()); ?>
+                        <?php if (is_array($labels)) { ?>
+                            <?php if (in_array('best', $labels)) { ?>
+                                <div class="collection__best">Best seller</div>
+                            <?php } ?>
+                            <?php if (in_array('new', $labels)) { ?>
+                                <div class="collection__new">New</div>
+                            <?php } ?>
+                            <?php if (in_array('cotton', $labels)) { ?>
+                                <div class="collection__cotton flex a-center">
+                                    <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
+                                    100% cotton
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                        <img class="collection__image" src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="<?php echo $collection->get_name(); ?>">
+                        <div class="collection__inner text-center">
+                            <div class="collection__title"><?php echo $collection->get_name(); ?></div>
+                            <div class="collection__more more-btn">Explore the collection</div>
+                        </div>
+                    </a>
+                    <?php } ?>
+                </div>
+
+                <!-- Show more Mobile -->
+                <a href="/collections/" class="products__more more-btn more-btn_mobile">See all collections</a>
+
+            </div>
+        </section>
+        <?php } ?>
+    </main>
+<?php get_footer(); ?>
