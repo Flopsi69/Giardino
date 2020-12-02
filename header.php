@@ -1,3 +1,4 @@
+<?php cart_control(); ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>

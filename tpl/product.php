@@ -1,10 +1,6 @@
 <?php
-$current_variation_id = intval($_GET['variation_id']);
-$product = wc_get_product($current_variation_id);
-if (empty($product)) {
-    $product = wc_get_product(get_the_ID());
-}
-$product_parent = wc_get_product(get_the_ID());
+$product = wc_get_product(get_the_ID());
+$product_parent = $product;
 ?>
 
 <main class="main">
