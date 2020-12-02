@@ -67,7 +67,6 @@ $product_parent = wc_get_product(get_the_ID());
                                 <?php } ?>
                             </table>
                         <?php } ?>
-                        <input type="hidden" name="product_id" value="<?php echo $product->get_id(); ?>">
 
                         <?php $collection_products = get_collection_products_without_current($product, $product_parent->get_id()); ?>
                         <?php if (!empty($collection_products)) { ?>
@@ -130,14 +129,15 @@ $product_parent = wc_get_product(get_the_ID());
                                             </div>
                                         </div>
                                     </label>
+                                    <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
                                     <?php $attributes = get_product_attributes($collection_product); ?>
                                     <?php if (!empty($attributes)) { ?>
-                                        <?php foreach ($attributes as $attribute) { ?>
+                                        <?php foreach ($attributes as $att_key => $attribute) { ?>
                                             <?php if (!empty($attribute['options'])) { ?>
                                                 <div class="pdp__collection-size pdp__size-select select">
                                                     <select>
-                                                        <?php foreach ($attribute['options'] as $option) { ?>
-                                                            <option value="<?php echo $option; ?>"><?php echo $option; ?></option>
+                                                        <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                            <option data-key="<?php echo $att_key; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -158,7 +158,8 @@ $product_parent = wc_get_product(get_the_ID());
                                                 <?php $count = 0; ?>
                                                 <?php foreach ($colors as $variation_id => $color) { ?>
                                                     <div data-name="<?php echo $color['name']; ?>"
-                                                         data-id="<?php echo $variation_id; ?>"
+                                                         data-value="<?php echo $color['slug']; ?>"
+                                                         data-key="pa_color"
                                                          class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>"
                                                          style="<?php echo $color['background']; ?>"></div>
                                                     <?php $count++; ?>
@@ -258,16 +259,18 @@ $product_parent = wc_get_product(get_the_ID());
                                     </div>
 
                                     <div class="pdp-look__info-body">
-
+                                        <input type="hidden" name="product_id" value="<?php echo $upsell->get_id(); ?>">
                                         <?php $attributes = get_product_attributes($upsell); ?>
                                         <?php if (!empty($attributes)) { ?>
-                                            <?php foreach ($attributes as $attribute) { ?>
+                                            <?php foreach ($attributes as $att_key => $attribute) { ?>
                                                 <div class="pdp-look__size">
                                                     <div class="pdp-look__caption"><?php echo $attribute['name']; ?>:</div>
                                                     <?php if (!empty($attribute['options'])) { ?>
                                                         <div class="pdp-look__size-list">
-                                                            <?php foreach ($attribute['options'] as $count => $option) { ?>
-                                                                <div class="pdp-look__size-option <?php echo ( $count === 0 ? 'active' : ''); ?>"><?php echo $option; ?></div>
+                                                            <?php $count = 0; ?>
+                                                            <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                <div data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" class="pdp-look__size-option <?php echo ($count === 0 ? 'active' : ''); ?>"><?php echo $option; ?></div>
+                                                                <?php $count++; ?>
                                                             <?php } ?>
                                                             <?php if ($attribute['name'] === 'Size') { ?>
                                                                 <a href="<?php print get_theme_file_uri(); ?>/pdf/bed-sheet.pdf" class="pdp__guide pdp-look__size-guide">Size guide</a>
@@ -328,14 +331,15 @@ $product_parent = wc_get_product(get_the_ID());
                                                                 </div>
                                                             <?php } ?>
                                                         </label>
+                                                        <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
                                                         <?php $attributes = get_product_attributes($collection_product); ?>
                                                         <?php if (!empty($attributes)) { ?>
-                                                            <?php foreach ($attributes as $attribute) { ?>
+                                                            <?php foreach ($attributes as $att_key => $attribute) { ?>
                                                                 <?php if (!empty($attribute['options'])) { ?>
                                                                     <div class="pdp__collection-size pdp__size-select select">
                                                                         <select>
-                                                                            <?php foreach ($attribute['options'] as $option) { ?>
-                                                                                <option value="<?php echo $option; ?>"><?php echo $option; ?></option>
+                                                                            <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                                <option data-key="<?php echo $att_key; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                                             <?php } ?>
                                                                         </select>
                                                                     </div>
@@ -356,7 +360,8 @@ $product_parent = wc_get_product(get_the_ID());
                                                                 <?php $count = 0; ?>
                                                                 <?php foreach ($colors as $variation_id => $color) { ?>
                                                                     <div data-name="<?php echo $color['name']; ?>"
-                                                                         data-id="<?php echo $variation_id; ?>"
+                                                                         data-value="<?php echo $color['slug']; ?>"
+                                                                         data-key="pa_color"
                                                                          class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>"
                                                                          style="<?php echo $color['background']; ?>"></div>
                                                                     <?php $count++; ?>
@@ -381,7 +386,7 @@ $product_parent = wc_get_product(get_the_ID());
                                                                     <div class="pdp-look__color-preview">
                                                                         <img src="<?php echo $color[$color['type']]; ?>" alt="">
                                                                     </div>
-                                                                    <div class="pdp-look__color-name"><?php echo $color['name']; ?></div>
+                                                                    <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
                                                                 </div>
                                                                 <?php $count++; ?>
                                                             <?php } ?>

@@ -39,10 +39,10 @@ function get_product_attributes($product) {
                     if ($terms) {
                         $name = get_taxonomy($key)->labels->singular_name;
                         foreach ($terms as $term) {
-                            $options[] = $term->name;
+                            $options[$term->slug] = $term->name;
                         }
                     }
-                    $values[mb_substr($key, 3)] = ['name' => $name, 'options' => $options];
+                    $values[$key] = ['name' => $name, 'options' => $options];
                 } else {
                     $values[$key] = ['name' => $attribute->get_name(), 'options' => $attribute->get_options()];
                 }
@@ -60,6 +60,7 @@ function get_product_variation_colors($product) {
 
 //    $match_attributes =  array(
 //        "attribute_pa_color" => 'white',
+//        "attribute_pa_size" => '200x240x33-cm'
 //    );
 //
 //    $data_store   = WC_Data_Store::load( 'product' );
@@ -67,6 +68,11 @@ function get_product_variation_colors($product) {
 //        new \WC_Product( $product),$match_attributes
 //    );
 //    print_r($variation_id);
+    $ku = new WC_Product_Variable($product->get_id());
+    print_r($ku->get_availability());
+    print_r($ku->get_attributes());
+    print_r($ku->get_variation_prices());
+    print_r($ku->get_variation_attributes());
 
     if (!empty($terms)) {
         if ($terms) {
