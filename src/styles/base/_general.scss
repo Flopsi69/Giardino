@@ -400,6 +400,7 @@ textarea {
   top: -5px;
   margin-left: 4px;
   display: inline-block;
+  flex-shrink: 0;
   @include md-block {
     &:before {
       content: "";
@@ -1209,12 +1210,26 @@ textarea {
     line-height: 0;
     display: inline-block;
     border: 1px solid transparent;
-    @include md-block {
-      width: 100px;
-      margin-bottom: 24px;
+    img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      @include md-block {
+        width: 100px;
+        height: 100px;
+      }
+      @include sm-block {
+        width: 60px;
+        height: 60px;
+      }
+      @include to(rem(370)) {
+        width: 48px;
+        height: 48px;
+      }
     }
-    @include sm-block {
-      width: 70px;
+    @include md-block {
+      margin-bottom: 24px;
     }
     &:hover {
       border-color: $blue;
@@ -1330,7 +1345,7 @@ textarea {
   }
   &__item {
     @include size(3);
-    @include size-sm(6);
+    @include size-md(6);
     margin-bottom: 15px;
     @include sm-block {
       width: calc(50% - 12px);
@@ -1350,25 +1365,21 @@ textarea {
   position: relative;
   &__label {
     position: absolute;
-    left: 20px;
-    top: 20px;
-    @include md-block {
-      top: 10px;
-      left: 10px;
-    }
+    left: 5px;
+    top: 5px;
     @include sm-block {
       right: 10px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
     }
-    // display: flex;
-    // flex-flow: column;
     &-item {
       display: inline-block;
       letter-spacing: 0.06em;
       font-size: 12px;
       line-height: 13px;
+      margin: 5px;
       text-transform: uppercase;
       font-weight: 700;
       border-radius: 30px;
@@ -1380,16 +1391,18 @@ textarea {
         padding-left: 10px;
         padding-right: 10px;
       }
-      & + & {
-        margin-top: 13px;
-        @include sm-block {
-          margin-top: 0;
-        }
+      @include sm-block {
+        font-size: 10px;
+        line-height: 11px;
       }
     }
     &_best {
       color: #fff;
       background-color: #800000;
+    }
+    &_new {
+      color: #fff;
+      background-color: $blue;
     }
     &_coton {
       display: flex;
@@ -1417,7 +1430,30 @@ textarea {
     img {
       min-width: 100%;
       min-height: 100%;
+      height: 300px;
       object-fit: cover;
+      .products-page__item & {
+        height: 380px;
+      }
+      @include lg-block {
+        height: 200px;
+        .products-page__item & {
+          height: 370px;
+        }
+      }
+      @include md-block {
+        height: 30vw;
+        .products-page__item & {
+          height: 30vw;
+        }
+      }
+      @include sm-block {
+        height: 35vw;
+        min-height: 130px;
+        .products-page__item & {
+          height: auto;
+        }
+      }
     }
     &_double {
       display: flex;
@@ -1920,7 +1956,17 @@ textarea {
       }
       &-preview {
         line-height: 0;
-        margin-bottom: 5px;
+        margin: 0 auto 5px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50px;
+        border: 1px solid transparent;
+        transition: 0.5s;
+        background-size: cover;
+        background-repeat: no-repeat;
+        .active & {
+          border-color: $blue;
+        }
       }
       &-option {
         width: 75px;
@@ -1933,18 +1979,6 @@ textarea {
         }
         &:hover {
           opacity: 0.8;
-        }
-        img {
-          width: 40px;
-          height: 40px;
-          border-radius: 50px;
-          border: 1px solid transparent;
-          transition: 0.5s;
-        }
-        &.active {
-          img {
-            border-color: $blue;
-          }
         }
       }
       &-name {
@@ -2199,6 +2233,9 @@ textarea {
   &__collection {
     &-link {
       border-bottom: 1px solid transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &:hover {
         border-color: $blue;
         color: $blue;
@@ -2263,6 +2300,7 @@ textarea {
 
 .collections {
   padding-bottom: 35px;
+  padding-top: 55px;
   &__item {
     margin-bottom: 30px;
     @include size(6);

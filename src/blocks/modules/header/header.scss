@@ -238,11 +238,12 @@
     }
   }
   &__sublist {
+    margin: 0 -10px;
     display: flex;
     opacity: 0;
     pointer-events: none;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     position: absolute;
     transition: opacity 0.3s;
     left: -15px;
@@ -266,6 +267,17 @@
     &-image {
       margin-bottom: 10px;
       line-height: 0;
+      img {
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        object-fit: cover;
+        .nav__sublist-collection & {
+          width: 145px;
+          height: 145px;
+          border-radius: 0;
+        }
+      }
     }
     &-name {
       font-weight: bold;
