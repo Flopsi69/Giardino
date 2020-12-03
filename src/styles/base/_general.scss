@@ -811,6 +811,7 @@ textarea {
 }
 
 .main {
+  overflow: hidden;
   @include md-block {
     padding-top: 68px;
   }
@@ -846,60 +847,96 @@ textarea {
   }
 }
 
-.pagination {
+ul.page-numbers {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 35px;
-  &__control {
-    text-transform: uppercase;
-    font-size: 15px;
-    &_prev {
-      margin-right: 15px;
-      @include md-block {
-        margin-right: 9px;
-      }
+  margin-top: 25px;
+  li {
+    & + li {
+      margin-left: 7px;
+    }
+  }
+  .page-numbers {
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    transition: 0.5s;
+    border-radius: 50px;
+    font-family: $grotesk;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 17px;
+    font-weight: 700;
+    color: $gray;
+    &:hover {
+      border-color: $blue;
+      color: $blue;
       a {
-        padding-left: 15px;
-        &:before {
-          content: "";
-          position: absolute;
-          top: 1px;
-          left: 0;
-          display: block;
-          background: url(../img/svg/icon-arrow-right.svg) center no-repeat;
-          background-size: contain;
-          height: 11px;
-          width: 7px;
-          filter: invert(40%) sepia(12%) saturate(298%) hue-rotate(212deg)
-            brightness(92%) contrast(87%);
-          transform: rotate(180deg);
-        }
+        color: $blue;
       }
     }
-    &_next {
-      margin-left: 15px;
-      @include md-block {
-        margin-left: 9px;
+    &.current {
+      background-color: #f5f4f3;
+      border: 1px solid $gray;
+    }
+    &.prev {
+      padding-left: 15px;
+      margin-right: 5px;
+      @include sm-block {
+        margin-right: 0;
       }
-      a {
-        padding-right: 15px;
-        &:after {
-          content: "";
-          position: absolute;
-          top: 1px;
-          right: 0;
-          display: block;
-          background: url(../img/svg/icon-arrow-right.svg) center no-repeat;
-          background-size: contain;
-          height: 11px;
-          width: 7px;
-          filter: invert(40%) sepia(12%) saturate(298%) hue-rotate(212deg)
-            brightness(92%) contrast(87%);
-        }
+      &:before {
+        content: "";
+        position: absolute;
+        top: 1px;
+        left: 0;
+        display: block;
+        background: url(../img/svg/icon-arrow-right.svg) center no-repeat;
+        background-size: contain;
+        height: 11px;
+        width: 7px;
+        filter: invert(40%) sepia(12%) saturate(298%) hue-rotate(212deg)
+          brightness(92%) contrast(87%);
+        transform: rotate(180deg);
       }
     }
-    a {
+    &.next {
+      padding-right: 15px;
+      margin-left: 5px;
+      @include sm-block {
+        margin-left: 0;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        top: 1px;
+        right: 0;
+        display: block;
+        background: url(../img/svg/icon-arrow-right.svg) center no-repeat;
+        background-size: contain;
+        height: 11px;
+        width: 7px;
+        filter: invert(40%) sepia(12%) saturate(298%) hue-rotate(212deg)
+          brightness(92%) contrast(87%);
+      }
+    }
+
+    &.prev,
+    &.next {
+      position: relative;
+      top: 2px;
+      font-family: $main-font;
+      border-radius: 0;
+      border-left: none;
+      border-top: none;
+      border-right: none;
+      text-transform: uppercase;
+      font-size: 15px;
+      width: auto;
+      height: auto;
       position: relative;
       border-bottom: 1px solid transparent;
       @include md-block {
@@ -915,39 +952,6 @@ textarea {
         }
       }
     }
-  }
-  &__num {
-    border: 1px solid transparent;
-    transition: 0.5s;
-    border-radius: 50px;
-    font-family: $grotesk;
-    a {
-      width: 36px;
-      height: 36px;
-    }
-    &:hover {
-      border-color: $blue;
-      color: $blue;
-      a {
-        color: $blue;
-      }
-    }
-    &.active {
-      background-color: #f5f4f3;
-      border: 1px solid $gray;
-    }
-    & + & {
-      margin-left: 7px;
-    }
-  }
-  &__link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    line-height: 17px;
-    font-weight: 700;
-    color: $gray;
   }
 }
 
@@ -2141,6 +2145,7 @@ textarea {
       img {
         height: 90px;
         width: 90px;
+        object-fit: cover;
       }
       .slick-prev {
         transform: rotate(90deg) translate(-50%, 50%);
@@ -2171,6 +2176,17 @@ textarea {
       }
     }
     &-for {
+      img {
+        height: 575px;
+        min-width: 100%;
+        object-fit: cover;
+        @include md-block {
+          height: 384px;
+        }
+        @include sm-block {
+          height: 270px;
+        }
+      }
     }
   }
   &__guide {
@@ -2194,6 +2210,7 @@ textarea {
     background: $blue;
     border-radius: 2px;
     border: 1px solid $blue;
+    margin-left: 10px;
     &__btn {
       font-weight: bold;
       font-size: 13px;
@@ -2844,7 +2861,7 @@ textarea {
 }
 
 .cart {
-  // display: none !important;
+  overflow: hidden;
   position: fixed;
   left: 0;
   right: 0;
@@ -2854,6 +2871,19 @@ textarea {
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    margin: 1px 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
   &:before {
     content: "";
     background: rgba($black, 0.7);
@@ -2969,7 +2999,7 @@ textarea {
   }
   &__body {
     display: flex;
-    overflow: scroll;
+    overflow-y: auto;
     flex-direction: column;
     flex-grow: 1;
   }
@@ -3024,8 +3054,11 @@ textarea {
       }
       img {
         width: 130px;
+        height: 150px;
+        object-fit: cover;
         @include sm-block {
           width: 80px;
+          height: 100px;
         }
       }
     }

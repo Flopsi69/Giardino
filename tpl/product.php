@@ -116,10 +116,8 @@ $product_parent = $product;
                                                 <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
                                             <?php } ?>
                                             <div class="pdp-measure">
-                                                <div class="pdp-measure">
-                                                    <div class="pdp-measure__btn active">cm</div>
-                                                    <div class="pdp-measure__btn">inc</div>
-                                                </div>
+                                                <div class="pdp-measure__btn active">cm</div>
+                                                <div class="pdp-measure__btn">inc</div>
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +202,7 @@ $product_parent = $product;
                         <div class="pdp__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
 
                         <div class="pdp__buttons row-flex">
-                            <button class="btn btn_blue pdp__buttons-item col">Add to CART</button>
+                            <button class="btn btn_blue pdp__buttons-item col btn-to-cart">Add to CART</button>
                             <div class="pdp__buttons-divider pdp__buttons-item pdp__buttons-mob col">Or</div>
                             <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></button>
                             <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item pdp__buttons-mob col">

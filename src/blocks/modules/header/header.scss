@@ -26,6 +26,7 @@
       transition: 0.5s;
       @include md-block {
         height: 54px;
+        object-fit: cover;
         .header_fixed & {
           height: 30px;
         }
@@ -103,6 +104,19 @@
   background: rgba(#1b1726, 0.7);
   padding-right: 52px;
   height: 100vh;
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    margin: 1px 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
   &__close {
     position: absolute;
     line-height: 0;
@@ -150,6 +164,7 @@
   &-link {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 15px 0;
     &__second {
       & + & {
@@ -169,6 +184,7 @@
       img {
         width: 45px;
         height: 45px;
+        object-fit: cover;
       }
     }
     &__direction {
@@ -209,6 +225,7 @@
         img {
           width: 70px;
           height: 70px;
+          object-fit: cover;
           border-radius: 50%;
         }
       }
