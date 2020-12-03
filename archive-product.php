@@ -133,10 +133,10 @@ get_header();
                                     <?php } ?>
                                 </div>
                                 <?php } ?>
-                                <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__preview">
-                                    <img src="<?php echo get_the_post_thumbnail_url($product->get_id()); ?>" alt="<?php echo $product->get_name(); ?>">
+                                <a href="<?php echo get_product_url($product); ?>" class="product__preview">
+                                    <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
                                 </a>
-                                <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__name products-page__product-name"><?php echo $product->get_name(); ?></a>
+                                <a href="<?php echo get_product_url($product); ?>" class="product__name products-page__product-name"><?php echo $product->get_name(); ?></a>
                                 <div class="product__descr"><?php echo $product->get_short_description(); ?></div>
                                 <div class="product__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                             </div>

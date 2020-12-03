@@ -10,7 +10,7 @@ $product_parent = $product;
             <!-- About Product -->
             <div class="pdp__row">
                 <?php
-                $photo = get_the_post_thumbnail_url($product->get_id());
+                $photo = get_product_image($product);
                 $image_ids = $product_parent->get_gallery_image_ids();
                 if (!empty($photo)) {
                 ?>
@@ -78,11 +78,13 @@ $product_parent = $product;
                                 <div class="pdp__color pdp-look__color pdp__option">
                                     <div class="pdp-look__caption">Color:</div>
                                     <div class="pdp-look__color-list text-center">
-                                        <?php foreach ($colors as $variation_id => $color) { ?>
-                                            <div class="pdp-look__color-option <?php echo ($variation_id === $product->get_id() ? 'active' : ''); ?>">
+                                        <?php $count = 0; ?>
+                                        <?php foreach ($colors as $color) { ?>
+                                            <div class="pdp-look__color-option <?php echo ($count === 0 ? 'active' : ''); ?>">
                                                 <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
                                                 <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
                                             </div>
+                                            <?php $count++; ?>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -140,7 +142,7 @@ $product_parent = $product;
                                                     <div class="pdp__collection">
                                                         <div class="pdp__collection-row">
                                                             <label class="checkbox pdp__collection-checkbox">
-                                                                <a class='pdp__collection-link' href="<?php echo get_permalink($collection_product->get_id()); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
+                                                                <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
                                                                 <input class='checkbox__input' type="checkbox">
                                                                 <span class="checkbox__mark"></span>
                                                                 <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
@@ -265,13 +267,13 @@ $product_parent = $product;
                             <!-- Item -->
                             <div class="pdp-look row-flex">
                                 <div class="pdp-look__preview col">
-                                    <img src="<?php echo get_the_post_thumbnail_url($upsell->get_id()); ?>" alt="<?php echo $upsell->get_name(); ?>">
-                                    <a href="<?php echo get_permalink($upsell->get_id()); ?>" class="pdp-look__preview-full">View larger</a>
+                                    <img src="<?php echo get_product_image($upsell); ?>" alt="<?php echo $upsell->get_name(); ?>">
+                                    <a href="<?php echo get_product_url($upsell); ?>" class="pdp-look__preview-full">View larger</a>
                                 </div>
 
                                 <div class="pdp-look__info col">
                                     <div class="pdp-look__info-head">
-                                        <a href="<?php echo get_permalink($upsell->get_id()); ?>" class="pdp-look__title"><?php echo $upsell->get_name(); ?></a>
+                                        <a href="<?php echo get_product_url($upsell); ?>" class="pdp-look__title"><?php echo $upsell->get_name(); ?></a>
 
                                         <div class="pdp-look__descr"><?php echo $upsell->get_short_description(); ?></div>
 
@@ -317,7 +319,7 @@ $product_parent = $product;
                                                 <?php foreach ($collection_products as $collection_product) { ?>
                                                     <div class="pdp__collection-row">
                                                         <label class="checkbox pdp__collection-checkbox">
-                                                            <a class='pdp__collection-link' href="<?php echo get_permalink($collection_product->get_id()); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
+                                                            <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
                                                             <input class='checkbox__input' type="checkbox">
                                                             <span class="checkbox__mark"></span>
                                                             <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>

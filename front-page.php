@@ -85,10 +85,10 @@
                                     <?php } ?>
                                 </div>
                             <?php } ?>
-                            <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__preview">
-                                <img src="<?php echo get_the_post_thumbnail_url($product->get_id()); ?>" alt="<?php echo $product->get_name(); ?>">
+                            <a href="<?php echo get_product_url($product); ?>" class="product__preview">
+                                <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
                             </a>
-                            <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__name"><?php echo $product->get_name(); ?></a>
+                            <a href="<?php echo get_product_url($product); ?>" class="product__name"><?php echo $product->get_name(); ?></a>
                             <div class="product__descr"><?php echo $product->get_short_description(); ?></div>
                             <div class="product__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                         </div>
@@ -121,7 +121,7 @@
                 <div class="collections__list row-flex">
                     <?php foreach ($collections as $collection) { ?>
                     <!-- Collection -->
-                    <a href="<?php echo get_permalink($collection->get_id()); ?>" class="collection collections__item col">
+                    <a href="<?php echo get_product_url($collection); ?>" class="collection collections__item col">
                         <?php $labels = get_carbon_field('labels', $collection->get_id()); ?>
                         <?php if (is_array($labels)) { ?>
                             <div class="product__label">
@@ -139,7 +139,7 @@
                                 <?php } ?>
                             </div>
                         <?php } ?>
-                        <img class="collection__image" src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="<?php echo $collection->get_name(); ?>">
+                        <img class="collection__image" src="<?php echo get_product_image($collection); ?>" alt="<?php echo $collection->get_name(); ?>">
                         <div class="collection__inner text-center">
                             <div class="collection__title"><?php echo $collection->get_name(); ?></div>
                             <div class="collection__more more-btn">Explore the collection</div>
