@@ -73,6 +73,7 @@
   "dependencies": {
     "jquery": "^3.5.1",
     "slick-carousel": "^1.8.1",
+    "slick-lightbox": "^0.2.12",
     "smart-grid": "^2.1.2"
   },
   "lint-staged": {

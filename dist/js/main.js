@@ -179,13 +179,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var slick_carousel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! slick-carousel */ "./node_modules/slick-carousel/slick/slick.js");
 /* harmony import */ var slick_carousel__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(slick_carousel__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _js_utils_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../js/utils/select */ "./src/js/utils/select.js");
-/* harmony import */ var _js_utils_label__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../js/utils/label */ "./src/js/utils/label.js");
-/* harmony import */ var _js_utils_cart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../js/utils/cart */ "./src/js/utils/cart.js");
-/* harmony import */ var _js_utils_cart__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_js_utils_cart__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var slick_lightbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! slick-lightbox */ "./node_modules/slick-lightbox/dist/slick-lightbox.js");
+/* harmony import */ var slick_lightbox__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(slick_lightbox__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _js_utils_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../js/utils/select */ "./src/js/utils/select.js");
+/* harmony import */ var _js_utils_label__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../js/utils/label */ "./src/js/utils/label.js");
+/* harmony import */ var _js_utils_cart__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../js/utils/cart */ "./src/js/utils/cart.js");
+/* harmony import */ var _js_utils_cart__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_js_utils_cart__WEBPACK_IMPORTED_MODULE_5__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -429,6 +432,14 @@ $(".pdp__slider-nav").slick({
       variableWidth: true
     }
   }]
+});
+$('.pdp__slider-for').slickLightbox({
+  src: 'src',
+  itemSelector: '.pdp__slide img'
+});
+$('.pdp-look__preview').slickLightbox({
+  src: 'src',
+  itemSelector: 'img'
 }); // SLIDERS **END**
 // Product page **START**
 // Tabs

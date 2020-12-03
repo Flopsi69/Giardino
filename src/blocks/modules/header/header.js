@@ -1,5 +1,6 @@
 import 'regenerator-runtime/runtime';
 import "slick-carousel";
+import 'slick-lightbox';
 import "../../../js/utils/select";
 import "../../../js/utils/label";
 import "../../../js/utils/cart";
@@ -240,6 +241,16 @@ $(".pdp__slider-nav").slick({
       },
     },
   ],
+});
+
+$('.pdp__slider-for').slickLightbox({
+  src: 'src',
+  itemSelector: '.pdp__slide img'
+});
+
+$('.pdp-look__preview').slickLightbox({
+  src: 'src',
+  itemSelector: 'img'
 });
 // SLIDERS **END**
 

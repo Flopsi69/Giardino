@@ -13,7 +13,7 @@ $product_parent = $product;
                 $photo = get_product_image($product);
                 $image_ids = $product_parent->get_gallery_image_ids();
                 if (!empty($photo)) {
-                    ?>
+                ?>
                     <!-- Gallery -->
                     <div class="pdp__col pdp__col-left">
                         <div class="pdp__gallery">
@@ -66,116 +66,111 @@ $product_parent = $product;
 
                         <?php $collection_products = get_collection_products_without_current($product, $product_parent->get_id()); ?>
                         <?php if (!empty($collection_products)) { ?>
-                        <div class="pdp__collection-options">
-                            <div class="pdp__collection-header row-flex a-center j-between">
-                                <div class="pdp__collection-col col">
-                                    Product:
-                                </div>
-                                <div class="pdp__collection-col flex a-center col">
-                                    Size: &nbsp;
-                                    <div class="pdp-measure">
+                            <div class="pdp__collection-options">
+                                <div class="pdp__collection-header row-flex a-center j-between">
+                                    <div class="pdp__collection-col col">
+                                        Product:
+                                    </div>
+                                    <div class="pdp__collection-col flex a-center col">
+                                        Size: &nbsp;
                                         <div class="pdp-measure">
-                                            <div class="pdp-measure__btn active">cm</div>
-                                            <div class="pdp-measure__btn">inc</div>
+                                            <div class="pdp-measure">
+                                                <div class="pdp-measure__btn active">cm</div>
+                                                <div class="pdp-measure__btn">inc</div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="pdp__collection-col text-right hidden-sm col">
+                                        Price:
+                                    </div>
                                 </div>
-                                <div class="pdp__collection-col text-right hidden-sm col">
-                                    Price:
-                                </div>
-                            </div>
-                            <div class="pdp__collection-body">
-                                <?php foreach ($collection_products as $collection_product) { ?>
-                                <div class="pdp__collection-row">
-                                    <label class="checkbox pdp__collection-checkbox">
-                                        <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>"
-                                           target='_blank'><?php echo $collection_product->get_name(); ?></a>
-                                        <input class='checkbox__input' type="checkbox">
-                                        <span class="checkbox__mark"></span>
-                                        <div class="tooltip">
-                                            <div class="tooltip__icon">
-                                                <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
-                                            </div>
-                                            <div class="tooltip__info">
-                                                <div class="tooltip__image">
-                                                    <img src="<?php echo get_product_image($collection_product) ?>" alt="">
-                                                </div>
-                                                <div class="tooltip__body">
-                                                    <table>
-                                                        <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
-                                                        <?php if (!empty($includes)) { ?>
-                                                            <tr>
-                                                                <td>What’s included:</td>
-                                                                <td><?php echo $includes; ?></td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                        <?php $options = get_carbon_field('options'); ?>
-                                                        <?php if (!empty($options)) { ?>
-                                                            <?php foreach ($options as $option) { ?>
-                                                                <?php if (!empty($option['option_key'])) { ?>
+                                <div class="pdp__collection-body">
+                                    <?php foreach ($collection_products as $collection_product) { ?>
+                                        <div class="pdp__collection-row">
+                                            <label class="checkbox pdp__collection-checkbox">
+                                                <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
+                                                <input class='checkbox__input' type="checkbox">
+                                                <span class="checkbox__mark"></span>
+                                                <div class="tooltip">
+                                                    <div class="tooltip__icon">
+                                                        <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
+                                                    </div>
+                                                    <div class="tooltip__info">
+                                                        <div class="tooltip__image">
+                                                            <img src="<?php echo get_product_image($collection_product) ?>" alt="">
+                                                        </div>
+                                                        <div class="tooltip__body">
+                                                            <table>
+                                                                <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
+                                                                <?php if (!empty($includes)) { ?>
                                                                     <tr>
-                                                                        <td><?php echo $option['option_key']; ?>:</td>
-                                                                        <td><?php echo $option['option_value']; ?></td>
+                                                                        <td>What’s included:</td>
+                                                                        <td><?php echo $includes; ?></td>
                                                                     </tr>
                                                                 <?php } ?>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </table>
+                                                                <?php $options = get_carbon_field('options'); ?>
+                                                                <?php if (!empty($options)) { ?>
+                                                                    <?php foreach ($options as $option) { ?>
+                                                                        <?php if (!empty($option['option_key'])) { ?>
+                                                                            <tr>
+                                                                                <td><?php echo $option['option_key']; ?>:</td>
+                                                                                <td><?php echo $option['option_value']; ?></td>
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
+                                            <?php $attributes = get_product_attributes($collection_product); ?>
+                                            <?php if (!empty($attributes)) { ?>
+                                                <?php foreach ($attributes as $att_key => $attribute) { ?>
+                                                    <?php if (!empty($attribute['options'])) { ?>
+                                                        <div class="pdp__collection-size pdp__size-select select">
+                                                            <select>
+                                                                <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                    <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php } ?>
+                                            <?php
+                                            $categories_ids = $collection_product->get_category_ids();
+                                            if (!empty($categories_ids)) {
+                                                $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                                if (!empty($size_guide_image)) {
+                                                    $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                                }
+                                            }
+                                            ?>
+                                            <?php if (!empty($size_guide)) { ?>
+                                                <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
+                                            <?php } ?>
+                                            <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                        </div>
+                                        <?php $colors = get_product_variation_colors($collection_product); ?>
+                                        <?php if (!empty($colors)) { ?>
+                                            <div class="towel-colors">
+                                                <div class="towel-colors__caption">
+                                                    Color: <span></span>
+                                                </div>
+                                                <div class="towel-colors__list">
+                                                    <?php $count = 0; ?>
+                                                    <?php foreach ($colors as $variation_id => $color) { ?>
+                                                        <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
+                                                        <?php $count++; ?>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </label>
-                                    <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
-                                    <?php $attributes = get_product_attributes($collection_product); ?>
-                                    <?php if (!empty($attributes)) { ?>
-                                        <?php foreach ($attributes as $att_key => $attribute) { ?>
-                                            <?php if (!empty($attribute['options'])) { ?>
-                                                <div class="pdp__collection-size pdp__size-select select">
-                                                    <select>
-                                                        <?php foreach ($attribute['options'] as $slug => $option) { ?>
-                                                            <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                            <?php } ?>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php
-                                    $categories_ids = $collection_product->get_category_ids();
-                                    if (!empty($categories_ids)) {
-                                        $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                        if (!empty($size_guide_image)) {
-                                            $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
-                                        }
-                                    }
-                                    ?>
-                                    <?php if (!empty($size_guide)) { ?>
-                                        <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
-                                    <?php } ?>
-                                    <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                 </div>
-                                    <?php $colors = get_product_variation_colors($collection_product); ?>
-                                    <?php if (!empty($colors)) {?>
-                                        <div class="towel-colors">
-                                            <div class="towel-colors__caption">
-                                                Color: <span></span>
-                                            </div>
-                                            <div class="towel-colors__list">
-                                                <?php $count = 0; ?>
-                                                <?php foreach ($colors as $variation_id => $color) { ?>
-                                                    <div data-name="<?php echo $color['name']; ?>"
-                                                         data-value="<?php echo $color['slug']; ?>"
-                                                         data-key="pa_color"
-                                                         class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>"
-                                                         style="<?php echo $color['background']; ?>"></div>
-                                                    <?php $count++; ?>
-                                                <?php } ?>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                <?php } ?>
                             </div>
-                        </div>
                         <?php } ?>
 
                         <div class="pdp__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
@@ -183,12 +178,9 @@ $product_parent = $product;
                         <div class="pdp__buttons row-flex">
                             <button class="btn btn_blue pdp__buttons-item col">Add to CART</button>
                             <div class="pdp__buttons-divider pdp__buttons-item pdp__buttons-mob col">Or</div>
-                            <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img
-                                        src="<?php print get_theme_file_uri(); ?>/img/paypal.png"
-                                        alt=""></button>
+                            <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></button>
                             <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item pdp__buttons-mob col">
-                                <img
-                                        src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt=""></button>
+                                <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt=""></button>
 
                         </div>
 
@@ -298,8 +290,7 @@ $product_parent = $product;
                                                 <?php foreach ($collection_products as $collection_product) { ?>
                                                     <div class="pdp__collection-row">
                                                         <label class="checkbox pdp__collection-checkbox">
-                                                            <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>"
-                                                               target='_blank'><?php echo $collection_product->get_name(); ?></a>
+                                                            <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
                                                             <input class='checkbox__input' type="checkbox">
                                                             <span class="checkbox__mark"></span>
                                                             <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
@@ -373,7 +364,7 @@ $product_parent = $product;
                                                         <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                     </div>
                                                     <?php $colors = get_product_variation_colors($collection_product); ?>
-                                                    <?php if (!empty($colors)) {?>
+                                                    <?php if (!empty($colors)) { ?>
                                                         <div class="towel-colors">
                                                             <div class="towel-colors__caption">
                                                                 Color: <span></span>
@@ -381,11 +372,7 @@ $product_parent = $product;
                                                             <div class="towel-colors__list">
                                                                 <?php $count = 0; ?>
                                                                 <?php foreach ($colors as $variation_id => $color) { ?>
-                                                                    <div data-name="<?php echo $color['name']; ?>"
-                                                                         data-value="<?php echo $color['slug']; ?>"
-                                                                         data-key="pa_color"
-                                                                         class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>"
-                                                                         style="<?php echo $color['background']; ?>"></div>
+                                                                    <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
                                                                     <?php $count++; ?>
                                                                 <?php } ?>
                                                             </div>
@@ -398,7 +385,7 @@ $product_parent = $product;
                                         <div class="pdp-look__bottom">
                                             <?php if ($upsell->get_type() === 'variable') { ?>
                                                 <?php $colors = get_product_variation_colors($upsell); ?>
-                                                <?php if (!empty($colors)) {?>
+                                                <?php if (!empty($colors)) { ?>
                                                     <div class="pdp-look__color">
                                                         <div class="pdp-look__caption">Color:</div>
                                                         <div class="pdp-look__color-list text-center">
