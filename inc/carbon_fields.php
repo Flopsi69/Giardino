@@ -8,7 +8,8 @@ if (class_exists('Carbon_Fields\Container')) {
     Container::make('post_meta', 'Product description')
         ->where('post_type', '=', 'product')
         ->add_fields(array(
-            Field::make('text', 'subtitle', 'Subtitle'),
+            Field::make('text', 'subtitle', 'Subtitle')
+                ->set_default_value('Designed in Monte-Carlo, Monaco'),
             Field::make('text', 'includes', 'Includes'),
             Field::make('set', 'labels', 'Labels')
                 ->set_options(array(

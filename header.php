@@ -76,18 +76,19 @@
                                 <!-- Item Sublist -->
                                 <ul class="nav__sublist text-center">
                                     <?php foreach ($subcategories->terms as $subcategory) { ?>
-                                    <li class="nav__sublist-item">
-                                        <a class="nav__sublist-link" href="<?php echo get_term_link($subcategory); ?>">
-                                            <div class="nav__sublist-image">
-                                                <?php
-                                                $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
-                                                $image = wp_get_attachment_image_url($image_id, 'large');
-                                                ?>
-                                                <img src="<?php echo $image; ?>" alt="<?php echo $subcategory->name; ?>">
-                                            </div>
-                                            <div class="nav__sublist-name"><?php echo $subcategory->name; ?></div>
-                                        </a>
-                                    </li>
+                                        <?php $_subcategories[$category->slug] = $subcategories->terms; ?>
+                                        <li class="nav__sublist-item">
+                                            <a class="nav__sublist-link" href="<?php echo get_term_link($subcategory); ?>">
+                                                <div class="nav__sublist-image">
+                                                    <?php
+                                                    $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
+                                                    $image = wp_get_attachment_image_url($image_id, 'large');
+                                                    ?>
+                                                    <img src="<?php echo $image; ?>" alt="">
+                                                </div>
+                                                <div class="nav__sublist-name"><?php echo $subcategory->name; ?></div>
+                                            </a>
+                                        </li>
                                     <?php } ?>
                                 </ul>
                                 <?php } ?>
@@ -104,7 +105,7 @@
                                     <li class="nav__sublist-item">
                                         <a class="nav__sublist-link" href="<?php echo get_permalink($collection->get_id()); ?>">
                                             <div class="nav__sublist-image">
-                                                <img src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="<?php echo $collection->get_name(); ?>">
+                                                <img src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="">
                                             </div>
                                             <div class="nav__sublist-name"><?php echo $collection->get_name(); ?></div>
                                         </a>
@@ -134,104 +135,69 @@
                         <div class="navbar__header">Products</div>
                         <!-- List -->
                         <div class="navbar__list">
-                            <!-- Item -->
-                            <a href="/products.html"
+                            <?php if (!empty($categories)) { ?>
+                                <?php foreach ($categories->terms as $category) { ?>
+                                    <a href="<?php echo get_term_link($category); ?>"
+                                       class="navbar-link navbar-link__direction <?php echo (!empty($_subcategories[$category->slug]) ? 'navbar-link__direction_dropdown' : ''); ?>"
+                                       data-target="<?php echo $category->slug; ?>">
+                                        <div class="navbar-link__direction-name"><?php echo $category->name; ?></div>
+                                        <div class="navbar-link__direction-image">
+                                            <?php
+                                            $image_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+                                            $image = wp_get_attachment_image_url($image_id, 'large');
+                                            ?>
+                                            <img src="<?php echo $image; ?>" alt="">
+                                        </div>
+                                    </a>
+                                <?php } ?>
+                            <?php } ?>
+                            <?php if (!empty($collections)) { ?>
+                            <a href="/collections/"
                                class="navbar-link navbar-link__direction navbar-link__direction_dropdown"
-                               data-target="1">
-                                <div class="navbar-link__direction-name ">Bed linen</div>
-                                <div class="navbar-link__direction-image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-1.png" alt="">
-                                </div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__direction">
-                                <div class="navbar-link__direction-name ">Towels</div>
-                                <div class="navbar-link__direction-image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-2.png" alt="">
-                                </div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__direction">
-                                <div class="navbar-link__direction-name ">L’ART DE LA TABLE</div>
-                                <div class="navbar-link__direction-image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-1.png" alt="">
-                                </div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__direction">
-                                <div class="navbar-link__direction-name ">Decorations</div>
-                                <div class="navbar-link__direction-image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-3.png" alt="">
-                                </div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html"
-                               class="navbar-link navbar-link__direction navbar-link__direction_dropdown"
-                               data-target="2">
+                               data-target="collections">
                                 <div class="navbar-link__direction-name ">Collections</div>
                                 <div class="navbar-link__direction-image">
                                     <img src="<?php print get_theme_file_uri(); ?>/img/direction-1.png" alt="">
                                 </div>
                             </a>
+                            <?php } ?>
                         </div>
                     </div>
+                    <?php if (!empty($categories)) { ?>
+                        <?php foreach ($categories->terms as $category) { ?>
+                            <?php if (!empty($_subcategories[$category->slug])) { ?>
+                            <!-- NavBlock -->
+                            <div class="navbar__block navbar__products" data-nav-id="<?php echo $category->slug; ?>">
+                                <!-- Head -->
+                                <div class="navbar__header">
+                                    <a href="#" class="navbar__header-back">
+                                        <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-back.svg" alt="">
+                                    </a>
+                                    <?php echo $category->name; ?>
+                                </div>
+                                <!-- List -->
+                                <div class="navbar__list">
+                                    <?php foreach ($_subcategories[$category->slug] as $subcategory) { ?>
+                                    <!-- Item -->
+                                    <a href="<?php echo get_term_link($subcategory); ?>" class="navbar-link navbar-link__second">
+                                        <div class="navbar-link__image">
+                                            <?php
+                                            $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
+                                            $image = wp_get_attachment_image_url($image_id, 'large');
+                                            ?>
+                                            <img src="<?php echo $image; ?>" alt="">
+                                        </div>
+                                        <div class="navbar-link__name"><?php echo $subcategory->name; ?></div>
+                                    </a>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
+                    <?php if (!empty($collections)) { ?>
                     <!-- NavBlock -->
-                    <div class="navbar__block navbar__products" data-nav-id="1">
-                        <!-- Head -->
-                        <div class="navbar__header">
-                            <a href="#" class="navbar__header-back">
-                                <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-back.svg" alt="">
-                            </a>
-                            Bed linen
-                        </div>
-                        <!-- List -->
-                        <div class="navbar__list">
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-1.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Bed linen</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-2.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Duvet covers</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-1.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Pillowcases & Shams</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-2.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Top flat embroidered sheets</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-1.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Flat sheets</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/products.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/direction-2.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Fitted sheets</div>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- NavBlock -->
-                    <div class="navbar__block navbar__collections upper" data-nav-id="2">
+                    <div class="navbar__block navbar__collections upper" data-nav-id="collections">
                         <!-- Head -->
                         <div class="navbar__header">
                             <a href="#" class="navbar__header-back">
@@ -241,64 +207,18 @@
                         </div>
                         <!-- List -->
                         <div class="navbar__list">
+                            <?php foreach ($collections as $collection) { ?>
                             <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
+                            <a href="<?php echo get_permalink($collection->get_id()); ?>" class="navbar-link navbar-link__second">
                                 <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/product-2.png" alt="">
+                                    <img src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="">
                                 </div>
-                                <div class="navbar-link__name">Sakura</div>
+                                <div class="navbar-link__name"><?php echo $collection->get_name(); ?></div>
                             </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/collection-2.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Lily of Valley</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/collection-3.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Giardino by giardino</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/collection-4.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Summer garden</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/product-2.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Butterfly</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/collection-2.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Concorde</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/collection-3.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Snowflakes</div>
-                            </a>
-                            <!-- Item -->
-                            <a href="/collection-page.html" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php print get_theme_file_uri(); ?>/img/temp/collection-4.png" alt="">
-                                </div>
-                                <div class="navbar-link__name">Christmas toys</div>
-                            </a>
+                            <?php } ?>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
                 <!-- Basket -->
                 <a href="#" class="header__basket col">
