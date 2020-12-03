@@ -19,7 +19,9 @@ $(document).on('click', '.select__items div', function () {
       const url = `/wp-json/giardino/product/?id=${productId}&${sizeKey}=${sizeValue}`;
       const res = await fetch(url);
       const data = await res.json()
-      priceEl.text(priceEl.text().replace(/\d*/, data.price));
+      if (data.price) {
+        priceEl.text(priceEl.text().replace(/\d*/, data.price));
+      }
      } catch (e) {
        console.log(e)
      }

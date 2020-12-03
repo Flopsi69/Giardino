@@ -219,7 +219,11 @@ $(document).on('click', '.select__items div', function () {
 
             case 7:
               data = _context.sent;
-              priceEl.text(priceEl.text().replace(/\d*/, data.price));
+
+              if (data.price) {
+                priceEl.text(priceEl.text().replace(/\d*/, data.price));
+              }
+
               _context.next = 14;
               break;
 
@@ -576,8 +580,10 @@ $(document).on('click', '.cart__product .count__btn', function (e) {
 
   function callbackChange(newDoc) {
     var currentActiveProduct = $(".cart__product[data-item-key = ".concat(productKey, "]"));
-    currentActiveProduct.after(newDoc.find(".cart__product[data-item-key = ".concat(productKey, "]")));
+    var newActiveProduct = newDoc.find(".cart__product[data-item-key = ".concat(productKey, "]"));
+    currentActiveProduct.after(newActiveProduct);
     currentActiveProduct.remove();
+    initSelect(newActiveProduct[0]);
   }
 
   setTimeout(function () {
@@ -627,6 +633,7 @@ function updateAjax(action, ajaxData, cb) {
       $('.cart .cart__body').remove();
       $('.cart .cart__head').after($(htmlDoc).find('.cart .cart__body'));
       $(".cart").addClass("cart_open");
+      initSelect($('.cart')[0]);
     }
   });
 } // "data[item_key]": "75",
@@ -696,75 +703,89 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
-var x, i, j, l, ll, selElmnt, a, b, c;
-/* Look for any elements with the class "custom-select": */
 
-x = document.getElementsByClassName("select");
-l = x.length;
+window.initSelect = function (initArea) {
+  console.log('init select');
+  var x, i, j, l, ll, selElmnt, a, b, c;
+  /* Look for any elements with the class "custom-select": */
 
-for (i = 0; i < l; i++) {
-  selElmnt = x[i].getElementsByTagName("select")[0];
-  ll = selElmnt.length;
-  /* For each element, create a new DIV that will act as the selected item: */
-
-  a = document.createElement("DIV");
-  a.setAttribute("class", "select__selected");
-  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-  x[i].appendChild(a);
-  /* For each element, create a new DIV that will contain the option list: */
-
-  b = document.createElement("DIV");
-  b.setAttribute("class", "select__items select_hide");
-
-  for (j = 0; j < ll; j++) {
-    /* For each option in the original select element,
-    create a new DIV that will act as an option item: */
-    c = document.createElement("DIV");
-
-    if (j == 0) {
-      c.classList.add('same-as-selected');
-    }
-
-    c.innerHTML = selElmnt.options[j].innerHTML;
-    c.addEventListener("click", function (e) {
-      /* When an item is clicked, update the original select box,
-        and the selected item: */
-      var y, i, k, s, h, sl, yl;
-      s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-      sl = s.length;
-      h = this.parentNode.previousSibling;
-
-      for (i = 0; i < sl; i++) {
-        if (s.options[i].innerHTML == this.innerHTML) {
-          s.selectedIndex = i;
-          h.innerHTML = this.innerHTML;
-          y = this.parentNode.getElementsByClassName("same-as-selected");
-          yl = y.length;
-
-          for (k = 0; k < yl; k++) {
-            y[k].removeAttribute("class");
-          }
-
-          this.setAttribute("class", "same-as-selected");
-          break;
-        }
-      }
-
-      h.click();
-    });
-    b.appendChild(c);
+  if (initArea) {
+    console.log(initArea);
+    x = initArea.querySelectorAll(".select");
+  } else {
+    console.log('document');
+    x = document.getElementsByClassName("select");
   }
 
-  x[i].appendChild(b);
-  a.addEventListener("click", function (e) {
-    /* When the select box is clicked, close any other select boxes,
-    and open/close the current select box: */
-    e.stopPropagation();
-    closeAllSelect(this);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this.nextSibling).slideToggle();
-    this.classList.toggle("active");
-  });
-}
+  console.log(x);
+  l = x.length;
+
+  for (i = 0; i < l; i++) {
+    selElmnt = x[i].getElementsByTagName("select")[0];
+    ll = selElmnt.length;
+    /* For each element, create a new DIV that will act as the selected item: */
+
+    a = document.createElement("DIV");
+    a.setAttribute("class", "select__selected");
+    a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+    x[i].appendChild(a);
+    /* For each element, create a new DIV that will contain the option list: */
+
+    b = document.createElement("DIV");
+    b.setAttribute("class", "select__items select_hide");
+
+    for (j = 0; j < ll; j++) {
+      /* For each option in the original select element,
+      create a new DIV that will act as an option item: */
+      c = document.createElement("DIV");
+
+      if (j == 0) {
+        c.classList.add('same-as-selected');
+      }
+
+      c.innerHTML = selElmnt.options[j].innerHTML;
+      c.addEventListener("click", function (e) {
+        /* When an item is clicked, update the original select box,
+          and the selected item: */
+        var y, i, k, s, h, sl, yl;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        sl = s.length;
+        h = this.parentNode.previousSibling;
+
+        for (i = 0; i < sl; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            yl = y.length;
+
+            for (k = 0; k < yl; k++) {
+              y[k].removeAttribute("class");
+            }
+
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
+        }
+
+        h.click();
+      });
+      b.appendChild(c);
+    }
+
+    x[i].appendChild(b);
+    a.addEventListener("click", function (e) {
+      /* When the select box is clicked, close any other select boxes,
+      and open/close the current select box: */
+      e.stopPropagation();
+      closeAllSelect(this);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(this.nextSibling).slideToggle();
+      this.classList.toggle("active");
+    });
+  }
+};
+
+initSelect();
 
 function closeAllSelect(elmnt) {
   /* A function that will close all select boxes in the document,

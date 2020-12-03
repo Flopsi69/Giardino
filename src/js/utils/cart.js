@@ -1,5 +1,4 @@
 
-
 // Add product
 $(document).on('click', '.btn-to-cart', function (e) {
   const productTargetParent = $(this).closest('.pdp-control');
@@ -41,8 +40,10 @@ $(document).on('click', '.cart__product .count__btn', function (e) {
   const productKey = $(this).closest('.cart__product').data('item-key');
   function callbackChange(newDoc) {
     let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
-    currentActiveProduct.after(newDoc.find(`.cart__product[data-item-key = ${productKey}]`));
+    let newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
+    currentActiveProduct.after(newActiveProduct);
     currentActiveProduct.remove();
+    initSelect(newActiveProduct[0]);
   }
   setTimeout(() => {
     let ajaxData = {
@@ -91,7 +92,9 @@ function updateAjax(action, ajaxData, cb) {
       $('.cart .cart__body').remove();
       $('.cart .cart__head').after($(htmlDoc).find('.cart .cart__body'));
       $(".cart").addClass("cart_open");
+      initSelect($('.cart')[0]);
     }
+    
   });
 }
 
