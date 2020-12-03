@@ -4,7 +4,7 @@ $current_page = (!empty($page) ? $page : 1);
 $sort = (!empty($sort) ? strval($sort) : 'best');
 switch ($sort) {
     case 'new':
-        $orderby = array('label' => 'DESC');
+        $orderby = array('new' => 'DESC');
         $sort_title = 'New Arrivals';
         break;
     case 'asc':
@@ -16,7 +16,7 @@ switch ($sort) {
         $sort_title = 'Price: High to Low';
         break;
     default:
-        $orderby = array('label' => 'ASC');
+        $orderby = array('best' => 'DESC');
         $sort_title = 'Recommendations';
         break;
 }
@@ -91,10 +91,13 @@ get_header();
                             'compare' => '>',
                             'type' => 'DECIMAL'
                         ),
-                        'label' => array(
-                            'key' => '_labels',
-                            'value' => '0',
-                            'compare' => 'NOT LIKE'
+                        'best' => array(
+                            'key' => '_label_best',
+                            'compare' => 'EXISTS'
+                        ),
+                        'new' => array(
+                            'key' => '_label_new',
+                            'compare' => 'EXISTS'
                         )
                     ),
                     'orderby' => $orderby,
@@ -102,8 +105,8 @@ get_header();
                         array(
                             'taxonomy' => 'product_type',
                             'field'    => 'id',
-                            'terms'    => ['3'],
-                            'operator' => 'NOT IN'
+                            'terms'    => ['2', '4'],
+                            'operator' => 'IN'
                         ),
                         array(
                             'taxonomy' => 'product_cat',
@@ -121,23 +124,20 @@ get_header();
                             <?php $product = wc_get_product($product->ID); ?>
                             <!-- Product -->
                             <div class="product products-page__item col">
-                                <?php $labels = get_carbon_field('labels', $product->get_id()); ?>
-                                <?php if (is_array($labels)) { ?>
-                                    <div class="product__label">
-                                        <?php if (in_array('best', $labels)) { ?>
-                                            <div class="product__label-item product__label_best">Best seller</div>
-                                        <?php } ?>
-                                        <?php if (in_array('new', $labels)) { ?>
-                                            <div class="product__label-item product__label_new">New</div>
-                                        <?php } ?>
-                                        <?php if (in_array('cotton', $labels)) { ?>
-                                            <div class="product__label-item product__label_coton flex a-center">
-                                                <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
-                                                100% cotton
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                <?php } ?>
+                                <div class="product__label">
+                                    <?php if (!empty(get_carbon_field('label_best', $product->get_id()))) { ?>
+                                        <div class="product__label-item product__label_best">Best seller</div>
+                                    <?php } ?>
+                                    <?php if (!empty(get_carbon_field('label_new', $product->get_id()))) { ?>
+                                        <div class="product__label-item product__label_new">New</div>
+                                    <?php } ?>
+                                    <?php if (!empty(get_carbon_field('label_cotton', $product->get_id()))) { ?>
+                                        <div class="product__label-item product__label_coton flex a-center">
+                                            <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
+                                            100% cotton
+                                        </div>
+                                    <?php } ?>
+                                </div>
                                 <a href="<?php echo get_product_url($product); ?>" class="product__preview">
                                     <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
                                 </a>

@@ -16,23 +16,20 @@
                     <!-- Collection -->
                     <?php foreach ($collections as $collection) { ?>
                     <a href="<?php echo get_product_url($collection); ?>" class="collection collections__item col">
-                        <?php $labels = get_carbon_field('labels', $collection->get_id()); ?>
-                        <?php if (is_array($labels)) { ?>
-                            <div class="product__label">
-                                <?php if (in_array('best', $labels)) { ?>
-                                    <div class="product__label-item product__label_best">Best seller</div>
-                                <?php } ?>
-                                <?php if (in_array('new', $labels)) { ?>
-                                    <div class="product__label-item product__label_new">New</div>
-                                <?php } ?>
-                                <?php if (in_array('cotton', $labels)) { ?>
-                                    <div class="product__label-item product__label_coton flex a-center">
-                                        <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
-                                        100% cotton
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        <?php } ?>
+                        <div class="product__label">
+                            <?php if (!empty(get_carbon_field('label_best', $collection->get_id()))) { ?>
+                                <div class="product__label-item product__label_best">Best seller</div>
+                            <?php } ?>
+                            <?php if (!empty(get_carbon_field('label_new', $collection->get_id()))) { ?>
+                                <div class="product__label-item product__label_new">New</div>
+                            <?php } ?>
+                            <?php if (!empty(get_carbon_field('label_cotton', $collection->get_id()))) { ?>
+                                <div class="product__label-item product__label_coton flex a-center">
+                                    <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-coton.svg" alt="">
+                                    100% cotton
+                                </div>
+                            <?php } ?>
+                        </div>
                         <img class="collection__image" src="<?php echo get_product_image($collection); ?>" alt="<?php echo $collection->get_name(); ?>">
                         <div class="collection__inner text-center">
                             <div class="collection__title"><?php echo $collection->get_name(); ?></div>

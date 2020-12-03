@@ -11,12 +11,12 @@ if (class_exists('Carbon_Fields\Container')) {
             Field::make('text', 'subtitle', 'Subtitle')
                 ->set_default_value('Designed in Monte-Carlo, Monaco'),
             Field::make('text', 'includes', 'Includes'),
-            Field::make('set', 'labels', 'Labels')
-                ->set_options(array(
-                    'new' => 'New',
-                    'best' => 'Best seller',
-                    'cotton' => '100% cotton'
-                )),
+            Field::make('checkbox', 'label_new', 'New')
+                ->set_option_value('new'),
+            Field::make('checkbox', 'label_best', 'Best seller')
+                ->set_option_value('best'),
+            Field::make('checkbox', 'label_cotton', '100% cotton')
+                ->set_option_value('cotton'),
             Field::make('complex', 'options', 'Options')
                 ->add_fields('item', array(
                     Field::make('text', 'option_key', 'Name'),
