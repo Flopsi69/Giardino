@@ -13,8 +13,8 @@
                 <?php if (!empty($product)) { ?>
                 <!-- Product -->
                 <div class="product products-slider__item">
-                    <a href="<?php echo get_permalink($product->get_id()); ?>" class="product__preview">
-                        <img src="<?php echo get_the_post_thumbnail_url($product->get_id()); ?>" alt="<?php echo $product->get_name(); ?>">
+                    <a href="<?php echo get_product_url($product); ?>" class="product__preview">
+                        <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
                     </a>
                     <a href="" class="product__name"><?php echo $product->get_name(); ?></a>
                     <div class="product__descr"><?php echo $product->get_short_description(); ?></div>

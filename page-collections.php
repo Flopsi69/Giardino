@@ -15,7 +15,7 @@
                 <div class="collections__list row-flex">
                     <!-- Collection -->
                     <?php foreach ($collections as $collection) { ?>
-                    <a href="<?php echo get_permalink($collection->get_id()); ?>" class="collection collections__item col">
+                    <a href="<?php echo get_product_url($collection); ?>" class="collection collections__item col">
                         <?php $labels = get_carbon_field('labels', $collection->get_id()); ?>
                         <?php if (is_array($labels)) { ?>
                             <div class="product__label">
@@ -33,7 +33,7 @@
                                 <?php } ?>
                             </div>
                         <?php } ?>
-                        <img class="collection__image" src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="<?php echo $collection->get_name(); ?>">
+                        <img class="collection__image" src="<?php echo get_product_image($collection); ?>" alt="<?php echo $collection->get_name(); ?>">
                         <div class="collection__inner text-center">
                             <div class="collection__title"><?php echo $collection->get_name(); ?></div>
                             <div class="collection__more more-btn">Explore the collection</div>

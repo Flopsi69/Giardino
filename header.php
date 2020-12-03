@@ -103,9 +103,9 @@
                                 <ul class="nav__sublist nav__sublist-collection">
                                     <?php foreach ($collections as $collection) { ?>
                                     <li class="nav__sublist-item">
-                                        <a class="nav__sublist-link" href="<?php echo get_permalink($collection->get_id()); ?>">
+                                        <a class="nav__sublist-link" href="<?php echo get_product_url($collection); ?>">
                                             <div class="nav__sublist-image">
-                                                <img src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="">
+                                                <img src="<?php echo get_product_image($collection); ?>" alt="">
                                             </div>
                                             <div class="nav__sublist-name"><?php echo $collection->get_name(); ?></div>
                                         </a>
@@ -209,9 +209,9 @@
                         <div class="navbar__list">
                             <?php foreach ($collections as $collection) { ?>
                             <!-- Item -->
-                            <a href="<?php echo get_permalink($collection->get_id()); ?>" class="navbar-link navbar-link__second">
+                            <a href="<?php echo get_product_url($collection); ?>" class="navbar-link navbar-link__second">
                                 <div class="navbar-link__image">
-                                    <img src="<?php echo get_the_post_thumbnail_url($collection->get_id()); ?>" alt="">
+                                    <img src="<?php echo get_product_image($collection); ?>" alt="">
                                 </div>
                                 <div class="navbar-link__name"><?php echo $collection->get_name(); ?></div>
                             </a>
@@ -249,12 +249,12 @@
                         <?php $product = $item['data']; ?>
                         <!-- Product -->
                         <div class="cart__product" data-item-key="<?php echo $key; ?>" data-quantity="<?php echo $item['quantity']; ?>">
-                        <a href="<?php echo get_permalink($product->get_id()) ?>" class="cart__product-preview">
-                            <img src="<?php echo get_the_post_thumbnail_url($product->get_id()); ?>" alt="<?php echo $product->get_name(); ?>">
+                        <a href="<?php echo get_product_url($product) ?>" class="cart__product-preview">
+                            <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
                         </a>
 
                         <div class="cart__product-info">
-                            <a href="<?php echo get_permalink($product->get_id()) ?>" class="cart__product-title"><?php echo $product->get_name(); ?></a>
+                            <a href="<?php echo get_product_url($product) ?>" class="cart__product-title"><?php echo $product->get_name(); ?></a>
 
                             <?php $attributes = get_product_attributes($product); ?>
                             <?php if (!empty($attributes)) { ?>
