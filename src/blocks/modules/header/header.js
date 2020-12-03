@@ -1,10 +1,35 @@
+import 'regenerator-runtime/runtime';
 import "slick-carousel";
 import "../../../js/utils/select";
 import "../../../js/utils/label";
+import "../../../js/utils/cart";
+
+
+$(document).on('click', '.select__items div', function () {
+  const selectOptionsObj = $(this).parent().siblings('select')[0];
+  const activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
+  const sizeKey = activeOption.dataset.key;
+  const sizeValue = activeOption.value;
+  const productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
+  const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
+  
+  // const productInfo = async () => {
+  const productInfo = async() => {
+    try {
+      const url = `/wp-json/giardino/product/?id=${productId}&${sizeKey}=${sizeValue}`;
+      const res = await fetch(url);
+      const data = await res.json()
+      priceEl.text(priceEl.text().replace(/\d*/, data.price));
+     } catch (e) {
+       console.log(e)
+     }
+  }
+  productInfo();
+})
 
 // Utils  **START**
 // Count
-$(".count__btn").on("click", function (e) {
+$(document).on("click", ".count__btn", function (e) {
   e.preventDefault();
   const inputEL = $(this).siblings("input");
   const currentValue = parseInt(inputEL.val());

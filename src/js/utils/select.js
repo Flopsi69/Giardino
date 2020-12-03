@@ -15,10 +15,13 @@ for (i = 0; i < l; i++) {
   /* For each element, create a new DIV that will contain the option list: */
   b = document.createElement("DIV");
   b.setAttribute("class", "select__items select_hide");
-  for (j = 1; j < ll; j++) {
+  for (j = 0; j < ll; j++) {
     /* For each option in the original select element,
     create a new DIV that will act as an option item: */
     c = document.createElement("DIV");
+    if (j == 0) { 
+      c.classList.add('same-as-selected');
+    }
     c.innerHTML = selElmnt.options[j].innerHTML;
     c.addEventListener("click", function (e) {
       /* When an item is clicked, update the original select box,
