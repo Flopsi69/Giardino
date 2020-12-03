@@ -133,7 +133,7 @@ $product_parent = $product;
                                                 <div class="pdp__collection-size pdp__size-select select">
                                                     <select>
                                                         <?php foreach ($attribute['options'] as $slug => $option) { ?>
-                                                            <option data-key="<?php echo $att_key; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
+                                                            <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -351,7 +351,7 @@ $product_parent = $product;
                                                                     <div class="pdp__collection-size pdp__size-select select">
                                                                         <select>
                                                                             <?php foreach ($attribute['options'] as $slug => $option) { ?>
-                                                                                <option data-key="<?php echo $att_key; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
+                                                                                <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                                             <?php } ?>
                                                                         </select>
                                                                     </div>
