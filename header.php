@@ -297,12 +297,12 @@
                         <?php } ?>
                     </div>
                 </div>
-            <?php } ?>
 
-            <div class="cart__products-total">
-                <div class="cart__products-caption">Total:</div>
-                <div class="cart__products-price">655.00€</div>
-            </div>
+                <div class="cart__products-total">
+                    <div class="cart__products-caption">Total:</div>
+                    <div class="cart__products-price"><?php echo get_cart_total(); ?>€</div>
+                </div>
+            <?php } ?>
 
             <div class="cart__footer">
                 <a href="/checkout/" class="cart__footer-checkout btn btn_blue w-100">Checkout</a>
