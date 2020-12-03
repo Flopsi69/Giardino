@@ -94,8 +94,12 @@ function updateAjax(action, ajaxData, cb) {
       $(".cart").addClass("cart_open");
       initSelect($('.cart')[0]);
     }
-    
+    updateTotal($(htmlDoc).find('.cart .cart__products-price').text());
   });
+}
+
+function updateTotal(newTotalPrice) {
+  $('.cart .cart__products-price').html(newTotalPrice);
 }
 
 
