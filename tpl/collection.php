@@ -140,8 +140,18 @@ $product_parent = $product;
                                             <?php } ?>
                                         <?php } ?>
                                     <?php } ?>
-
-                                    <a href='<?php print get_theme_file_uri(); ?>/pdf/bed-sheet.pdf' class="pdp__guide" target='_blank'>Size guide</a>
+                                    <?php
+                                    $categories_ids = $collection_product->get_category_ids();
+                                    if (!empty($categories_ids)) {
+                                        $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                        if (!empty($size_guide_image)) {
+                                            $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                        }
+                                    }
+                                    ?>
+                                    <?php if (!empty($size_guide)) { ?>
+                                        <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
+                                    <?php } ?>
                                     <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                 </div>
                                     <?php $colors = get_product_variation_colors($collection_product); ?>
@@ -264,7 +274,18 @@ $product_parent = $product;
                                                                 <?php $count++; ?>
                                                             <?php } ?>
                                                             <?php if ($attribute['name'] === 'Size') { ?>
-                                                                <a href="<?php print get_theme_file_uri(); ?>/pdf/bed-sheet.pdf" class="pdp__guide pdp-look__size-guide">Size guide</a>
+                                                                <?php
+                                                                $categories_ids = $upsell->get_category_ids();
+                                                                if (!empty($categories_ids)) {
+                                                                    $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                                                    if (!empty($size_guide_image)) {
+                                                                        $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                                                    }
+                                                                }
+                                                                ?>
+                                                                <?php if (!empty($size_guide)) { ?>
+                                                                    <div data-image="<?php echo $size_guide; ?>" class="pdp__guide pdp-look__size-guide">Size guide</div>
+                                                                <?php } ?>
                                                             <?php } ?>
                                                         </div>
                                                     <?php } ?>
@@ -337,8 +358,18 @@ $product_parent = $product;
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         <?php } ?>
-
-                                                        <a href='<?php print get_theme_file_uri(); ?>/pdf/bed-sheet.pdf' class="pdp__guide" target='_blank'>Size guide</a>
+                                                        <?php
+                                                        $categories_ids = $collection_product->get_category_ids();
+                                                        if (!empty($categories_ids)) {
+                                                            $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                                            if (!empty($size_guide_image)) {
+                                                                $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <?php if (!empty($size_guide)) { ?>
+                                                            <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
+                                                        <?php } ?>
                                                         <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                     </div>
                                                     <?php $colors = get_product_variation_colors($collection_product); ?>
