@@ -2143,7 +2143,7 @@ a:hover .products-subcat__name {
 }
 
 .pdp {
-  margin-top: 25px;
+  padding-top: 30px;
   padding-bottom: 70px;
 }
 
@@ -2251,6 +2251,13 @@ a:hover .products-subcat__name {
 .pdp-look__preview {
   text-align: center;
   width: calc(25% - 1.875rem);
+}
+
+.pdp-look__preview img {
+  min-width: 100%;
+  max-width: auto;
+  height: 275px;
+  object-fit: cover;
 }
 
 .pdp-look__preview-full {
@@ -2535,8 +2542,16 @@ a:hover .products-subcat__name {
   top: 100%;
 }
 
+.pdp__slider-nav img {
+  border: 1px solid transparent;
+}
+
 .pdp__slider-nav .pdp__slide {
   margin: 2px 0;
+}
+
+.pdp__slider-nav .slick-current img {
+  border: 1px solid #0b2358;
 }
 
 .pdp__slider-for img {
@@ -2565,6 +2580,8 @@ a:hover .products-subcat__name {
   border-radius: 2px;
   border: 1px solid #0b2358;
   margin-left: 10px;
+  filter: grayscale(100%);
+  pointer-events: none;
 }
 
 .pdp-measure__btn {
@@ -3354,11 +3371,15 @@ a:hover .products-subcat__name {
 }
 
 .slick-lightbox .slick-prev {
-  left: 15px;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
 }
 
 .slick-lightbox .slick-next {
-  right: 15px;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
 }
 
 .slick-lightbox-hide {
@@ -4189,6 +4210,10 @@ a:hover .products-subcat__name {
     margin-top: 6px;
   }
 
+  .pdp-look__preview img {
+    height: 175px;
+  }
+
   .pdp-look__buy {
     justify-content: space-between;
   }
@@ -4625,6 +4650,10 @@ a:hover .products-subcat__name {
     width: calc(50% - 12px);
     margin-left: 6px;
     margin-right: 6px;
+  }
+
+  .pdp-look__preview img {
+    height: 150px;
   }
 
   .pdp-look__preview-full {

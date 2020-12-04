@@ -74,10 +74,8 @@ $product_parent = $product;
                                     <div class="pdp__collection-col flex a-center col">
                                         Size: &nbsp;
                                         <div class="pdp-measure">
-                                            <div class="pdp-measure">
-                                                <div class="pdp-measure__btn active">cm</div>
-                                                <div class="pdp-measure__btn">inc</div>
-                                            </div>
+                                            <div class="pdp-measure__btn active">cm</div>
+                                            <div class="pdp-measure__btn">inc</div>
                                         </div>
                                     </div>
                                     <div class="pdp__collection-col text-right hidden-sm col">

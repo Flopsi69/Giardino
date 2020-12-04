@@ -1,6 +1,7 @@
 <?php cart_control(); ?>
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,8 +28,9 @@
     <link rel="stylesheet" href="<?php print get_theme_file_uri(); ?>/styles/main.css">
     <?php wp_head(); ?>
 </head>
+
 <body>
-<!-- Header -->
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header__row row-flex a-center j-between">
@@ -58,63 +60,63 @@
                         $categories = new WP_Term_Query($args);
                         ?>
                         <?php if (!empty($categories)) { ?>
-                        <ul class="nav__list flex">
-                            <?php foreach($categories->terms as $category) { ?>
-                            <!-- Item -->
-                            <li class="nav__list-item">
-                                <a class="nav__link" href="<?php echo get_term_link($category); ?>"><?php echo $category->name; ?></a>
-                                <?php
-                                $args = array(
-                                    'taxonomy' => array('product_cat'),
-                                    'parent' => $category->term_id,
-                                    'hide_empty' => true,
-                                    'exclude' => 15
-                                );
-                                $subcategories = new WP_Term_Query($args);
-                                ?>
-                                <?php if (!empty($subcategories)) { ?>
-                                <!-- Item Sublist -->
-                                <ul class="nav__sublist text-center">
-                                    <?php foreach ($subcategories->terms as $subcategory) { ?>
-                                        <?php $_subcategories[$category->slug] = $subcategories->terms; ?>
-                                        <li class="nav__sublist-item">
-                                            <a class="nav__sublist-link" href="<?php echo get_term_link($subcategory); ?>">
-                                                <div class="nav__sublist-image">
-                                                    <?php
-                                                    $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
-                                                    $image = wp_get_attachment_image_url($image_id, 'large');
-                                                    ?>
-                                                    <img src="<?php echo $image; ?>" alt="">
-                                                </div>
-                                                <div class="nav__sublist-name"><?php echo $subcategory->name; ?></div>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                </ul>
-                                <?php } ?>
-                            </li>
-                            <?php } ?>
-                            <?php $collections = get_product_collections(0); ?>
-                            <?php if (!empty($collections)) { ?>
-                            <!-- Item -->
-                            <li class="nav__list-item">
-                                <a class="nav__link" href="/collections/">Explore by Collection</a>
-                                <!-- Item Sublist -->
-                                <ul class="nav__sublist nav__sublist-collection">
-                                    <?php foreach ($collections as $collection) { ?>
-                                    <li class="nav__sublist-item">
-                                        <a class="nav__sublist-link" href="<?php echo get_product_url($collection); ?>">
-                                            <div class="nav__sublist-image">
-                                                <img src="<?php echo get_product_image($collection); ?>" alt="">
-                                            </div>
-                                            <div class="nav__sublist-name"><?php echo $collection->get_name(); ?></div>
-                                        </a>
+                            <ul class="nav__list flex">
+                                <?php foreach ($categories->terms as $category) { ?>
+                                    <!-- Item -->
+                                    <li class="nav__list-item">
+                                        <a class="nav__link" href="<?php echo get_term_link($category); ?>"><?php echo $category->name; ?></a>
+                                        <?php
+                                        $args = array(
+                                            'taxonomy' => array('product_cat'),
+                                            'parent' => $category->term_id,
+                                            'hide_empty' => true,
+                                            'exclude' => 15
+                                        );
+                                        $subcategories = new WP_Term_Query($args);
+                                        ?>
+                                        <?php if (!empty($subcategories)) { ?>
+                                            <!-- Item Sublist -->
+                                            <ul class="nav__sublist text-center">
+                                                <?php foreach ($subcategories->terms as $subcategory) { ?>
+                                                    <?php $_subcategories[$category->slug] = $subcategories->terms; ?>
+                                                    <li class="nav__sublist-item">
+                                                        <a class="nav__sublist-link" href="<?php echo get_term_link($subcategory); ?>">
+                                                            <div class="nav__sublist-image">
+                                                                <?php
+                                                                $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
+                                                                $image = wp_get_attachment_image_url($image_id, 'large');
+                                                                ?>
+                                                                <img src="<?php echo $image; ?>" alt="">
+                                                            </div>
+                                                            <div class="nav__sublist-name"><?php echo $subcategory->name; ?></div>
+                                                        </a>
+                                                    </li>
+                                                <?php } ?>
+                                            </ul>
+                                        <?php } ?>
                                     </li>
-                                    <?php } ?>
-                                </ul>
-                            </li>
-                            <?php } ?>
-                        </ul>
+                                <?php } ?>
+                                <?php $collections = get_product_collections(0); ?>
+                                <?php if (!empty($collections)) { ?>
+                                    <!-- Item -->
+                                    <li class="nav__list-item">
+                                        <a class="nav__link" href="/collections/">Explore by Collection</a>
+                                        <!-- Item Sublist -->
+                                        <ul class="nav__sublist nav__sublist-collection">
+                                            <?php foreach ($collections as $collection) { ?>
+                                                <li class="nav__sublist-item">
+                                                    <a class="nav__sublist-link" href="<?php echo get_product_url($collection); ?>">
+                                                        <div class="nav__sublist-image">
+                                                            <img src="<?php echo get_product_image($collection); ?>" alt="">
+                                                        </div>
+                                                        <div class="nav__sublist-name"><?php echo $collection->get_name(); ?></div>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                    </li>
+                                <?php } ?>
+                            </ul>
                         <?php } ?>
                     </nav>
 
@@ -161,63 +163,64 @@
                     <?php if (!empty($categories)) { ?>
                         <?php foreach ($categories->terms as $category) { ?>
                             <?php if (!empty($_subcategories[$category->slug])) { ?>
-                            <!-- NavBlock -->
-                            <div class="navbar__block navbar__products" data-nav-id="<?php echo $category->slug; ?>">
-                                <!-- Head -->
-                                <div class="navbar__header">
-                                    <a href="#" class="navbar__header-back">
-                                        <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-back.svg" alt="">
-                                    </a>
-                                    <?php echo $category->name; ?>
+                                <!-- NavBlock -->
+                                <div class="navbar__block navbar__products" data-nav-id="<?php echo $category->slug; ?>">
+                                    <!-- Head -->
+                                    <div class="navbar__header">
+                                        <a href="#" class="navbar__header-back">
+                                            <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-back.svg" alt="">
+                                        </a>
+                                        <?php echo $category->name; ?>
+                                    </div>
+                                    <!-- List -->
+                                    <div class="navbar__list">
+                                        <?php foreach ($_subcategories[$category->slug] as $subcategory) { ?>
+                                            <!-- Item -->
+                                            <a href="<?php echo get_term_link($subcategory); ?>" class="navbar-link navbar-link__second">
+                                                <div class="navbar-link__image">
+                                                    <?php
+                                                    $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
+                                                    $image = wp_get_attachment_image_url($image_id, 'large');
+                                                    ?>
+                                                    <img src="<?php echo $image; ?>" alt="">
+                                                </div>
+                                                <div class="navbar-link__name"><?php echo $subcategory->name; ?></div>
+                                            </a>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                                <!-- List -->
-                                <div class="navbar__list">
-                                    <?php foreach ($_subcategories[$category->slug] as $subcategory) { ?>
-                                    <!-- Item -->
-                                    <a href="<?php echo get_term_link($subcategory); ?>" class="navbar-link navbar-link__second">
-                                        <div class="navbar-link__image">
-                                            <?php
-                                            $image_id = get_term_meta($subcategory->term_id, 'thumbnail_id', true);
-                                            $image = wp_get_attachment_image_url($image_id, 'large');
-                                            ?>
-                                            <img src="<?php echo $image; ?>" alt="">
-                                        </div>
-                                        <div class="navbar-link__name"><?php echo $subcategory->name; ?></div>
-                                    </a>
-                                    <?php } ?>
-                                </div>
-                            </div>
                             <?php } ?>
                         <?php } ?>
                     <?php } ?>
                     <?php if (!empty($collections)) { ?>
-                    <!-- NavBlock -->
-                    <div class="navbar__block navbar__collections upper" data-nav-id="collections">
-                        <!-- Head -->
-                        <div class="navbar__header">
-                            <a href="#" class="navbar__header-back">
-                                <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-back.svg" alt="">
-                            </a>
-                            Collections
+                        <!-- NavBlock -->
+                        <div class="navbar__block navbar__collections upper" data-nav-id="collections">
+                            <!-- Head -->
+                            <div class="navbar__header">
+                                <a href="#" class="navbar__header-back">
+                                    <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-arrow-back.svg" alt="">
+                                </a>
+                                Collections
+                            </div>
+                            <!-- List -->
+                            <div class="navbar__list">
+                                <?php foreach ($collections as $collection) { ?>
+                                    <!-- Item -->
+                                    <a href="<?php echo get_product_url($collection); ?>" class="navbar-link navbar-link__second">
+                                        <div class="navbar-link__image">
+                                            <img src="<?php echo get_product_image($collection); ?>" alt="">
+                                        </div>
+                                        <div class="navbar-link__name"><?php echo $collection->get_name(); ?></div>
+                                    </a>
+                                <?php } ?>
+                            </div>
                         </div>
-                        <!-- List -->
-                        <div class="navbar__list">
-                            <?php foreach ($collections as $collection) { ?>
-                            <!-- Item -->
-                            <a href="<?php echo get_product_url($collection); ?>" class="navbar-link navbar-link__second">
-                                <div class="navbar-link__image">
-                                    <img src="<?php echo get_product_image($collection); ?>" alt="">
-                                </div>
-                                <div class="navbar-link__name"><?php echo $collection->get_name(); ?></div>
-                            </a>
-                            <?php } ?>
-                        </div>
-                    </div>
                     <?php } ?>
                 </div>
                 <!-- Basket -->
                 <a href="#" class="header__basket col">
                     <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-basket.svg" alt="">
+                    <span class="basket-quantity">4</span>
                     <!-- <img src="<?php print get_theme_file_uri(); ?>/img/icon-basket.png" alt=""> -->
                 </a>
             </div>
@@ -237,19 +240,19 @@
             </div>
             <?php $cart_items = get_cart_items(); ?>
             <?php if (!empty($cart_items)) { ?>
-            <div class="cart__body">
-                <!-- List -->
-                <div class="cart__products">
-                    <?php foreach ($cart_items as $key => $item) { ?>
-                        <?php $product = $item['data']; ?>
-                        <!-- Product -->
-                        <div class="cart__product" data-item-key="<?php echo $key; ?>" data-quantity="<?php echo $item['quantity']; ?>">
-                        <a href="<?php echo get_product_url($product) ?>" class="cart__product-preview">
-                            <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
-                        </a>
+                <div class="cart__body">
+                    <!-- List -->
+                    <div class="cart__products">
+                        <?php foreach ($cart_items as $key => $item) { ?>
+                            <?php $product = $item['data']; ?>
+                            <!-- Product -->
+                            <div class="cart__product" data-item-key="<?php echo $key; ?>" data-quantity="<?php echo $item['quantity']; ?>">
+                                <a href="<?php echo get_product_url($product) ?>" class="cart__product-preview">
+                                    <img src="<?php echo get_product_image($product); ?>" alt="<?php echo $product->get_name(); ?>">
+                                </a>
 
-                        <div class="cart__product-info">
-                            <a href="<?php echo get_product_url($product) ?>" class="cart__product-title"><?php echo $product->get_name(); ?></a>
+                                <div class="cart__product-info">
+                                    <a href="<?php echo get_product_url($product) ?>" class="cart__product-title"><?php echo $product->get_name(); ?></a>
 
                                     <?php $attributes = get_product_attributes($product); ?>
                                     <?php if (!empty($attributes)) { ?>

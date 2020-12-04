@@ -33,6 +33,40 @@ $(document).on('click', '.cart__product-cancel', function (e) {
   updateAjax('remove', ajaxData);
 })
 
+// Сhange
+$(document).on('click', '.cart__product .towel-colors__list>div, .cart__product .select__items>div', function (e) {
+  console.log('changes');
+  let productTargetParent = $(this).closest('.cart__product');
+  const productKey = productTargetParent.data('item-key');
+  function callbackChange(newDoc) {
+    // let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
+    // let newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
+    // currentActiveProduct.after(newActiveProduct);
+    // currentActiveProduct.remove();
+    // initSelect(newActiveProduct[0]);
+  }
+
+  let ajaxData = {
+    "data[item_key]": productKey
+  }
+  
+  if (productTargetParent.find('.pdp__size-select').length) {
+    const productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
+    const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
+    const sizeValue = activeOption.value;
+    ajaxData["data[pa_size]"] = sizeValue;
+  }
+
+  if (productTargetParent.find('.towel-colors__list').length) {
+    checkColor(productTargetParent.find('.towel-colors__list'));
+    ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
+  }
+
+  setTimeout(() => {
+    updateAjax('change', ajaxData);
+  }, 100);
+})
+
 
 // Change Quantity
 $(document).on('click', '.cart__product .count__btn', function (e) {
@@ -53,6 +87,7 @@ $(document).on('click', '.cart__product .count__btn', function (e) {
     updateAjax('quantity', ajaxData, callbackChange);
   }, 100);
 })
+
 
 // Remove
 $(document).on('click', '.cart__product-cancel', function (e) {
@@ -101,31 +136,6 @@ function updateAjax(action, ajaxData, cb) {
 function updateTotal(newTotalPrice) {
   $('.cart .cart__products-price').html(newTotalPrice);
 }
-
-
-// "data[item_key]": "75",
-// "data[product_id]": "75",
-// "data[pa_color]": "red",
-// "action": "add",
-// "data[quantity]": "1"
-
-
-// Remove
-// "action": "remove",
-// "data[item_key]": "75",
-
-// Change
-// "action": "quantity",
-// "data[item_key]": "75",
-// "data[pa_color]": "red",
-// "data[quantity]": "1"
-
-// Quanity
-// "action": "quantity",
-// "data[item_key]": "75",
-// "data[quantity]": "1"
-
-
 
 
 

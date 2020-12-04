@@ -185,6 +185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_utils_label__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../js/utils/label */ "./src/js/utils/label.js");
 /* harmony import */ var _js_utils_cart__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../js/utils/cart */ "./src/js/utils/cart.js");
 /* harmony import */ var _js_utils_cart__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_js_utils_cart__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _js_utils_measure__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../js/utils/measure */ "./src/js/utils/measure.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -195,14 +196,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-$(document).on('click', '.select__items div', function () {
+
+$(document).on('click', '.pdp-control .select__items div', function () {
   var selectOptionsObj = $(this).parent().siblings('select')[0];
   var activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
-  var sizeKey = activeOption.dataset.key;
   var sizeValue = activeOption.value;
   var productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
-  var priceEl = $(this).closest('.pdp-control').find('.pdp__price'); // const productInfo = async () => {
+  var priceEl = $(this).closest('.pdp-control').find('.pdp__price');
+  updatePrice(productId, sizeValue, priceEl);
+});
+$(document).on('click', '.pdp-look .pdp-look__size-option', function () {
+  var sizeValue = $(this).data('value');
+  var productEl = $(this).closest('.pdp-look');
+  var productId = productEl.find("input[name='product_id']").val();
+  var priceEl = productEl.find('.pdp-look__buy-price');
+  updatePrice(productId, sizeValue, priceEl);
+});
 
+function updatePrice(productId, sizeValue, priceEl) {
   var productInfo = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var url, res, data;
@@ -211,7 +222,7 @@ $(document).on('click', '.select__items div', function () {
           switch (_context.prev = _context.next) {
             case 0:
               _context.prev = 0;
-              url = "/wp-json/giardino/product/?id=".concat(productId, "&").concat(sizeKey, "=").concat(sizeValue);
+              url = "/wp-json/giardino/product/?id=".concat(productId, "&pa_size=").concat(sizeValue);
               _context.next = 4;
               return fetch(url);
 
@@ -224,7 +235,9 @@ $(document).on('click', '.select__items div', function () {
               data = _context.sent;
 
               if (data.price) {
-                priceEl.text(priceEl.text().replace(/\d*/, data.price));
+                priceEl.each(function (index, el) {
+                  $(el).text($(el).text().replace(/\d*/, data.price));
+                });
               }
 
               _context.next = 14;
@@ -249,8 +262,9 @@ $(document).on('click', '.select__items div', function () {
   }();
 
   productInfo();
-}); // Utils  **START**
+} // Utils  **START**
 // Count
+
 
 $(document).on("click", ".count__btn", function (e) {
   e.preventDefault();
@@ -262,11 +276,6 @@ $(document).on("click", ".count__btn", function (e) {
   } else if ($(this).hasClass("count__plus")) {
     inputEL.val(currentValue + 1);
   }
-}); // Toggler
-
-$(".pdp-measure__btn").on("click", function name(e) {
-  e.preventDefault();
-  $(this).addClass("active").siblings(".active").removeClass("active");
 }); // Step Radio
 
 $(".step__radio").on("click", function () {
@@ -581,6 +590,39 @@ $(document).on('click', '.cart__product-cancel', function (e) {
     "data[item_key]": productKey
   };
   updateAjax('remove', ajaxData);
+}); // Сhange
+
+$(document).on('click', '.cart__product .towel-colors__list>div, .cart__product .select__items>div', function (e) {
+  console.log('changes');
+  var productTargetParent = $(this).closest('.cart__product');
+  var productKey = productTargetParent.data('item-key');
+
+  function callbackChange(newDoc) {// let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
+    // let newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
+    // currentActiveProduct.after(newActiveProduct);
+    // currentActiveProduct.remove();
+    // initSelect(newActiveProduct[0]);
+  }
+
+  var ajaxData = {
+    "data[item_key]": productKey
+  };
+
+  if (productTargetParent.find('.pdp__size-select').length) {
+    var productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
+    var activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
+    var sizeValue = activeOption.value;
+    ajaxData["data[pa_size]"] = sizeValue;
+  }
+
+  if (productTargetParent.find('.towel-colors__list').length) {
+    checkColor(productTargetParent.find('.towel-colors__list'));
+    ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
+  }
+
+  setTimeout(function () {
+    updateAjax('change', ajaxData);
+  }, 100);
 }); // Change Quantity
 
 $(document).on('click', '.cart__product .count__btn', function (e) {
@@ -653,23 +695,7 @@ function updateAjax(action, ajaxData, cb) {
 
 function updateTotal(newTotalPrice) {
   $('.cart .cart__products-price').html(newTotalPrice);
-} // "data[item_key]": "75",
-// "data[product_id]": "75",
-// "data[pa_color]": "red",
-// "action": "add",
-// "data[quantity]": "1"
-// Remove
-// "action": "remove",
-// "data[item_key]": "75",
-// Change
-// "action": "quantity",
-// "data[item_key]": "75",
-// "data[pa_color]": "red",
-// "data[quantity]": "1"
-// Quanity
-// "action": "quantity",
-// "data[item_key]": "75",
-// "data[quantity]": "1"
+}
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
@@ -705,6 +731,48 @@ function labelToggle(inputEl) {
     inputEl.removeClass("filled");
   }
 }
+
+/***/ }),
+
+/***/ "./src/js/utils/measure.js":
+/*!*********************************!*\
+  !*** ./src/js/utils/measure.js ***!
+  \*********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+ // $(document).on('click', '.pdp-measure__btn', function name(e) {
+//   e.preventDefault();
+//   $(this).addClass("active").siblings(".active").removeClass("active");
+//   if ($(this).text() == 'inc') {
+//     localStorage.setItem('measure', 'inc');
+//   } else {
+//     localStorage.setItem('measure', 'cm');
+//   }
+//   initMeasure();
+// });
+// function initMeasure() {
+//   let measure = localStorage.getItem('measure'); // cm or inc
+//   if (measure && measure == 'inc') {
+//     if ($('.pdp-measure.active').next()) {
+//       $('.pdp-measure.active').removeClass('active').next().addClass('active');
+//    }
+//     $(".select__items div, .pdp-look__size-option, .select__selected").each((index, element) => {
+//       let measureArray = $(element).text().split(" ");
+//       let measureValue = measureArray[0].split('x').map(val => {
+//         return (val * 0.393701).toFixed(1);
+//       });
+//       $(element).text(measureValue.join('x') + ' inc');
+//     })
+//   } else {
+//     localStorage.setItem('measure', 'cm');
+//   }
+// }
+// initMeasure();
 
 /***/ }),
 
@@ -755,11 +823,6 @@ window.initSelect = function (initArea) {
       /* For each option in the original select element,
       create a new DIV that will act as an option item: */
       c = document.createElement("DIV");
-
-      if (j == 0) {
-        c.classList.add('same-as-selected');
-      }
-
       c.innerHTML = selElmnt.options[j].innerHTML;
       c.addEventListener("click", function (e) {
         /* When an item is clicked, update the original select box,

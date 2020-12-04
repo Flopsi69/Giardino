@@ -4,31 +4,46 @@ import 'slick-lightbox';
 import "../../../js/utils/select";
 import "../../../js/utils/label";
 import "../../../js/utils/cart";
+import "../../../js/utils/measure";
 
 
-$(document).on('click', '.select__items div', function () {
+
+$(document).on('click', '.pdp-control .select__items div', function () {
   const selectOptionsObj = $(this).parent().siblings('select')[0];
   const activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
-  const sizeKey = activeOption.dataset.key;
   const sizeValue = activeOption.value;
   const productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
   const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
   
-  // const productInfo = async () => {
+  updatePrice(productId, sizeValue, priceEl);
+})
+
+
+$(document).on('click', '.pdp-look .pdp-look__size-option', function () {
+  const sizeValue = $(this).data('value');
+  const productEl = $(this).closest('.pdp-look');
+  const productId = productEl.find("input[name='product_id']").val();
+  const priceEl = productEl.find('.pdp-look__buy-price');
+  updatePrice(productId, sizeValue, priceEl);
+})
+
+function updatePrice(productId, sizeValue, priceEl) {
   const productInfo = async() => {
     try {
-      const url = `/wp-json/giardino/product/?id=${productId}&${sizeKey}=${sizeValue}`;
+      const url = `/wp-json/giardino/product/?id=${productId}&pa_size=${sizeValue}`;
       const res = await fetch(url);
       const data = await res.json()
       if (data.price) {
-        priceEl.text(priceEl.text().replace(/\d*/, data.price));
+        priceEl.each((index, el) => {
+          $(el).text( $(el).text().replace(/\d*/, data.price));
+        }) 
       }
      } catch (e) {
        console.log(e)
      }
   }
   productInfo();
-})
+}
 
 // Utils  **START**
 // Count
@@ -41,12 +56,6 @@ $(document).on("click", ".count__btn", function (e) {
   } else if ($(this).hasClass("count__plus")) {
     inputEL.val(currentValue + 1);
   }
-});
-
-// Toggler
-$(".pdp-measure__btn").on("click", function name(e) {
-  e.preventDefault();
-  $(this).addClass("active").siblings(".active").removeClass("active");
 });
 
 // Step Radio

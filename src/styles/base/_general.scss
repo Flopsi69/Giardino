@@ -1698,7 +1698,7 @@ ul.page-numbers {
 }
 
 .pdp {
-  margin-top: 25px;
+  padding-top: 30px;
   padding-bottom: 70px;
   @include sm-block {
     padding-bottom: 35px;
@@ -1842,6 +1842,18 @@ ul.page-numbers {
         width: calc(50% - 12px);
         margin-left: 6px;
         margin-right: 6px;
+      }
+      img {
+        min-width: 100%;
+        max-width: auto;
+        height: 275px;
+        object-fit: cover;
+        @include md-block {
+          height: 175px;
+        }
+        @include sm-block {
+          height: 150px;
+        }
       }
       &-full {
         color: $gray;
@@ -2168,11 +2180,18 @@ ul.page-numbers {
         }
       }
 
+      img {
+        border: 1px solid transparent;
+      }
       .pdp__slide {
         margin: 2px 0;
         @include sm-block {
           padding: 0 5px;
         }
+      }
+
+      .slick-current img {
+        border: 1px solid $blue;
       }
     }
     &-for {
@@ -2211,6 +2230,8 @@ ul.page-numbers {
     border-radius: 2px;
     border: 1px solid $blue;
     margin-left: 10px;
+    filter: grayscale(100%);
+    pointer-events: none;
     &__btn {
       font-weight: bold;
       font-size: 13px;
@@ -3113,10 +3134,14 @@ ul.page-numbers {
   background-color: transparent;
 }
 .slick-lightbox .slick-prev {
-  left: 15px;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
 }
 .slick-lightbox .slick-next {
-  right: 15px;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
 }
 .slick-lightbox-hide {
   opacity: 0;

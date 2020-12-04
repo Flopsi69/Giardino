@@ -28,9 +28,6 @@ window.initSelect = function (initArea) {
       /* For each option in the original select element,
       create a new DIV that will act as an option item: */
       c = document.createElement("DIV");
-      if (j == 0) {
-        c.classList.add('same-as-selected');
-      }
       c.innerHTML = selElmnt.options[j].innerHTML;
       c.addEventListener("click", function (e) {
         /* When an item is clicked, update the original select box,
