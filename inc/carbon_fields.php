@@ -57,7 +57,10 @@ if (class_exists('Carbon_Fields\Container')) {
     Container::make('term_meta', 'Category')
         ->where('term_taxonomy', '=', 'product_cat')
         ->add_fields(array(
-            Field::make('image', 'size_guide', 'Size guide'),
+            Field::make('image', 'size_guide', 'Size guide')
+                ->set_classes('size-guide'),
+            Field::make('image', 'size_guide_mobile', '')
+                ->set_classes('size-guide-mobile'),
         ));
 
     Container::make('theme_options', ('Giardino'))

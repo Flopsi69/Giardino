@@ -108,14 +108,18 @@ $product_parent = $product;
                                             <?php
                                             $categories_ids = $product->get_category_ids();
                                             if (!empty($categories_ids)) {
-                                                $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                                if (!empty($size_guide_image)) {
-                                                    $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                                $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                                $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
+                                                if (!empty($size_guide_img)) {
+                                                    $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
+                                                }
+                                                if (!empty($size_guide_mobile_img)) {
+                                                    $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
                                                 }
                                             }
                                             ?>
-                                            <?php if (!empty($size_guide)) { ?>
-                                                <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
+                                            <?php if (!empty($size_guide) && !empty($size_guide_mobile)) { ?>
+                                                <div data-image="<?php echo $size_guide; ?>" data-mobile="<?php echo $size_guide_mobile; ?>" class="pdp__guide">Size guide</div>
                                             <?php } ?>
                                             <div class="pdp-measure">
                                                 <div class="pdp-measure__btn active">cm</div>
@@ -296,14 +300,18 @@ $product_parent = $product;
                                                                 <?php
                                                                 $categories_ids = $upsell->get_category_ids();
                                                                 if (!empty($categories_ids)) {
-                                                                    $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                                                    if (!empty($size_guide_image)) {
-                                                                        $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                                                    $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                                                    $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
+                                                                    if (!empty($size_guide_img)) {
+                                                                        $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
+                                                                    }
+                                                                    if (!empty($size_guide_mobile_img)) {
+                                                                        $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
                                                                     }
                                                                 }
                                                                 ?>
-                                                                <?php if (!empty($size_guide)) { ?>
-                                                                    <div data-image="<?php echo $size_guide; ?>" class="pdp__guide pdp-look__size-guide">Size guide</div>
+                                                                <?php if (!empty($size_guide) && !empty($size_guide_mobile)) { ?>
+                                                                    <div data-image="<?php echo $size_guide; ?>" data-mobile="<?php echo $size_guide_mobile; ?>" class="pdp__guide pdp-look__size-guide">Size guide</div>
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         </div>
@@ -354,14 +362,18 @@ $product_parent = $product;
                                                         <?php
                                                         $categories_ids = $collection_product->get_category_ids();
                                                         if (!empty($categories_ids)) {
-                                                            $size_guide_image = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                                            if (!empty($size_guide_image)) {
-                                                                $size_guide = wp_get_attachment_image_url($size_guide_image, 'large');
+                                                            $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
+                                                            $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
+                                                            if (!empty($size_guide_img)) {
+                                                                $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
+                                                            }
+                                                            if (!empty($size_guide_mobile_img)) {
+                                                                $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
                                                             }
                                                         }
                                                         ?>
-                                                        <?php if (!empty($size_guide)) { ?>
-                                                            <div data-image="<?php echo $size_guide; ?>" class="pdp__guide">Size guide</div>
+                                                        <?php if (!empty($size_guide) && !empty($size_guide_mobile)) { ?>
+                                                            <div data-image="<?php echo $size_guide; ?>" data-mobile="<?php echo $size_guide_mobile; ?>" class="pdp__guide">Size guide</div>
                                                         <?php } ?>
                                                         <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                     </div>
