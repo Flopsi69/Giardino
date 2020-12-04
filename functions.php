@@ -268,10 +268,10 @@ function get_category_data($product) {
         $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
         $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
         if (!empty($size_guide_img)) {
-            $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
+            $size_guide = wp_get_attachment_image_url($size_guide_img, 'full');
         }
         if (!empty($size_guide_mobile_img)) {
-            $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
+            $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'full');
         }
         $term = get_term(end($categories_ids));
         if (!empty($term)) {
