@@ -44,6 +44,7 @@
         </section>
             <?php $count = 0; ?>
             <?php foreach($categories->terms as $category) { ?>
+                <?php if ($category->slug === 'decoration') { continue; }; ?>
             <!-- Products -->
             <section class="section products <?php echo ($count % 2 === 0 ? '' : 'bg-gray'); ?>">
                 <div class="container">

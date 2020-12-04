@@ -10,7 +10,7 @@
         <div class="products__list products-slider__list">
             <?php foreach ($products as $product) { ?>
                 <?php $product = wc_get_product($product['id']); ?>
-                <?php if (!empty($product)) { ?>
+                <?php if (!empty($product) && $product->get_status() === 'publish') { ?>
                 <!-- Product -->
                 <div class="product products-slider__item">
                     <a href="<?php echo get_product_url($product); ?>" class="product__preview">

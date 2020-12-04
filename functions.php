@@ -62,11 +62,11 @@ function get_product_attributes($product) {
 function get_product_image($product)
 {
     $product_id = $product->get_id();
-    $image = get_the_post_thumbnail_url($product_id);
+    $image = get_the_post_thumbnail_url($product_id, 'large');
     if (empty($image) && $product->get_parent_id() !== 0) {
-        $image = get_the_post_thumbnail_url($product->get_parent_id());
+        $image = get_the_post_thumbnail_url($product->get_parent_id(), 'large');
     }
-    return $image;
+    return $image ?? '';
 }
 
 function get_product_url($product)
