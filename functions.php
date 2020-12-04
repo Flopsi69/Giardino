@@ -292,7 +292,8 @@ function cart_control() {
                             $cart = WC()->cart;
                             $item = $cart->get_cart_item($item_key);
                             if (isset($item['product_id'])) {
-                                if (!empty(add_to_cart($item['product_id'], $quantity, $variation_id ?? false, false, $data ?? false))) {
+                                $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, false, $data ?? false);
+                                if (!empty($new_item_key) && $item_key !== $new_item_key) {
                                     remove_from_cart($item_key);
                                 }
                             }
