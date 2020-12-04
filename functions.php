@@ -8,6 +8,11 @@ function start_session() {
     }
 }
 
+add_action('admin_enqueue_scripts', 'admin_style');
+function admin_style() {
+    wp_enqueue_style('admin-styles', get_template_directory_uri(). '/styles/admin-custom.css');
+}
+
 add_action('carbon_fields_register_fields', 'register_custom_fields');
 function register_custom_fields() {
     require_once 'inc/carbon_fields.php';
@@ -229,7 +234,7 @@ function get_cart_total() {
     return false;
 }
 
-function add_to_cart($product_id, $quantity = 1, $variation_id = false, $variation = false, $item_data = []) {
+function add_to_cart($product_id, $quantity = 1, $variation_id = false, $item_data = []) {
     if (function_exists('WC')) {
         $cart = WC()->cart;
         $attributes = $item_data;
@@ -238,7 +243,12 @@ function add_to_cart($product_id, $quantity = 1, $variation_id = false, $variati
         if ($product_data['id'] !== $product_id) {
             $variation_id = $product_data['id'];
         }
-        return $cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $item_data);
+        if (!empty($item_data)) {
+            foreach ($item_data as $key => $datum) {
+                $variation['attribute_' . $key] = $datum;
+            }
+        }
+        return $cart->add_to_cart($product_id, $quantity, $variation_id, $variation ?? [], $item_data);
     }
     return false;
 }
@@ -298,7 +308,7 @@ function cart_control() {
             switch ($action) {
                 case 'add':
                     if (isset($product_id)) {
-                        add_to_cart($product_id, $quantity, $variation_id ?? false, false, $data ?? false);
+                        add_to_cart($product_id, $quantity, $variation_id ?? false, $data ?? false);
                     }
                     break;
                 case 'quantity':
@@ -317,7 +327,7 @@ function cart_control() {
                             $cart = WC()->cart;
                             $item = $cart->get_cart_item($item_key);
                             if (isset($item['product_id'])) {
-                                $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, false, $data ?? false);
+                                $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, $data ?? false);
                                 if (!empty($new_item_key) && $item_key !== $new_item_key) {
                                     remove_from_cart($item_key);
                                 }
