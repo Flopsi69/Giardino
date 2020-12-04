@@ -30,6 +30,7 @@
 </head>
 
 <body>
+    <?php $cart_items = get_cart_items(); ?>
     <!-- Header -->
     <header class="header">
         <div class="container">
@@ -220,7 +221,9 @@
                 <!-- Basket -->
                 <a href="#" class="header__basket col">
                     <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-basket.svg" alt="">
-                    <span class="basket-quantity">4</span>
+                    <?php if (!empty($cart_items)) { ?>
+                        <span class="basket-quantity"><?php echo count($cart_items); ?></span>
+                    <?php } ?>
                     <!-- <img src="<?php print get_theme_file_uri(); ?>/img/icon-basket.png" alt=""> -->
                 </a>
             </div>
@@ -238,7 +241,6 @@
                     </svg>
                 </a>
             </div>
-            <?php $cart_items = get_cart_items(); ?>
             <?php if (!empty($cart_items)) { ?>
                 <div class="cart__body">
                     <!-- List -->
@@ -300,12 +302,12 @@
                         <?php } ?>
                     </div>
                 </div>
+            <?php } ?>
 
                 <div class="cart__products-total">
                     <div class="cart__products-caption">Total:</div>
                     <div class="cart__products-price"><?php echo get_cart_total(); ?>€</div>
                 </div>
-            <?php } ?>
 
             <div class="cart__footer">
                 <a href="/checkout/" class="cart__footer-checkout btn btn_blue w-100">Checkout</a>

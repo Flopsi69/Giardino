@@ -58,8 +58,10 @@ if (class_exists('Carbon_Fields\Container')) {
         ->where('term_taxonomy', '=', 'product_cat')
         ->add_fields(array(
             Field::make('image', 'size_guide', 'Size guide')
+                ->set_help_text('for desktop')
                 ->set_classes('size-guide'),
             Field::make('image', 'size_guide_mobile', '')
+                ->set_help_text('for mobile')
                 ->set_classes('size-guide-mobile'),
         ));
 
