@@ -720,7 +720,12 @@ function updateAjax(action, ajaxData, cb) {
 
   if (action == 'add') {
     var basketNum = $('.header__basket .basket-quantity');
-    basketNum.text(parseInt(basketNum.text()) + 1);
+
+    if (basketNum.text().trim()) {
+      basketNum.html(parseInt(basketNum.text()) + 1);
+    } else {
+      basketNum.html('1');
+    }
   }
 
   if (action == 'remove') {

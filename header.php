@@ -221,9 +221,11 @@
                 <!-- Basket -->
                 <a href="#" class="header__basket col">
                     <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-basket.svg" alt="">
-                    <?php if (!empty($cart_items)) { ?>
-                        <span class="basket-quantity"><?php echo count($cart_items); ?></span>
-                    <?php } ?>
+                    <span class="basket-quantity">
+                        <?php if (!empty($cart_items)) { ?>
+                            <?php echo count($cart_items); ?>
+                        <?php } ?>
+                    </span>
                     <!-- <img src="<?php print get_theme_file_uri(); ?>/img/icon-basket.png" alt=""> -->
                 </a>
             </div>
@@ -304,10 +306,10 @@
                 </div>
             <?php } ?>
 
-                <div class="cart__products-total">
-                    <div class="cart__products-caption">Total:</div>
-                    <div class="cart__products-price"><?php echo get_cart_total(); ?>€</div>
-                </div>
+            <div class="cart__products-total">
+                <div class="cart__products-caption">Total:</div>
+                <div class="cart__products-price"><?php echo get_cart_total(); ?>€</div>
+            </div>
 
             <div class="cart__footer">
                 <a href="/checkout/" class="cart__footer-checkout btn btn_blue w-100">Checkout</a>

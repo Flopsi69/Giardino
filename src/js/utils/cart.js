@@ -124,7 +124,11 @@ function updateAjax(action, ajaxData, cb) {
   ajaxData.action = action;
   if (action == 'add') {
     let basketNum = $('.header__basket .basket-quantity');
-    basketNum.text(parseInt(basketNum.text()) + 1);
+    if (basketNum.text().trim()) {
+      basketNum.html(parseInt(basketNum.text()) + 1);
+    } else {
+      basketNum.html('1');
+    }
   } if (action == 'remove') {
     let basketNum = $('.header__basket .basket-quantity');
     basketNum.text(parseInt(basketNum.text()) - 1);
