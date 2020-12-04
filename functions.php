@@ -256,6 +256,28 @@ function change_item_cart_quantity($item_key, $quantity = 1) {
     return false;
 }
 
+function get_category_data($product) {
+    $size_guide = '';
+    $size_guide_mobile = '';
+    $category_name = '';
+    $categories_ids = $product->get_category_ids();
+    if (!empty($categories_ids)) {
+        $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
+        $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
+        if (!empty($size_guide_img)) {
+            $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
+        }
+        if (!empty($size_guide_mobile_img)) {
+            $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
+        }
+        $term = get_term(end($categories_ids));
+        if (!empty($term)) {
+            $category_name = $term->name;
+        }
+    }
+    return ['category_name' => $category_name, 'size_guide' => $size_guide, 'size_guide_mobile' => $size_guide_mobile];
+}
+
 function cart_control() {
     if (!empty($_POST['action'])) {
         $quantity = 1;

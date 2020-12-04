@@ -84,6 +84,7 @@ $product_parent = $product;
                                 </div>
                                 <div class="pdp__collection-body">
                                     <?php foreach ($collection_products as $collection_product) { ?>
+                                        <?php $category_data = get_category_data($collection_product); ?>
                                         <div class="pdp__collection-row">
                                             <label class="checkbox pdp__collection-checkbox">
                                                 <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
@@ -134,24 +135,11 @@ $product_parent = $product;
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
+                                                        <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
+                                                            <div data-image="<?php echo $category_data['size_guide']; ?>" data-mobile="<?php echo $category_data['size_guide_mobile']; ?>" class="pdp__guide">Size guide</div>
+                                                        <?php } ?>
                                                     <?php } ?>
                                                 <?php } ?>
-                                            <?php } ?>
-                                            <?php
-                                            $categories_ids = $collection_product->get_category_ids();
-                                            if (!empty($categories_ids)) {
-                                                $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                                $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
-                                                if (!empty($size_guide_img)) {
-                                                    $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
-                                                }
-                                                if (!empty($size_guide_mobile_img)) {
-                                                    $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
-                                                }
-                                            }
-                                            ?>
-                                            <?php if (!empty($size_guide) && !empty($size_guide_mobile)) { ?>
-                                                <div data-image="<?php echo $size_guide; ?>" data-mobile="<?php echo $size_guide_mobile; ?>" class="pdp__guide">Size guide</div>
                                             <?php } ?>
                                             <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                         </div>
@@ -159,13 +147,11 @@ $product_parent = $product;
                                         <?php if (!empty($colors)) { ?>
                                             <div class="towel-colors">
                                                 <div class="towel-colors__caption">
-                                                    Color: <span></span>
+                                                   <?php echo $category_data['category_name']; ?> color: <span><?php echo reset($colors)['name']; ?></span>
                                                 </div>
                                                 <div class="towel-colors__list">
-                                                    <?php $count = 0; ?>
                                                     <?php foreach ($colors as $variation_id => $color) { ?>
-                                                        <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
-                                                        <?php $count++; ?>
+                                                        <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo (reset($colors) === $color ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
                                                     <?php } ?>
                                                 </div>
                                             </div>
@@ -236,6 +222,7 @@ $product_parent = $product;
                             if ($upsell->get_parent_id() !== 0) {
                                 $upsell = wc_get_product($upsell->get_parent_id());
                             }
+                            $category_data = get_category_data($upsell);
                             ?>
                             <!-- Item -->
                             <div class="pdp-look row-flex">
@@ -262,28 +249,11 @@ $product_parent = $product;
                                                     <div class="pdp-look__caption"><?php echo $attribute['name']; ?>:</div>
                                                     <?php if (!empty($attribute['options'])) { ?>
                                                         <div class="pdp-look__size-list">
-                                                            <?php $count = 0; ?>
                                                             <?php foreach ($attribute['options'] as $slug => $option) { ?>
-                                                                <div data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" class="pdp-look__size-option <?php echo ($count === 0 ? 'active' : ''); ?>"><?php echo $option; ?></div>
-                                                                <?php $count++; ?>
+                                                                <div data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" class="pdp-look__size-option <?php echo (reset($attribute['options']) === $option ? 'active' : ''); ?>"><?php echo $option; ?></div>
                                                             <?php } ?>
-                                                            <?php if ($attribute['name'] === 'Size') { ?>
-                                                                <?php
-                                                                $categories_ids = $upsell->get_category_ids();
-                                                                if (!empty($categories_ids)) {
-                                                                    $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                                                    $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
-                                                                    if (!empty($size_guide_img)) {
-                                                                        $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
-                                                                    }
-                                                                    if (!empty($size_guide_mobile_img)) {
-                                                                        $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
-                                                                    }
-                                                                }
-                                                                ?>
-                                                                <?php if (!empty($size_guide) && !empty($size_guide_mobile)) { ?>
-                                                                    <div data-image="<?php echo $size_guide; ?>" data-mobile="<?php echo $size_guide_mobile; ?>" class="pdp__guide pdp-look__size-guide">Size guide</div>
-                                                                <?php } ?>
+                                                            <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
+                                                                <div data-image="<?php echo $category_data['size_guide']; ?>" data-mobile="<?php echo $category_data['size_guide_mobile']; ?>" class="pdp__guide pdp-look__size-guide">Size guide</div>
                                                             <?php } ?>
                                                         </div>
                                                     <?php } ?>
@@ -294,6 +264,7 @@ $product_parent = $product;
                                             <?php $collection_products = get_collection_products_without_current($upsell); ?>
                                             <?php if (!empty($collection_products)) { ?>
                                                 <?php foreach ($collection_products as $collection_product) { ?>
+                                                    <?php $category_data = get_category_data($collection_product); ?>
                                                     <div class="pdp__collection-row">
                                                         <label class="checkbox pdp__collection-checkbox">
                                                             <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
@@ -352,24 +323,11 @@ $product_parent = $product;
                                                                             <?php } ?>
                                                                         </select>
                                                                     </div>
+                                                                    <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
+                                                                        <div data-image="<?php echo $category_data['size_guide']; ?>" data-mobile="<?php echo $category_data['size_guide_mobile']; ?>" class="pdp__guide">Size guide</div>
+                                                                    <?php } ?>
                                                                 <?php } ?>
                                                             <?php } ?>
-                                                        <?php } ?>
-                                                        <?php
-                                                        $categories_ids = $collection_product->get_category_ids();
-                                                        if (!empty($categories_ids)) {
-                                                            $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
-                                                            $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
-                                                            if (!empty($size_guide_img)) {
-                                                                $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
-                                                            }
-                                                            if (!empty($size_guide_mobile_img)) {
-                                                                $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
-                                                            }
-                                                        }
-                                                        ?>
-                                                        <?php if (!empty($size_guide) && !empty($size_guide_mobile)) { ?>
-                                                            <div data-image="<?php echo $size_guide; ?>" data-mobile="<?php echo $size_guide_mobile; ?>" class="pdp__guide">Size guide</div>
                                                         <?php } ?>
                                                         <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                     </div>
@@ -377,13 +335,11 @@ $product_parent = $product;
                                                     <?php if (!empty($colors)) { ?>
                                                         <div class="towel-colors">
                                                             <div class="towel-colors__caption">
-                                                                Color: <span></span>
+                                                                <?php echo $category_data['category_name']; ?> color: <span><?php echo reset($colors)['name']; ?></span>
                                                             </div>
                                                             <div class="towel-colors__list">
-                                                                <?php $count = 0; ?>
                                                                 <?php foreach ($colors as $variation_id => $color) { ?>
-                                                                    <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo ($count === 0 ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
-                                                                    <?php $count++; ?>
+                                                                    <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo (reset($colors) === $color ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
@@ -399,13 +355,11 @@ $product_parent = $product;
                                                     <div class="pdp-look__color">
                                                         <div class="pdp-look__caption">Color:</div>
                                                         <div class="pdp-look__color-list text-center">
-                                                            <?php $count = 0; ?>
                                                             <?php foreach ($colors as $variation_id => $color) { ?>
-                                                                <div class="pdp-look__color-option <?php echo ($count === 0 ? 'active' : ''); ?>">
+                                                                <div class="pdp-look__color-option <?php echo (reset($colors) === $color ? 'active' : ''); ?>">
                                                                     <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
                                                                     <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
                                                                 </div>
-                                                                <?php $count++; ?>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
