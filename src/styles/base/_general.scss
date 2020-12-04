@@ -1297,7 +1297,8 @@ ul.page-numbers {
           width: 75px;
           height: 75px;
         }
-        a:hover & {
+        a:hover &,
+        a.active & {
           border-color: $blue;
         }
       }
@@ -1326,7 +1327,8 @@ ul.page-numbers {
       @include md-block {
         font-size: 10px;
       }
-      a:hover & {
+      a:hover &,
+      a.active & {
         border-color: $blue;
       }
     }

@@ -87,7 +87,8 @@ function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
       const data = await res.json()
       if (data.price) {
         priceEl.each((index, el) => {
-          $(el).text( $(el).text().replace(/\d*/, data.price*quantity));
+          let price = quantity == 1 ? data.price : data.price * quantity;
+          $(el).text( $(el).text().replace(/[\d\.]*/, price));
         }) 
       }
      } catch (e) {

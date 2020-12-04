@@ -287,7 +287,8 @@ function updatePrice(productId, sizeValue, priceEl) {
 
               if (data.price) {
                 priceEl.each(function (index, el) {
-                  $(el).text($(el).text().replace(/\d*/, data.price * quantity));
+                  var price = quantity == 1 ? data.price : data.price * quantity;
+                  $(el).text($(el).text().replace(/[\d\.]*/, price));
                 });
               }
 

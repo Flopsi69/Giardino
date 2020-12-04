@@ -1841,7 +1841,8 @@ ul.page-numbers .page-numbers.next:hover:after {
   transition: 0.3s;
 }
 
-a:hover .products-subcat__image img {
+a:hover .products-subcat__image img,
+a.active .products-subcat__image img {
   border-color: #0b2358;
 }
 
@@ -1861,7 +1862,8 @@ a:hover .products-subcat__image img {
   transition: 0.3s;
 }
 
-a:hover .products-subcat__name {
+a:hover .products-subcat__name,
+a.active .products-subcat__name {
   border-color: #0b2358;
 }
 
