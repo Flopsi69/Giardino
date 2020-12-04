@@ -6,44 +6,14 @@ import "../../../js/utils/label";
 import "../../../js/utils/cart";
 import "../../../js/utils/measure";
 
-
-
-$(document).on('click', '.pdp-control .select__items div', function () {
-  const selectOptionsObj = $(this).parent().siblings('select')[0];
-  const activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
-  const sizeValue = activeOption.value;
-  const productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
-  const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
-  
-  updatePrice(productId, sizeValue, priceEl);
+$(".nav__list-item").hover(function () {
+  console.log('hover', $(this));
+  $(this).addClass('nav-item-hover');
+}, function () {
+    setTimeout(() => {
+      $(this).removeClass('nav-item-hover');
+    }, 200);
 })
-
-
-$(document).on('click', '.pdp-look .pdp-look__size-option', function () {
-  const sizeValue = $(this).data('value');
-  const productEl = $(this).closest('.pdp-look');
-  const productId = productEl.find("input[name='product_id']").val();
-  const priceEl = productEl.find('.pdp-look__buy-price');
-  updatePrice(productId, sizeValue, priceEl);
-})
-
-function updatePrice(productId, sizeValue, priceEl) {
-  const productInfo = async() => {
-    try {
-      const url = `/wp-json/giardino/product/?id=${productId}&pa_size=${sizeValue}`;
-      const res = await fetch(url);
-      const data = await res.json()
-      if (data.price) {
-        priceEl.each((index, el) => {
-          $(el).text( $(el).text().replace(/\d*/, data.price));
-        }) 
-      }
-     } catch (e) {
-       console.log(e)
-     }
-  }
-  productInfo();
-}
 
 // Utils  **START**
 // Count
@@ -69,6 +39,63 @@ $(".tooltip").on("click", function (e) {
   $(this).toggleClass("active");
 });
 // Utils **END**
+
+$(document).on('click', '.pdp-control .select__items div', function () {
+  const selectOptionsObj = $(this).parent().siblings('select')[0];
+  const activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
+  const sizeValue = activeOption.value;
+  const productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
+  const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
+  
+  updatePrice(productId, sizeValue, priceEl);
+})
+
+// Size options
+$(document).on("click", ".pdp-look__size-option", function () {
+  $(this).addClass("active").siblings(".active").removeClass("active");
+});
+
+// Color options
+$(document).on("click", ".pdp-look__color-option", function () {
+  $(this).addClass("active").siblings(".active").removeClass("active");
+});
+
+$(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn', function () {
+  const sizeValue = $(this).data('value');
+  const productEl = $(this).closest('.pdp-look');
+  const productId = productEl.find("input[name='product_id']").val();
+  const priceEl = productEl.find('.pdp-look__buy-price');
+  const quantity = productEl.find('.count__value').val();
+  console.log(quantity);
+    updatePrice(productId, sizeValue, priceEl, quantity);
+})
+
+// $(document).on('click', '.pdp-look .count__btn', function () {
+//   const sizeValue = $(this).data('value');
+//   const productEl = $(this).closest('.pdp-look');
+//   const productId = productEl.find("input[name='product_id']").val();
+//   const priceEl = productEl.find('.pdp-look__buy-price');
+//   updatePrice(productId, sizeValue, priceEl,);
+// })
+
+
+function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
+  const productInfo = async() => {
+    try {
+      const url = `/wp-json/giardino/product/?id=${productId}&pa_size=${sizeValue}`;
+      const res = await fetch(url);
+      const data = await res.json()
+      if (data.price) {
+        priceEl.each((index, el) => {
+          $(el).text( $(el).text().replace(/\d*/, data.price*quantity));
+        }) 
+      }
+     } catch (e) {
+       console.log(e)
+     }
+  }
+  productInfo();
+}
 
 // Header **START**
 // scroll Fixed
@@ -277,16 +304,6 @@ $(".pdp-tabs__nav-item").on("click", function () {
     .slideUp();
 });
 
-// Size options
-$(".pdp-look__size-option").on("click", function () {
-  $(this).addClass("active").siblings(".active").removeClass("active");
-});
-
-// Color options
-$(".pdp-look__color-option").on("click", function () {
-  $(this).addClass("active").siblings(".active").removeClass("active");
-});
-
 // Collection
 $(".dropdown-toggler").on("click", function () {
   $(this).toggleClass("active").siblings().slideToggle();
@@ -317,29 +334,35 @@ if ($(".pdp-look").length) {
   pdpViewMobToggle();
 }
 
-// Color towel
-$(".towel-colors__item").on("click", function () {
-  $(this).addClass("active").siblings(".active").removeClass("active");
-});
-
 // Product page **END**
 
 // Modals
-$(".modal-trigger").click(function (e) {
+$(document).on('click', '.modal-trigger, .pdp__guide', function (e) {
   e.preventDefault();
   let target = $(this).attr("modal-target");
+  if ($(this).hasClass('pdp__guide')) {
+    let desktopGuide = $(this).data('image');
+    let mobileGuide = $(this).data('mobile');
+    target = '#m-guide';
+    if ($(window).width() > 992) {
+      $(target).find('.m-guide__image').attr('src', desktopGuide);
+    } else {
+      $(target).find('.m-guide__image').attr('src', mobileGuide);
+    }
+  }
   $(".modal").hasClass("modal_active")
     ? $(".modal__body").slideUp()
     : $(".modal").addClass("modal_active");
   $(target).delay(500).slideDown();
 });
 
+
 $(".modal__close, .modal__close-btn").click(function (e) {
   e.preventDefault();
   modalClose();
 });
 
-$(".modal").click(function (e) {
+$(".modal").on('click', function (e) {
   if ($(e.target).hasClass("modal_active")) {
     modalClose();
   }
