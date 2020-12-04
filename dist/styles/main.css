@@ -2206,6 +2206,7 @@ a:hover .products-subcat__name {
 
 .pdp__col-right {
   flex-grow: 1;
+  min-width: 0;
 }
 
 .pdp-subtitle {
@@ -2564,6 +2565,7 @@ a:hover .products-subcat__name {
   color: #66646e;
   text-decoration: underline;
   padding: 5px 10px;
+  cursor: pointer;
 }
 
 .pdp__guide:hover {
@@ -2644,7 +2646,7 @@ a:hover .products-subcat__name {
 .pdp__collection-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .pdp__collection-checkbox {
@@ -2696,7 +2698,8 @@ a:hover .products-subcat__name {
 }
 
 .collection__image {
-  min-height: 300px;
+  height: 390px;
+  min-width: 100%;
   object-fit: cover;
 }
 
@@ -3708,7 +3711,8 @@ a:hover .products-subcat__name {
   line-height: 0;
 }
 
-.nav__list-item:hover .nav__sublist {
+.nav__list-item:hover .nav__sublist,
+.nav__list-item.nav-item-hover .nav__sublist {
   opacity: 1;
   pointer-events: auto;
 }
@@ -3904,27 +3908,7 @@ a:hover .products-subcat__name {
   border-radius: 15px;
   box-shadow: 0 30px 109px rgba(155, 143, 123, 0.1);
   background-color: #fff;
-  padding: 35px 70px 50px;
-}
-
-.modal__title {
-  color: #ff0000;
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-}
-
-.modal__caption {
-  line-height: 1.4;
-}
-
-.m-callback {
-  max-width: 490px;
-}
-
-.m-callback__form {
-  margin-top: 35px;
+  text-align: center;
 }
 
 @media (min-width: 992px) {
@@ -3997,6 +3981,10 @@ a:hover .products-subcat__name {
   .pdp-look__buy {
     width: 100%;
     margin-top: 30px;
+  }
+
+  .collection__image {
+    height: 270px;
   }
 
   .collection__title {
@@ -4805,6 +4793,10 @@ a:hover .products-subcat__name {
     width: 100%;
   }
 
+  .collection__image {
+    height: 230px;
+  }
+
   .checkout .btn {
     font-size: 14px;
   }
@@ -4938,19 +4930,6 @@ a:hover .products-subcat__name {
   .modal__close svg {
     width: 12px;
     height: 12px;
-  }
-
-  .modal__title {
-    font-size: 22px;
-    margin-bottom: 15px;
-  }
-
-  .modal__caption {
-    font-size: 14px;
-  }
-
-  .m-callback {
-    padding: 55px 25px 30px;
   }
 }
 

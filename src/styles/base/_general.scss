@@ -1787,6 +1787,7 @@ ul.page-numbers {
     }
     &-right {
       flex-grow: 1;
+      min-width: 0;
     }
   }
   &-subtitle {
@@ -2212,6 +2213,7 @@ ul.page-numbers {
     color: $gray;
     text-decoration: underline;
     padding: 5px 10px;
+    cursor: pointer;
     @include sm-block {
       padding-left: 4px;
       padding-right: 4px;
@@ -2302,7 +2304,10 @@ ul.page-numbers {
     &-row {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin: 10px 0;
+      & + & {
+        // margin-top: 10px;
+      }
       @include sm-block {
         flex-wrap: wrap;
         border-radius: 2px;
@@ -2367,8 +2372,15 @@ ul.page-numbers {
     }
   }
   &__image {
-    min-height: 300px;
+    height: 390px;
+    min-width: 100%;
     object-fit: cover;
+    @include lg-block {
+      height: 270px;
+    }
+    @include sm-block {
+      height: 230px;
+    }
   }
   &__new {
     position: absolute;

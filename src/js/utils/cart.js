@@ -1,27 +1,43 @@
 
 // Add product
-$(document).on('click', '.btn-to-cart', function (e) {
-  const productTargetParent = $(this).closest('.pdp-control');
-  const productId = productTargetParent.find('input[name=product_id]').val();
-  let ajaxData = {
-    "data[product_id]": productId
-  }
-  
-  if (productTargetParent.find('.pdp__size-select').length) {
-    const productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
-    const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
-    const sizeValue = activeOption.value;
-    ajaxData["data[pa_size]"] = sizeValue;
-  }
+$(document).on('click', '.btn-to-cart, .pdp-look__buy-btn', function (e) {
+  let ajaxData = {}
+  let productTargetParent = $(this).closest('.pdp-control');
+  if (productTargetParent.length) {
+    const productId = productTargetParent.find('input[name=product_id]').val();
+    ajaxData["data[product_id]"] = productId;
+    if (productTargetParent.find('.pdp__size-select').length) {
+      const productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
+      const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
+      const sizeValue = activeOption.value;
+      ajaxData["data[pa_size]"] = sizeValue;
+    }
 
-  if (productTargetParent.find('.pdp-look__color-list').length) {
-    checkColor(productTargetParent.find('.pdp-look__color-list'));
-    ajaxData["data[pa_color]"] = $('.pdp-look__color-option.active .pdp-look__color-name').data('value');
-  }
+    if (productTargetParent.find('.pdp-look__color-list').length) {
+      checkColor(productTargetParent.find('.pdp-look__color-list'));
+      ajaxData["data[pa_color]"] = $('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+    }
+  } else {
+    let productTargetParent = $(this).closest('.pdp-look');
+    const productId = productTargetParent.find('input[name=product_id]').val();
+    ajaxData["data[product_id]"] = productId;
+    if (productTargetParent.find('.pdp-look__size-option.active').length) {
+      ajaxData["data[pa_size]"] = productTargetParent.find('.pdp-look__size-option.active').data('value')
+    }
 
+    if (productTargetParent.find('.count__value').length) {
+      ajaxData["data[quantity]"] = productTargetParent.find('.count__value').val();
+    }
+
+    if (productTargetParent.find('.towel-colors__item.active').length) {
+      ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
+    }
+  }
   console.log('ajaxData', ajaxData);
   updateAjax('add', ajaxData);
 })
+
+
 
 // Remove product
 $(document).on('click', '.cart__product-cancel', function (e) {
@@ -33,17 +49,26 @@ $(document).on('click', '.cart__product-cancel', function (e) {
   updateAjax('remove', ajaxData);
 })
 
+$(document).on("click", ".towel-colors__item", function () {
+  if ($(this).closest('.towel-colors').length) {
+    let colorName = $(this).data('name');
+    $(this).closest('.towel-colors').find('.towel-colors__caption span').text(colorName);
+  }
+  $(this).addClass("active").siblings(".active").removeClass("active");
+});
+
 // Сhange
-$(document).on('click', '.cart__product .towel-colors__list>div, .cart__product .select__items>div', function (e) {
+$(document).on('click', '.cart__product .towel-colors__item, .cart__product .select__items>div', function (e) {
   console.log('changes');
   let productTargetParent = $(this).closest('.cart__product');
   const productKey = productTargetParent.data('item-key');
   function callbackChange(newDoc) {
-    // let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
-    // let newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
-    // currentActiveProduct.after(newActiveProduct);
-    // currentActiveProduct.remove();
-    // initSelect(newActiveProduct[0]);
+    let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
+    let newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
+    // let newActiveProduct = newDoc.find(`.cart__product`).first();
+    currentActiveProduct.after(newActiveProduct);
+    currentActiveProduct.remove();
+    initSelect(newActiveProduct[0]);
   }
 
   let ajaxData = {
@@ -58,7 +83,7 @@ $(document).on('click', '.cart__product .towel-colors__list>div, .cart__product 
   }
 
   if (productTargetParent.find('.towel-colors__list').length) {
-    checkColor(productTargetParent.find('.towel-colors__list'));
+    // checkColor(productTargetParent.find('.towel-colors__list'));
     ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
   }
 
@@ -88,17 +113,6 @@ $(document).on('click', '.cart__product .count__btn', function (e) {
   }, 100);
 })
 
-
-// Remove
-$(document).on('click', '.cart__product-cancel', function (e) {
-  const productKey = $(this).closest('.cart__product').data('item-key');
-  let ajaxData = {
-    "data[item_key]": productKey,
-  }
-  updateAjax('remove', ajaxData);
-})
-
-
 function checkColor(parentEl) {
   if (parentEl.find('.pdp-look__color-option.active').length) {
     return true;
@@ -108,6 +122,18 @@ function checkColor(parentEl) {
 
 function updateAjax(action, ajaxData, cb) {
   ajaxData.action = action;
+  if (action == 'add') {
+    let basketNum = $('.header__basket .basket-quantity');
+    if (basketNum.text().trim()) {
+      basketNum.html(parseInt(basketNum.text()) + 1);
+    } else {
+      basketNum.html('1');
+    }
+  } if (action == 'remove') {
+    let basketNum = $('.header__basket .basket-quantity');
+    basketNum.text(parseInt(basketNum.text()) - 1);
+   }
+
   console.log('ajaxData', ajaxData);
   const settingsAjaxCart = {
     "url": location.origin,

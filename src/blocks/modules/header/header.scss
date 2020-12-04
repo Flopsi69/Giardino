@@ -240,7 +240,8 @@
 .nav {
   &__list {
     &-item {
-      &:hover {
+      &:hover,
+      &.nav-item-hover {
         .nav__sublist {
           opacity: 1;
           pointer-events: auto;
