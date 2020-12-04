@@ -24,9 +24,11 @@ get_header();
 ?>
     <main class="main">
         <?php
+        $parent_id = wp_get_term_taxonomy_parent_id($category_id, 'product_cat');
         $args = array(
             'taxonomy' => array('product_cat'),
-            'parent' => $category_id
+            'parent' => ($parent_id === 0 ? $category_id : $parent_id),
+            'exclude' => 15
         );
         $categories = new WP_Term_Query($args);
         ?>
@@ -36,7 +38,7 @@ get_header();
                 <div class="container products-subcat__container">
                     <div class="products-subcat__list row-flex j-between">
                         <?php foreach ($categories->terms as $category) { ?>
-                            <a href="<?php echo get_term_link($category); ?>" class="products-subcat__item col">
+                            <a href="<?php echo get_term_link($category); ?>" class="products-subcat__item <?php echo ($category->term_id === $category_id ? 'active' : ''); ?> col">
                                 <div class="products-subcat__image">
                                     <img src="<?php echo wp_get_attachment_image_url(get_term_meta($category->term_id, 'thumbnail_id', true), 'large') ?>" alt="<?php echo $category->name; ?>">
                                 </div>

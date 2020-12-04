@@ -158,7 +158,10 @@ function get_collection_products_without_current($collection, $without_id = 0) {
     if (!empty($products_ids)) {
         foreach ($products_ids as $product_id) {
             if (intval($without_id) !== intval($product_id)) {
-                $products[] = wc_get_product($product_id);
+                $product = wc_get_product($product_id);
+                if ($product->get_status() === 'publish') {
+                    $products[] = $product;
+                }
             }
         }
     }
