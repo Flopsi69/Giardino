@@ -1,10 +1,17 @@
 <?php
 add_theme_support('woocommerce');
 
-add_action('init', 'start_session', 1);
+add_action('init', 'start_session');
 function start_session() {
     if (!session_id()) {
         session_start();
+    }
+}
+
+add_action('wp_loaded', 'close_session');
+function close_session() {
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_write_close();
     }
 }
 

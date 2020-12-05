@@ -141,12 +141,31 @@ $category_data = get_category_data($product_parent);
                                                                             <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
                                                                         </div>
                                                                         <div class="tooltip__info">
-                                                                            <table>
-                                                                                <tr>
-                                                                                    <td>What’s included:</td>
-                                                                                    <td><?php echo $includes; ?></td>
-                                                                                </tr>
-                                                                            </table>
+                                                                            <div class="tooltip__image">
+                                                                                <img src="<?php echo get_product_image($collection_product) ?>" alt="">
+                                                                            </div>
+                                                                            <div class="tooltip__body">
+                                                                                <table>
+                                                                                    <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
+                                                                                    <?php if (!empty($includes)) { ?>
+                                                                                        <tr>
+                                                                                            <td>What’s included:</td>
+                                                                                            <td><?php echo $includes; ?></td>
+                                                                                        </tr>
+                                                                                    <?php } ?>
+                                                                                    <?php $options = get_carbon_field('options'); ?>
+                                                                                    <?php if (!empty($options)) { ?>
+                                                                                        <?php foreach ($options as $option) { ?>
+                                                                                            <?php if (!empty($option['option_key'])) { ?>
+                                                                                                <tr>
+                                                                                                    <td><?php echo $option['option_key']; ?>:</td>
+                                                                                                    <td><?php echo $option['option_value']; ?></td>
+                                                                                                </tr>
+                                                                                            <?php } ?>
+                                                                                        <?php } ?>
+                                                                                    <?php } ?>
+                                                                                </table>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 <?php } ?>
@@ -305,12 +324,31 @@ $category_data = get_category_data($product_parent);
                                                                         <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
                                                                     </div>
                                                                     <div class="tooltip__info">
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td>What’s included:</td>
-                                                                                <td><?php echo $includes; ?></td>
-                                                                            </tr>
-                                                                        </table>
+                                                                        <div class="tooltip__image">
+                                                                            <img src="<?php echo get_product_image($collection_product) ?>" alt="">
+                                                                        </div>
+                                                                        <div class="tooltip__body">
+                                                                            <table>
+                                                                                <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
+                                                                                <?php if (!empty($includes)) { ?>
+                                                                                    <tr>
+                                                                                        <td>What’s included:</td>
+                                                                                        <td><?php echo $includes; ?></td>
+                                                                                    </tr>
+                                                                                <?php } ?>
+                                                                                <?php $options = get_carbon_field('options'); ?>
+                                                                                <?php if (!empty($options)) { ?>
+                                                                                    <?php foreach ($options as $option) { ?>
+                                                                                        <?php if (!empty($option['option_key'])) { ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $option['option_key']; ?>:</td>
+                                                                                                <td><?php echo $option['option_value']; ?></td>
+                                                                                            </tr>
+                                                                                        <?php } ?>
+                                                                                    <?php } ?>
+                                                                                <?php } ?>
+                                                                            </table>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             <?php } ?>
