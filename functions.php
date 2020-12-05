@@ -1,11 +1,23 @@
 <?php
 add_theme_support('woocommerce');
 
-add_action('init', 'start_session', 1);
+add_action('init', 'start_session');
 function start_session() {
     if (!session_id()) {
         session_start();
     }
+}
+
+add_action('wp_loaded', 'close_session');
+function close_session() {
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_write_close();
+    }
+}
+
+add_action('admin_enqueue_scripts', 'admin_style');
+function admin_style() {
+    wp_enqueue_style('admin-styles', get_template_directory_uri(). '/styles/admin-custom.css');
 }
 
 add_action('carbon_fields_register_fields', 'register_custom_fields');
@@ -62,11 +74,11 @@ function get_product_attributes($product) {
 function get_product_image($product)
 {
     $product_id = $product->get_id();
-    $image = get_the_post_thumbnail_url($product_id);
+    $image = get_the_post_thumbnail_url($product_id, 'large');
     if (empty($image) && $product->get_parent_id() !== 0) {
-        $image = get_the_post_thumbnail_url($product->get_parent_id());
+        $image = get_the_post_thumbnail_url($product->get_parent_id(), 'large');
     }
-    return $image;
+    return $image ?? '';
 }
 
 function get_product_url($product)
@@ -229,7 +241,7 @@ function get_cart_total() {
     return false;
 }
 
-function add_to_cart($product_id, $quantity = 1, $variation_id = false, $variation = false, $item_data = []) {
+function add_to_cart($product_id, $quantity = 1, $variation_id = false, $item_data = []) {
     if (function_exists('WC')) {
         $cart = WC()->cart;
         $attributes = $item_data;
@@ -238,7 +250,12 @@ function add_to_cart($product_id, $quantity = 1, $variation_id = false, $variati
         if ($product_data['id'] !== $product_id) {
             $variation_id = $product_data['id'];
         }
-        return $cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $item_data);
+        if (!empty($item_data)) {
+            foreach ($item_data as $key => $datum) {
+                $variation['attribute_' . $key] = $datum;
+            }
+        }
+        return $cart->add_to_cart($product_id, $quantity, $variation_id, $variation ?? [], $item_data);
     }
     return false;
 }
@@ -268,10 +285,10 @@ function get_category_data($product) {
         $size_guide_img = carbon_get_term_meta(end($categories_ids), 'size_guide');
         $size_guide_mobile_img = carbon_get_term_meta(end($categories_ids), 'size_guide_mobile');
         if (!empty($size_guide_img)) {
-            $size_guide = wp_get_attachment_image_url($size_guide_img, 'large');
+            $size_guide = wp_get_attachment_image_url($size_guide_img, 'full');
         }
         if (!empty($size_guide_mobile_img)) {
-            $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'large');
+            $size_guide_mobile = wp_get_attachment_image_url($size_guide_mobile_img, 'full');
         }
         $term = get_term(end($categories_ids));
         if (!empty($term)) {
@@ -298,7 +315,7 @@ function cart_control() {
             switch ($action) {
                 case 'add':
                     if (isset($product_id)) {
-                        add_to_cart($product_id, $quantity, $variation_id ?? false, false, $data ?? false);
+                        add_to_cart($product_id, $quantity, $variation_id ?? false, $data ?? false);
                     }
                     break;
                 case 'quantity':
@@ -317,7 +334,7 @@ function cart_control() {
                             $cart = WC()->cart;
                             $item = $cart->get_cart_item($item_key);
                             if (isset($item['product_id'])) {
-                                $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, false, $data ?? false);
+                                $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, $data ?? false);
                                 if (!empty($new_item_key) && $item_key !== $new_item_key) {
                                     remove_from_cart($item_key);
                                 }

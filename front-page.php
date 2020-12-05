@@ -44,6 +44,7 @@
         </section>
             <?php $count = 0; ?>
             <?php foreach($categories->terms as $category) { ?>
+                <?php if ($category->slug === 'decoration') { continue; }; ?>
             <!-- Products -->
             <section class="section products <?php echo ($count % 2 === 0 ? '' : 'bg-gray'); ?>">
                 <div class="container">
@@ -51,7 +52,7 @@
                         <!-- Title -->
                         <h2 class="products__title section__title col"><?php echo $category->name; ?></h2>
                         <!-- Show more -->
-                        <a href="<?php echo get_term_link($category); ?>" class="products__more more-btn col hidden-sm">See all bed linen</a>
+                        <a href="<?php echo get_term_link($category); ?>" class="products__more more-btn col hidden-sm">See all <?php echo $category->name; ?></a>
                     </div>
                     <?php
                     $args = array(
