@@ -133,6 +133,7 @@ $category_data = get_category_data($product_parent);
                                                             <label class="checkbox pdp__collection-checkbox">
                                                                 <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
                                                                 <input class='checkbox__input' type="checkbox">
+                                                                <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
                                                                 <span class="checkbox__mark"></span>
                                                                 <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
                                                                 <?php if (!empty($includes)) { ?>
