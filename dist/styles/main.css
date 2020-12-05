@@ -3905,6 +3905,7 @@ a.active .products-subcat__name {
   position: relative;
   margin: auto;
   display: none;
+  overflow: hidden;
   max-width: 750px;
   width: 100%;
   border-radius: 15px;

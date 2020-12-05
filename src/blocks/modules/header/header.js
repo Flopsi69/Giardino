@@ -102,7 +102,7 @@ function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
           $(el).text( $(el).text().replace(/[\d\.]*/, price));
         }) 
 
-        if ($('.pdp__collection-options').length) {
+        if ($('.pdp-control .pdp__collection-row').length) {
           let totalPrice = 0;
           document.querySelectorAll('.pdp-control .pdp__collection-row').forEach(element => {
             if ($(element).find('.checkbox__input').is(':checked')) {

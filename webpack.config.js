@@ -14,7 +14,7 @@ module.exports = {
     ],
     
     entry: {
-        main: ['@babel/polyfill', './src/index.js'],
+        main: "./src/js/index.js",
     },
 
     output: {

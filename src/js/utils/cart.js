@@ -1,25 +1,47 @@
 
 // Add product
 $(document).on('click', '.btn-to-cart', function (e) {
+  const productParent = $(this).closest('.pdp__row');
+  console.log(productParent);
+  if (productParent.find('.pdp__collection-inner').length) {
+    productParent.find('.pdp__collection-inner').each((index, element) => {
+      if ($(element).find('.checkbox__input').is(':checked')) {
+        let ajaxData = prepareToAdd($(element))
+        updateAjax('add', ajaxData);
+      }
+    })
+  }
+  if (productParent.find('.pdp__options-product').length) {
+    let ajaxData = prepareToAdd($('.pdp__options-product'))
+    updateAjax('add', ajaxData);
+  }
+})
+
+function prepareToAdd(product) {
   const ajaxData = {};
-  const productTargetParent = $(this).closest('.pdp-control');
-  const productId = productTargetParent.find('input[name=product_id]').val();
+  const productId = $(product).find("input[name='product_id']").val();
   ajaxData["data[product_id]"] = productId;
-  if (productTargetParent.find('.pdp__size-select').length) {
-    const productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
+  if ($(product).find('.pdp__size-select').length) {
+    const productSizeEl = $(product).find('.pdp__size-select select')[0];
     const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
     const sizeValue = activeOption.value;
     ajaxData["data[pa_size]"] = sizeValue;
   }
 
-  if (productTargetParent.find('.pdp-look__color-list').length) {
-    checkColor(productTargetParent.find('.pdp-look__color-list'));
-    ajaxData["data[pa_color]"] = $('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+  if ($(product).find('.pdp-look__color-list').length) {
+    checkColor($(product).find('.pdp-look__color-list'));
+    ajaxData["data[pa_color]"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
   }
- 
-  console.log('ajaxData', ajaxData);
-  updateAjax('add', ajaxData);
-})
+
+  if ($(product).find('.towel-colors__list').length) {
+    checkColor($(product).find('.towel-colors__list'));
+    ajaxData["data[pa_color]"] = $(product).find('.towel-colors__item.active').data('value');
+  }
+
+  return ajaxData;
+}
+
+
 
 $(document).on('click', '.pdp-look__buy-btn', function (e) {
   const ajaxData = {}
@@ -38,15 +60,8 @@ $(document).on('click', '.pdp-look__buy-btn', function (e) {
     ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
   }
 
-  console.log('ajaxData', ajaxData);
   updateAjax('add', ajaxData);
 })
-
-
-function prepareToAdd() {
-  
-}
-
 
 
 // Remove product
@@ -124,10 +139,13 @@ $(document).on('click', '.cart__product .count__btn', function (e) {
 })
 
 function checkColor(parentEl) {
-  if (parentEl.find('.pdp-look__color-option.active').length) {
+  if (parentEl.find('.active').length) {
     return true;
+  } else if (parentEl.find('.pdp-look__color-option').length) {
+    parentEl.find('.pdp-look__color-option').first().addClass('active');
+  } else if (parentEl.find('.towel-colors__item').length) {
+    parentEl.find('.towel-colors__item').first().addClass('active');
   }
-  parentEl.find('.pdp-look__color-option').first().addClass('active');
 }
 
 function updateAjax(action, ajaxData, cb) {

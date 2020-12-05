@@ -74,47 +74,49 @@ $category_data = get_category_data($product_parent);
                         <?php } ?>
 
                         <div class="pdp__options">
-                            <?php $colors = get_product_variation_colors($product); ?>
-                            <?php if (!empty($colors)) { ?>
-                                <div class="pdp__color pdp-look__color pdp__option">
-                                    <div class="pdp-look__caption">Color:</div>
-                                    <div class="pdp-look__color-list text-center">
-                                        <?php foreach ($colors as $color) { ?>
-                                            <div class="pdp-look__color-option <?php echo (reset($colors) === $color ? 'active' : ''); ?>">
-                                                <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
-                                                <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                            <input type="hidden" name="product_id" value="<?php echo $product_parent->get_id(); ?>">
-                            <?php $attributes = get_product_attributes($product); ?>
-                            <?php if (!empty($attributes)) { ?>
-                                <?php foreach ($attributes as $att_key => $attribute) { ?>
-                                    <div class="pdp__size pdp__option">
-                                        <div class="pdp-look__caption"><?php echo $attribute['name']; ?>:</div>
-                                        <div class="pdp-look__size-list pdp__size-list">
-                                            <?php if (!empty($attribute['options'])) { ?>
-                                                <div class="pdp__size-select select">
-                                                    <select>
-                                                        <?php foreach ($attribute['options'] as $slug => $option) { ?>
-                                                            <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
-                                                        <?php } ?>
-                                                    </select>
+                            <div class="pdp__options-product">
+                                <input type="hidden" name="product_id" value="<?php echo $product_parent->get_id(); ?>">
+                                <?php $colors = get_product_variation_colors($product); ?>
+                                <?php if (!empty($colors)) { ?>
+                                    <div class="pdp__color pdp-look__color pdp__option">
+                                        <div class="pdp-look__caption">Color:</div>
+                                        <div class="pdp-look__color-list text-center">
+                                            <?php foreach ($colors as $color) { ?>
+                                                <div class="pdp-look__color-option <?php echo (reset($colors) === $color ? 'active' : ''); ?>">
+                                                    <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
+                                                    <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
                                                 </div>
                                             <?php } ?>
-                                            <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
-                                                <div data-image="<?php echo $category_data['size_guide']; ?>" data-mobile="<?php echo $category_data['size_guide_mobile']; ?>" class="pdp__guide">Size guide</div>
-                                            <?php } ?>
-                                            <div class="pdp-measure">
-                                                <div class="pdp-measure__btn active">cm</div>
-                                                <div class="pdp-measure__btn">inc</div>
-                                            </div>
                                         </div>
                                     </div>
                                 <?php } ?>
-                            <?php } ?>
+                                <?php $attributes = get_product_attributes($product); ?>
+                                <?php if (!empty($attributes)) { ?>
+                                    <?php foreach ($attributes as $att_key => $attribute) { ?>
+                                        <div class="pdp__size pdp__option">
+                                            <div class="pdp-look__caption"><?php echo $attribute['name']; ?>:</div>
+                                            <div class="pdp-look__size-list pdp__size-list">
+                                                <?php if (!empty($attribute['options'])) { ?>
+                                                    <div class="pdp__size-select select">
+                                                        <select>
+                                                            <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                <?php } ?>
+                                                <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
+                                                    <div data-image="<?php echo $category_data['size_guide']; ?>" data-mobile="<?php echo $category_data['size_guide_mobile']; ?>" class="pdp__guide">Size guide</div>
+                                                <?php } ?>
+                                                <div class="pdp-measure">
+                                                    <div class="pdp-measure__btn active">cm</div>
+                                                    <div class="pdp-measure__btn">inc</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                <?php } ?>
+                            </div>
                             <?php $collections = get_product_collections($product); ?>
                             <?php if (!empty($collections)) { ?>
                                 <?php foreach ($collections as $collection) { ?>
@@ -128,7 +130,7 @@ $category_data = get_category_data($product_parent);
                                             <div class="pdp__collection-body pdp__option" style='display: none;'>
                                                 <?php foreach ($collection_products as $collection_product) { ?>
                                                     <?php $category_data = get_category_data($product); ?>
-                                                    <div class="pdp__collection">
+                                                    <div class="pdp__collection-inner">
                                                         <div class="pdp__collection-row">
                                                             <label class="checkbox pdp__collection-checkbox">
                                                                 <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
