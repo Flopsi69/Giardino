@@ -129,7 +129,7 @@ $category_data = get_category_data($product_parent);
 
                                             <div class="pdp__collection-body pdp__option" style='display: none;'>
                                                 <?php foreach ($collection_products as $collection_product) { ?>
-                                                    <?php $category_data = get_category_data($product); ?>
+                                                    <?php $category_data = get_category_data($collection_product); ?>
                                                     <div class="pdp__collection-inner">
                                                         <div class="pdp__collection-row">
                                                             <label class="checkbox pdp__collection-checkbox">

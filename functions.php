@@ -303,45 +303,52 @@ function cart_control() {
         $quantity = 1;
         $action = filter_var($_POST['action'], FILTER_SANITIZE_STRING);
         if (!empty($_POST['data'])) {
-            foreach ($_POST['data'] as $key => $value) {
-                if ($key === 'product_id' || $key === 'item_key' || $key === 'quantity' || $key === 'variation_id') {
-                    ${$key} = filter_var($value, FILTER_SANITIZE_STRING);
-                } else {
-                    $data[filter_var($key, FILTER_SANITIZE_STRING)] = filter_var($value, FILTER_SANITIZE_STRING);
-                }
+            if (array_keys($_POST['data']) !== range(0, count($_POST['data']) - 1)) {
+                $postData[] = $_POST['data'];
+            } else {
+                $postData = $_POST['data'];
             }
-        }
-        if (isset($action)) {
-            switch ($action) {
-                case 'add':
-                    if (isset($product_id)) {
-                        add_to_cart($product_id, $quantity, $variation_id ?? false, $data ?? false);
+            foreach ($postData as $postDatum) {
+                foreach ($postDatum as $key => $value) {
+                    if ($key === 'product_id' || $key === 'item_key' || $key === 'quantity' || $key === 'variation_id') {
+                        ${$key} = filter_var($value, FILTER_SANITIZE_STRING);
+                    } else {
+                        $data[filter_var($key, FILTER_SANITIZE_STRING)] = filter_var($value, FILTER_SANITIZE_STRING);
                     }
-                    break;
-                case 'quantity':
-                    if (isset($item_key)) {
-                        change_item_cart_quantity($item_key, $quantity);
-                    }
-                    break;
-                case 'remove':
-                    if (isset($item_key)) {
-                        remove_from_cart($item_key);
-                    }
-                    break;
-                case 'change':
-                    if (isset($item_key)) {
-                        if (function_exists('WC')) {
-                            $cart = WC()->cart;
-                            $item = $cart->get_cart_item($item_key);
-                            if (isset($item['product_id'])) {
-                                $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, $data ?? false);
-                                if (!empty($new_item_key) && $item_key !== $new_item_key) {
-                                    remove_from_cart($item_key);
+                }
+                if (isset($action)) {
+                    switch ($action) {
+                        case 'add':
+                            if (isset($product_id)) {
+                                add_to_cart($product_id, $quantity, $variation_id ?? false, $data ?? false);
+                            }
+                            break;
+                        case 'quantity':
+                            if (isset($item_key)) {
+                                change_item_cart_quantity($item_key, $quantity);
+                            }
+                            break;
+                        case 'remove':
+                            if (isset($item_key)) {
+                                remove_from_cart($item_key);
+                            }
+                            break;
+                        case 'change':
+                            if (isset($item_key)) {
+                                if (function_exists('WC')) {
+                                    $cart = WC()->cart;
+                                    $item = $cart->get_cart_item($item_key);
+                                    if (isset($item['product_id'])) {
+                                        $new_item_key = add_to_cart($item['product_id'], $quantity, $variation_id ?? false, $data ?? false);
+                                        if (!empty($new_item_key) && $item_key !== $new_item_key) {
+                                            remove_from_cart($item_key);
+                                        }
+                                    }
                                 }
                             }
-                        }
+                            break;
                     }
-                    break;
+                }
             }
         }
     }
