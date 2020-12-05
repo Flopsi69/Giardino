@@ -4,12 +4,13 @@ $(document).on('click', '.btn-to-cart', function (e) {
   const productParent = $(this).closest('.pdp__row');
   console.log(productParent);
   if (productParent.find('.pdp__collection-inner').length) {
+    let ajaxData = [];
     productParent.find('.pdp__collection-inner').each((index, element) => {
       if ($(element).find('.checkbox__input').is(':checked')) {
-        let ajaxData = prepareToAdd($(element))
-        updateAjax('add', ajaxData);
+        ajaxData.push(prepareToAdd($(element), true));
       }
     })
+    updateAjax('add', ajaxData);
   }
   if (productParent.find('.pdp__options-product').length) {
     let ajaxData = prepareToAdd($('.pdp__options-product'))
@@ -17,25 +18,42 @@ $(document).on('click', '.btn-to-cart', function (e) {
   }
 })
 
-function prepareToAdd(product) {
+function prepareToAdd(product, isArray) {
   const ajaxData = {};
   const productId = $(product).find("input[name='product_id']").val();
+  if (isArray) {
+  ajaxData["product_id"] = productId;
+  } else {
   ajaxData["data[product_id]"] = productId;
+  }
   if ($(product).find('.pdp__size-select').length) {
     const productSizeEl = $(product).find('.pdp__size-select select')[0];
     const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
     const sizeValue = activeOption.value;
-    ajaxData["data[pa_size]"] = sizeValue;
+    if (isArray) {
+      ajaxData["pa_size"] = sizeValue;
+    } else {
+      ajaxData["data[pa_size]"] = sizeValue;
+    }
   }
 
   if ($(product).find('.pdp-look__color-list').length) {
     checkColor($(product).find('.pdp-look__color-list'));
-    ajaxData["data[pa_color]"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+    if (isArray) {
+      ajaxData["pa_color"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+    } else {
+      ajaxData["data[pa_color]"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+    }
   }
 
   if ($(product).find('.towel-colors__list').length) {
     checkColor($(product).find('.towel-colors__list'));
-    ajaxData["data[pa_color]"] = $(product).find('.towel-colors__item.active').data('value');
+    if (isArray) {
+      ajaxData["pa_color"] = $(product).find('.towel-colors__item.active').data('value');
+    } else {
+      ajaxData["data[pa_color]"] = $(product).find('.towel-colors__item.active').data('value');
+    }
+   
   }
 
   return ajaxData;
@@ -149,7 +167,17 @@ function checkColor(parentEl) {
 }
 
 function updateAjax(action, ajaxData, cb) {
-  ajaxData.action = action;
+  if (Array.isArray(ajaxData)) {
+    ajaxData = {
+      "data": ajaxData,
+      "action": action
+    }
+  } else {
+    ajaxData.action = action;
+  }
+
+  // ajaxData.push(action);
+
   if (action == 'add') {
     let basketNum = $('.header__basket .basket-quantity');
     if (basketNum.text().trim()) {
@@ -170,6 +198,7 @@ function updateAjax(action, ajaxData, cb) {
     "headers": {
       "Content-Type": "application/x-www-form-urlencoded"
     },
+    
     "data": ajaxData
   };
   $.ajax(settingsAjaxCart).done(function (response) {

@@ -269,12 +269,11 @@ $(document).on('click', '.pdp-control .select__items div, .pdp__collection-check
 });
 $(document).on('click', '.pdp__collection-checkbox', function () {});
 $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn', function () {
-  var sizeValue = $(this).data('value');
   var productEl = $(this).closest('.pdp-look');
+  var sizeValue = productEl.find('.pdp-look__size-option.active').data('value');
   var productId = productEl.find("input[name='product_id']").val();
   var priceEl = productEl.find('.pdp-look__buy-price');
   var quantity = productEl.find('.count__value').val();
-  console.log(quantity);
   updatePrice(productId, sizeValue, priceEl, quantity);
 });
 
@@ -622,40 +621,62 @@ $(document).on('click', '.btn-to-cart', function (e) {
   console.log(productParent);
 
   if (productParent.find('.pdp__collection-inner').length) {
+    var ajaxData = [];
     productParent.find('.pdp__collection-inner').each(function (index, element) {
       if ($(element).find('.checkbox__input').is(':checked')) {
-        var ajaxData = prepareToAdd($(element));
-        updateAjax('add', ajaxData);
+        ajaxData.push(prepareToAdd($(element), true));
       }
     });
+    updateAjax('add', ajaxData);
   }
 
   if (productParent.find('.pdp__options-product').length) {
-    var ajaxData = prepareToAdd($('.pdp__options-product'));
-    updateAjax('add', ajaxData);
+    var _ajaxData = prepareToAdd($('.pdp__options-product'));
+
+    updateAjax('add', _ajaxData);
   }
 });
 
-function prepareToAdd(product) {
+function prepareToAdd(product, isArray) {
   var ajaxData = {};
   var productId = $(product).find("input[name='product_id']").val();
-  ajaxData["data[product_id]"] = productId;
+
+  if (isArray) {
+    ajaxData["product_id"] = productId;
+  } else {
+    ajaxData["data[product_id]"] = productId;
+  }
 
   if ($(product).find('.pdp__size-select').length) {
     var productSizeEl = $(product).find('.pdp__size-select select')[0];
     var activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
     var sizeValue = activeOption.value;
-    ajaxData["data[pa_size]"] = sizeValue;
+
+    if (isArray) {
+      ajaxData["pa_size"] = sizeValue;
+    } else {
+      ajaxData["data[pa_size]"] = sizeValue;
+    }
   }
 
   if ($(product).find('.pdp-look__color-list').length) {
     checkColor($(product).find('.pdp-look__color-list'));
-    ajaxData["data[pa_color]"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+
+    if (isArray) {
+      ajaxData["pa_color"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+    } else {
+      ajaxData["data[pa_color]"] = $(product).find('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+    }
   }
 
   if ($(product).find('.towel-colors__list').length) {
     checkColor($(product).find('.towel-colors__list'));
-    ajaxData["data[pa_color]"] = $(product).find('.towel-colors__item.active').data('value');
+
+    if (isArray) {
+      ajaxData["pa_color"] = $(product).find('.towel-colors__item.active').data('value');
+    } else {
+      ajaxData["data[pa_color]"] = $(product).find('.towel-colors__item.active').data('value');
+    }
   }
 
   return ajaxData;
@@ -768,7 +789,15 @@ function checkColor(parentEl) {
 }
 
 function updateAjax(action, ajaxData, cb) {
-  ajaxData.action = action;
+  if (Array.isArray(ajaxData)) {
+    ajaxData = {
+      "data": ajaxData,
+      "action": action
+    };
+  } else {
+    ajaxData.action = action;
+  } // ajaxData.push(action);
+
 
   if (action == 'add') {
     var basketNum = $('.header__basket .basket-quantity');
@@ -910,19 +939,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.initSelect = function (initArea) {
-  console.log('init select');
   var x, i, j, l, ll, selElmnt, a, b, c;
   /* Look for any elements with the class "custom-select": */
 
   if (initArea) {
-    console.log(initArea);
     x = initArea.querySelectorAll(".select");
   } else {
-    console.log('document');
     x = document.getElementsByClassName("select");
   }
 
-  console.log(x);
   l = x.length;
 
   for (i = 0; i < l; i++) {

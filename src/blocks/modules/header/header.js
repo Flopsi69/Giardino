@@ -78,13 +78,12 @@ $(document).on('click', '.pdp__collection-checkbox', function () {
 })
 
 $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn', function () {
-  const sizeValue = $(this).data('value');
   const productEl = $(this).closest('.pdp-look');
+  const sizeValue = productEl.find('.pdp-look__size-option.active').data('value');
   const productId = productEl.find("input[name='product_id']").val();
   const priceEl = productEl.find('.pdp-look__buy-price');
   const quantity = productEl.find('.count__value').val();
-  console.log(quantity);
-    updatePrice(productId, sizeValue, priceEl, quantity);
+  updatePrice(productId, sizeValue, priceEl, quantity);
 })
 
 

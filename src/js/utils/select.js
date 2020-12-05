@@ -1,17 +1,13 @@
 import $ from "jquery";
 
 window.initSelect = function (initArea) {
-  console.log('init select');
   var x, i, j, l, ll, selElmnt, a, b, c;
 /* Look for any elements with the class "custom-select": */
   if (initArea) {
-    console.log(initArea);
     x = initArea.querySelectorAll(".select");
   } else {
-    console.log('document');
     x = document.getElementsByClassName("select");
   }
-  console.log(x);
   l = x.length;
   for (i = 0; i < l; i++) {
     selElmnt = x[i].getElementsByTagName("select")[0];
