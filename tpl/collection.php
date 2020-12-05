@@ -147,7 +147,7 @@ $product_parent = $product;
                                         <?php if (!empty($colors)) { ?>
                                             <div class="towel-colors">
                                                 <div class="towel-colors__caption">
-                                                   <?php echo $category_data['category_name']; ?> color: <span><?php echo reset($colors)['name']; ?></span>
+                                                    <?php echo $category_data['category_name']; ?> color: <span><?php echo reset($colors)['name']; ?></span>
                                                 </div>
                                                 <div class="towel-colors__list">
                                                     <?php foreach ($colors as $variation_id => $color) { ?>
@@ -184,16 +184,24 @@ $product_parent = $product;
                         <!-- Tabs Nav -->
                         <div class="pdp-tabs__nav flex">
                             <div class="pdp-tabs__nav-item pdp-subtitle active" data-tab-target='1'>Description</div>
-                            <div class="pdp-tabs__nav-item pdp-subtitle" data-tab-target='2'>Care guide</div>
+                            <?php
+                            $care_guide = get_carbon_field('care_guide');
+                            if (!empty($care_guide)) {
+                            ?>
+                                <div class="pdp-tabs__nav-item pdp-subtitle" data-tab-target='2'>Care guide</div>
+                            <?php } ?>
+
                         </div>
                         <!-- Tabs body -->
                         <div class="pdp-tabs__body">
                             <div class="pdp-tabs__tab pdp-text active" data-tab='1' style='display: block;'>
                                 <?php the_content(); ?>
                             </div>
-                            <div class="pdp-tabs__tab pdp-text" data-tab='2'>
-                                <?php echo get_carbon_field('care_guide'); ?>
-                            </div>
+                            <?php if (!empty($care_guide)) { ?>
+                                <div class="pdp-tabs__tab pdp-text" data-tab='2'>
+                                    <?php echo get_carbon_field('care_guide'); ?>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>

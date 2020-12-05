@@ -7,13 +7,16 @@ import "../../../js/utils/cart";
 import "../../../js/utils/measure";
 
 $(".nav__list-item").hover(function () {
-  console.log('hover', $(this));
   $(this).addClass('nav-item-hover');
 }, function () {
     setTimeout(() => {
       $(this).removeClass('nav-item-hover');
-    }, 200);
+    }, 500);
 })
+
+if ($('.pdp__collection-options').length) {
+  $('.pdp__price').text($('.pdp__price').text().replace(/[\d\.]*/, 0));
+}
 
 // Utils  **START**
 // Count
@@ -39,17 +42,6 @@ $(".tooltip").on("click", function (e) {
   $(this).toggleClass("active");
 });
 // Utils **END**
-
-$(document).on('click', '.pdp-control .select__items div', function () {
-  const selectOptionsObj = $(this).parent().siblings('select')[0];
-  const activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
-  const sizeValue = activeOption.value;
-  const productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
-  const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
-  
-  updatePrice(productId, sizeValue, priceEl);
-})
-
 // Size options
 $(document).on("click", ".pdp-look__size-option", function () {
   $(this).addClass("active").siblings(".active").removeClass("active");
@@ -59,6 +51,31 @@ $(document).on("click", ".pdp-look__size-option", function () {
 $(document).on("click", ".pdp-look__color-option", function () {
   $(this).addClass("active").siblings(".active").removeClass("active");
 });
+
+$(document).on('click', '.pdp-control .select__items div, .pdp__collection-checkbox', function () {
+  let selectOptionsObj;
+  if ($(this).hasClass('pdp__collection-checkbox')) {
+    selectOptionsObj = $(this).siblings('.select').find('select')[0];
+  } else {
+    selectOptionsObj = $(this).parent().siblings('select')[0];
+  }
+  const activeOption = selectOptionsObj.querySelectorAll('option')[selectOptionsObj.options.selectedIndex];
+  const sizeValue = activeOption.value;
+  let productId;
+  if ($(this).closest('.pdp__collection-row').length) {
+    productId = $(this).closest('.pdp__collection-row').find("input[name='product_id']").val();
+    const priceEl = $(this).closest('.pdp__collection-row').find('.pdp__collection-price');
+    updatePrice(productId, sizeValue, priceEl);
+  } else {
+    productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
+    const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
+    updatePrice(productId, sizeValue, priceEl);
+  }
+})
+
+$(document).on('click', '.pdp__collection-checkbox', function () {
+
+})
 
 $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn', function () {
   const sizeValue = $(this).data('value');
@@ -70,16 +87,10 @@ $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn
     updatePrice(productId, sizeValue, priceEl, quantity);
 })
 
-// $(document).on('click', '.pdp-look .count__btn', function () {
-//   const sizeValue = $(this).data('value');
-//   const productEl = $(this).closest('.pdp-look');
-//   const productId = productEl.find("input[name='product_id']").val();
-//   const priceEl = productEl.find('.pdp-look__buy-price');
-//   updatePrice(productId, sizeValue, priceEl,);
-// })
-
 
 function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
+  console.log('update price');
+
   const productInfo = async() => {
     try {
       const url = `/wp-json/giardino/product/?id=${productId}&pa_size=${sizeValue}`;
@@ -90,6 +101,16 @@ function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
           let price = quantity == 1 ? data.price : data.price * quantity;
           $(el).text( $(el).text().replace(/[\d\.]*/, price));
         }) 
+
+        if ($('.pdp__collection-options').length) {
+          let totalPrice = 0;
+          document.querySelectorAll('.pdp-control .pdp__collection-row').forEach(element => {
+            if ($(element).find('.checkbox__input').is(':checked')) {
+              totalPrice += parseFloat($(element).find('.pdp__collection-price').text());
+            }
+          });
+          $('.pdp__price').text($('.pdp__price').text().replace(/[\d\.]*/, totalPrice));
+        }
       }
      } catch (e) {
        console.log(e)
@@ -226,7 +247,7 @@ function toggleStep(stepEL, toggleNav = false) {
 // Same products
 $(".products-slider__list").slick({
   slidesToShow: 4,
-  slidesToScroll: 2,
+  slidesToScroll: 1,
   autoplay: true,
   dots: true,
   responsive: [
@@ -234,7 +255,7 @@ $(".products-slider__list").slick({
       breakpoint: 992,
       settings: {
         slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToScroll: 1,
         infinite: true,
         dots: true,
       },

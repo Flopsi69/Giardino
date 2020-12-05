@@ -1971,7 +1971,7 @@ a.active .products-subcat__name {
   font-size: 17px;
   font-weight: 700;
   color: #1b1726;
-  margin: 12px 0 6px;
+  margin: 12px 0 2px;
   text-transform: uppercase;
   line-height: 20px;
   white-space: nowrap;
@@ -1996,7 +1996,7 @@ a.active .products-subcat__name {
 .product__price {
   font-size: 26px;
   color: #0b2358;
-  margin-top: 12px;
+  margin-top: 0;
 }
 
 .products-page {
@@ -2652,7 +2652,7 @@ a.active .products-subcat__name {
 }
 
 .pdp__collection-checkbox {
-  width: 130px;
+  width: 150px;
   display: flex;
   align-items: end;
 }
@@ -4194,10 +4194,6 @@ a.active .products-subcat__name {
 
   .products-page__item .product__preview img {
     height: 30vw;
-  }
-
-  .product__price {
-    margin-top: 6px;
   }
 
   .pdp-look__preview img {

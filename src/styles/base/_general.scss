@@ -1480,7 +1480,7 @@ ul.page-numbers {
     font-size: 17px;
     font-weight: 700;
     color: #1b1726;
-    margin: 12px 0 6px;
+    margin: 12px 0 2px;
     text-transform: uppercase;
     line-height: 20px;
     white-space: nowrap;
@@ -1516,12 +1516,9 @@ ul.page-numbers {
   &__price {
     font-size: 26px;
     color: $blue;
-    margin-top: 12px;
+    margin-top: 0;
     @include lg-block {
       font-size: 20px;
-    }
-    @include md-block {
-      margin-top: 6px;
     }
   }
 }
@@ -2318,7 +2315,7 @@ ul.page-numbers {
       }
     }
     &-checkbox {
-      width: 130px;
+      width: 150px;
       display: flex;
       align-items: end;
       @include sm-block {

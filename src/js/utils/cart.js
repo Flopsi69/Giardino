@@ -1,41 +1,51 @@
 
 // Add product
-$(document).on('click', '.btn-to-cart, .pdp-look__buy-btn', function (e) {
-  let ajaxData = {}
-  let productTargetParent = $(this).closest('.pdp-control');
-  if (productTargetParent.length) {
-    const productId = productTargetParent.find('input[name=product_id]').val();
-    ajaxData["data[product_id]"] = productId;
-    if (productTargetParent.find('.pdp__size-select').length) {
-      const productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
-      const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
-      const sizeValue = activeOption.value;
-      ajaxData["data[pa_size]"] = sizeValue;
-    }
-
-    if (productTargetParent.find('.pdp-look__color-list').length) {
-      checkColor(productTargetParent.find('.pdp-look__color-list'));
-      ajaxData["data[pa_color]"] = $('.pdp-look__color-option.active .pdp-look__color-name').data('value');
-    }
-  } else {
-    let productTargetParent = $(this).closest('.pdp-look');
-    const productId = productTargetParent.find('input[name=product_id]').val();
-    ajaxData["data[product_id]"] = productId;
-    if (productTargetParent.find('.pdp-look__size-option.active').length) {
-      ajaxData["data[pa_size]"] = productTargetParent.find('.pdp-look__size-option.active').data('value')
-    }
-
-    if (productTargetParent.find('.count__value').length) {
-      ajaxData["data[quantity]"] = productTargetParent.find('.count__value').val();
-    }
-
-    if (productTargetParent.find('.towel-colors__item.active').length) {
-      ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
-    }
+$(document).on('click', '.btn-to-cart', function (e) {
+  const ajaxData = {};
+  const productTargetParent = $(this).closest('.pdp-control');
+  const productId = productTargetParent.find('input[name=product_id]').val();
+  ajaxData["data[product_id]"] = productId;
+  if (productTargetParent.find('.pdp__size-select').length) {
+    const productSizeEl = productTargetParent.find('.pdp__size-select select')[0];
+    const activeOption = productSizeEl.querySelectorAll('option')[productSizeEl.options.selectedIndex];
+    const sizeValue = activeOption.value;
+    ajaxData["data[pa_size]"] = sizeValue;
   }
+
+  if (productTargetParent.find('.pdp-look__color-list').length) {
+    checkColor(productTargetParent.find('.pdp-look__color-list'));
+    ajaxData["data[pa_color]"] = $('.pdp-look__color-option.active .pdp-look__color-name').data('value');
+  }
+ 
   console.log('ajaxData', ajaxData);
   updateAjax('add', ajaxData);
 })
+
+$(document).on('click', '.pdp-look__buy-btn', function (e) {
+  const ajaxData = {}
+  const productTargetParent = $(this).closest('.pdp-look');
+  const productId = productTargetParent.find('input[name=product_id]').val();
+  ajaxData["data[product_id]"] = productId;
+  if (productTargetParent.find('.pdp-look__size-option.active').length) {
+    ajaxData["data[pa_size]"] = productTargetParent.find('.pdp-look__size-option.active').data('value')
+  }
+
+  if (productTargetParent.find('.count__value').length) {
+    ajaxData["data[quantity]"] = productTargetParent.find('.count__value').val();
+  }
+
+  if (productTargetParent.find('.towel-colors__item.active').length) {
+    ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
+  }
+
+  console.log('ajaxData', ajaxData);
+  updateAjax('add', ajaxData);
+})
+
+
+function prepareToAdd() {
+  
+}
 
 
 
