@@ -323,11 +323,11 @@ function updatePrice(productId, sizeValue, priceEl) {
                 totalPrice = 0;
 
                 if ($('.pdp-control .pdp__options-product').length) {
-                  if ($('.pdp__price').data('main-price')) {
-                    totalPrice = parseFloat($('.pdp__price').attr('data-main-price'));
-                  } else {
-                    totalPrice = parseFloat($('.pdp__price').text());
+                  if ($('.pdp__price').attr('data-main-price')) {} else {
+                    $('.pdp__price').attr('data-main-price', parseFloat($('.pdp__price').text()));
                   }
+
+                  totalPrice = parseFloat($('.pdp__price').attr('data-main-price'));
                 }
 
                 document.querySelectorAll('.pdp-control .pdp__collection-row').forEach(function (element) {
