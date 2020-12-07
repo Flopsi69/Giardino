@@ -260,14 +260,15 @@ $(document).on('click', '.pdp-control .select__items div, .pdp__collection-check
     var priceEl = $(this).closest('.pdp__collection-row').find('.pdp__collection-price');
     updatePrice(productId, sizeValue, priceEl);
   } else {
-    productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
+    productId = $(this).closest('.pdp__options-product').find("input[name='product_id']").val();
 
     var _priceEl = $(this).closest('.pdp-control').find('.pdp__price');
 
     updatePrice(productId, sizeValue, _priceEl);
   }
-});
-$(document).on('click', '.pdp__collection-checkbox', function () {});
+}); // $(document).on('click', '.pdp__collection-checkbox', function () {
+// })
+
 $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn', function () {
   var productEl = $(this).closest('.pdp-look');
   var sizeValue = productEl.find('.pdp-look__size-option.active').data('value');
@@ -279,6 +280,7 @@ $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn
 
 function updatePrice(productId, sizeValue, priceEl) {
   var quantity = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+  console.log('--------------');
   console.log('update price');
 
   var productInfo = /*#__PURE__*/function () {
@@ -301,37 +303,56 @@ function updatePrice(productId, sizeValue, priceEl) {
             case 7:
               data = _context.sent;
 
-              if (data.price) {
-                priceEl.each(function (index, el) {
-                  var price = quantity == 1 ? data.price : data.price * quantity;
-                  $(el).text($(el).text().replace(/[\d\.]*/, price));
-                });
-
-                if ($('.pdp-control .pdp__collection-row').length) {
-                  totalPrice = 0;
-                  document.querySelectorAll('.pdp-control .pdp__collection-row').forEach(function (element) {
-                    if ($(element).find('.checkbox__input').is(':checked')) {
-                      totalPrice += parseFloat($(element).find('.pdp__collection-price').text());
-                    }
-                  });
-                  $('.pdp__price').text($('.pdp__price').text().replace(/[\d\.]*/, totalPrice));
-                }
+              if (!data.price) {
+                _context.next = 12;
+                break;
               }
 
-              _context.next = 14;
-              break;
+              _context.next = 11;
+              return priceEl.each(function (index, el) {
+                var price = quantity == 1 ? data.price : data.price * quantity;
+                $(el).text($(el).text().replace(/[\d\.]*/, price));
+
+                if ($(el).hasClass('pdp__price')) {
+                  $(el).attr("data-main-price", price);
+                }
+              });
 
             case 11:
-              _context.prev = 11;
+              if ($('.pdp-control .pdp__collection-inner').length) {
+                totalPrice = 0;
+
+                if ($('.pdp-control .pdp__options-product').length) {
+                  if ($('.pdp__price').data('main-price')) {
+                    totalPrice = parseFloat($('.pdp__price').attr('data-main-price'));
+                  } else {
+                    totalPrice = parseFloat($('.pdp__price').text());
+                  }
+                }
+
+                document.querySelectorAll('.pdp-control .pdp__collection-row').forEach(function (element) {
+                  if ($(element).find('.checkbox__input').is(':checked')) {
+                    totalPrice += parseFloat($(element).find('.pdp__collection-price').text());
+                  }
+                });
+                $('.pdp__price').text($('.pdp__price').text().replace(/[\d\.]*/, totalPrice));
+              }
+
+            case 12:
+              _context.next = 17;
+              break;
+
+            case 14:
+              _context.prev = 14;
               _context.t0 = _context["catch"](0);
               console.log(_context.t0);
 
-            case 14:
+            case 17:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 11]]);
+      }, _callee, null, [[0, 14]]);
     }));
 
     return function productInfo() {
@@ -627,10 +648,13 @@ $(document).on('click', '.btn-to-cart', function (e) {
         ajaxData.push(prepareToAdd($(element), true));
       }
     });
-    updateAjax('add', ajaxData);
-  }
 
-  if (productParent.find('.pdp__options-product').length) {
+    if ($('.pdp__options-product').length) {
+      ajaxData.push(prepareToAdd($('.pdp__options-product'), true));
+    }
+
+    updateAjax('add', ajaxData);
+  } else {
     var _ajaxData = prepareToAdd($('.pdp__options-product'));
 
     updateAjax('add', _ajaxData);
@@ -799,22 +823,6 @@ function updateAjax(action, ajaxData, cb) {
   } // ajaxData.push(action);
 
 
-  if (action == 'add') {
-    var basketNum = $('.header__basket .basket-quantity');
-
-    if (basketNum.text().trim()) {
-      basketNum.html(parseInt(basketNum.text()) + 1);
-    } else {
-      basketNum.html('1');
-    }
-  }
-
-  if (action == 'remove') {
-    var _basketNum = $('.header__basket .basket-quantity');
-
-    _basketNum.text(parseInt(_basketNum.text()) - 1);
-  }
-
   console.log('ajaxData', ajaxData);
   var settingsAjaxCart = {
     "url": location.origin,
@@ -828,6 +836,11 @@ function updateAjax(action, ajaxData, cb) {
   $.ajax(settingsAjaxCart).done(function (response) {
     var parser = new DOMParser();
     var htmlDoc = parser.parseFromString(response, 'text/html');
+    $('.basket-quantity').remove();
+
+    if ($(htmlDoc).find('.basket-quantity').length) {
+      $('.header__basket').append($(htmlDoc).find('.basket-quantity'));
+    }
 
     if (cb) {
       cb($(htmlDoc));
@@ -1030,13 +1043,13 @@ function closeAllSelect(elmnt) {
     if (elmnt == y[i]) {
       arrNo.push(i);
     } else {
-      y[i].classList.remove("select-arrow-active");
+      y[i].classList.remove("active");
     }
   }
 
   for (i = 0; i < xl; i++) {
     if (arrNo.indexOf(i)) {
-      x[i].classList.add("select_hide");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(x[i]).slideUp();
     }
   }
 }

@@ -221,11 +221,12 @@
                 <!-- Basket -->
                 <a href="#" class="header__basket col">
                     <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-basket.svg" alt="">
-                    <span class="basket-quantity">
-                        <?php if (!empty($cart_items)) { ?>
+                    <?php if (!empty($cart_items)) { ?>
+                        <span class="basket-quantity">
                             <?php echo count($cart_items); ?>
-                        <?php } ?>
-                    </span>
+                        </span>
+                    <?php } ?>
+
                     <!-- <img src="<?php print get_theme_file_uri(); ?>/img/icon-basket.png" alt=""> -->
                 </a>
             </div>

@@ -3519,8 +3519,25 @@ a.active .products-subcat__name {
 }
 
 .header__basket {
+  position: relative;
   text-align: right;
   width: calc(16.66667% - 1.875rem);
+}
+
+.header__basket span {
+  position: absolute;
+  right: -12px;
+  top: 13px;
+  background: #0b2358;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 10px;
+  font-size: 12px;
+  min-width: 25px;
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 2px 5px;
 }
 
 .header__basket:hover img {

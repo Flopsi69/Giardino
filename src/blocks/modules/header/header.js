@@ -67,15 +67,15 @@ $(document).on('click', '.pdp-control .select__items div, .pdp__collection-check
     const priceEl = $(this).closest('.pdp__collection-row').find('.pdp__collection-price');
     updatePrice(productId, sizeValue, priceEl);
   } else {
-    productId = $(this).closest('.pdp__options').find("input[name='product_id']").val();
+    productId = $(this).closest('.pdp__options-product').find("input[name='product_id']").val();
     const priceEl = $(this).closest('.pdp-control').find('.pdp__price');
     updatePrice(productId, sizeValue, priceEl);
   }
 })
 
-$(document).on('click', '.pdp__collection-checkbox', function () {
+// $(document).on('click', '.pdp__collection-checkbox', function () {
 
-})
+// })
 
 $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn', function () {
   const productEl = $(this).closest('.pdp-look');
@@ -85,9 +85,9 @@ $(document).on('click', '.pdp-look .pdp-look__size-option, .pdp-look .count__btn
   const quantity = productEl.find('.count__value').val();
   updatePrice(productId, sizeValue, priceEl, quantity);
 })
-
-
 function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
+  console.log('--------------');
+
   console.log('update price');
 
   const productInfo = async() => {
@@ -96,13 +96,24 @@ function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
       const res = await fetch(url);
       const data = await res.json()
       if (data.price) {
-        priceEl.each((index, el) => {
+        await priceEl.each((index, el) => {
           let price = quantity == 1 ? data.price : data.price * quantity;
-          $(el).text( $(el).text().replace(/[\d\.]*/, price));
+          $(el).text($(el).text().replace(/[\d\.]*/, price));
+          if ($(el).hasClass('pdp__price')) {
+            $(el).attr("data-main-price", price);
+          }
         }) 
 
-        if ($('.pdp-control .pdp__collection-row').length) {
+        if ($('.pdp-control .pdp__collection-inner').length) {
           let totalPrice = 0;
+          if ($('.pdp-control .pdp__options-product').length) {
+            if ($('.pdp__price').data('main-price')) {
+              totalPrice = parseFloat($('.pdp__price').attr('data-main-price'));
+            } else {
+              totalPrice = parseFloat($('.pdp__price').text());
+            }
+          } 
+
           document.querySelectorAll('.pdp-control .pdp__collection-row').forEach(element => {
             if ($(element).find('.checkbox__input').is(':checked')) {
               totalPrice += parseFloat($(element).find('.pdp__collection-price').text());

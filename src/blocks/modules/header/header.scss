@@ -46,9 +46,25 @@
     }
   }
   &__basket {
+    position: relative;
     text-align: right;
     @include size(2);
     @include size-md(3);
+    span {
+      position: absolute;
+      right: -12px;
+      top: 13px;
+      background: #0b2358;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 10px;
+      font-size: 12px;
+      min-width: 25px;
+      text-align: center;
+      line-height: 1;
+      white-space: nowrap;
+      padding: 2px 5px;
+    }
 
     &:hover {
       img {

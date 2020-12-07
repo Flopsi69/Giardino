@@ -79,12 +79,12 @@ function closeAllSelect(elmnt) {
     if (elmnt == y[i]) {
       arrNo.push(i);
     } else {
-      y[i].classList.remove("select-arrow-active");
+      y[i].classList.remove("active");
     }
   }
   for (i = 0; i < xl; i++) {
     if (arrNo.indexOf(i)) {
-      x[i].classList.add("select_hide");
+      $(x[i]).slideUp();
     }
   }
 }
