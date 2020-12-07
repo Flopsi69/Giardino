@@ -1,4 +1,6 @@
-<?php get_header(); ?>
+<?php get_header('checkout'); ?>
+<?php $checkout = WC()->checkout(); ?>
+<?php $cart_items = get_cart_items(); ?>
     <main class="main">
         <!-- Checkout -->
         <section class='section checkout'>
@@ -27,88 +29,96 @@
                 <!-- Head -->
                 <div class="checkout__head flex a-center j-between">
                     <h1 class="checkout__title">Checkout</h1>
+                    <?php if (!empty($cart_items)) { ?>
+                            <div class="checkout__orders orders">
+                                <div class="orders__head">
+                                    <!-- Toggler -->
+                                    <div class="orders__toggler dropdown-toggler flex a-center">
+                                        <div class="orders__caption">Show Order Summary:</div>
+                                        <div class="orders__value">
+                                            <?php echo get_cart_total(); ?><?php echo get_woocommerce_currency_symbol(); ?>
+                                        </div>
+                                    </div>
 
-                    <div class="checkout__orders orders">
-                        <div class="orders__head">
-                            <!-- Toggler -->
-                            <div class="orders__toggler dropdown-toggler flex a-center">
-                                <div class="orders__caption">Show Order Summary:</div>
-                                <div class="orders__value">$162</div>
-                            </div>
-
-                            <!-- Popup -->
-                            <div class="orders-popup">
-                                <!-- Order -->
-                                <div class="orders-popup__list">
-                                    <div class="orders-popup__order">
-                                        <!-- Image -->
-                                        <a href='#' class="orders-popup__order-image">
-                                            <img src="<?php print get_theme_file_uri(); ?>/img/temp/product-2.png"
-                                                 alt="">
-                                        </a>
-
-                                        <!-- Info -->
-                                        <div class="orders-popup__order-info">
-                                            <a href='#' class="orders-popup__order-title">Towel ‘Christmas Toys”</a>
-                                            <div class="orders-popup__order-params flex a-end j-between">
-                                                <div class="orders-popup__order-options">
-                                                    <div class="orders-popup__order-option">Size 25*55</div>
-                                                    <div class="orders-popup__order-option">Qty: 1</div>
+                                    <!-- Popup -->
+                                    <div class="orders-popup">
+                                        <!-- Order -->
+                                        <div class="orders-popup__list">
+                                            <?php foreach ($cart_items as $item) { ?>
+                                                <?php $product = $item['data']; ?>
+                                                <div class="orders-popup__order">
+                                                    <!-- Image -->
+                                                    <a href="<?php echo get_permalink($product->get_id()); ?>" class="orders-popup__order-image">
+                                                        <img src="<?php echo get_product_image($product); ?>"
+                                                             alt="">
+                                                    </a>
+                                                    <!-- Info -->
+                                                    <div class="orders-popup__order-info">
+                                                        <a href="<?php echo get_permalink($product->get_id()); ?>" class="orders-popup__order-title"><?php echo $product->get_name(); ?></a>
+                                                        <div class="orders-popup__order-params flex a-end j-between">
+                                                            <div class="orders-popup__order-options">
+                                                                <?php $attributes = get_product_attributes($product); ?>
+                                                                <?php if (!empty($attributes)) { ?>
+                                                                    <?php foreach ($attributes as $att_key => $attribute) { ?>
+                                                                        <?php if (!empty($attribute['options'])) { ?>
+                                                                            <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                                <?php if ($item[$att_key] === $slug) { ?>
+                                                                                <div class="orders-popup__order-option"><?php echo $attribute['name']; ?> <?php echo $option; ?></div>
+                                                                                <?php } ?>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                                <?php $colors = get_product_variation_colors($product); ?>
+                                                                <?php if (!empty($colors)) { ?>
+                                                                    <?php foreach ($colors as $variation_id => $color) { ?>
+                                                                        <?php if ($item['pa_color'] === $color['slug']) { ?>
+                                                                            <div class="orders-popup__order-option">Color: <?php echo $color['name']; ?></div>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                                <div class="orders-popup__order-option">Qty: <?php echo $item['quantity']; ?></div>
+                                                            </div>
+                                                            <div class="orders-popup__order-price">
+                                                                <?php echo $item['line_total']; ?><?php echo get_woocommerce_currency_symbol(); ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="orders-popup__order-price">$100</div>
+                                            <?php } ?>
+                                        </div>
+
+                                        <!-- Prices -->
+                                        <div class="orders-popup__prices">
+                                            <div class="orders-popup__row row-flex j-between">
+                                                <div class="orders-popup__key col">Subtotal</div>
+                                                <div class="orders-popup__value col">
+                                                    <?php echo get_items_total(); ?><?php echo get_woocommerce_currency_symbol(); ?>
+                                                </div>
+                                            </div>
+                                            <div class="orders-popup__row row-flex j-between">
+                                                <div class="orders-popup__key col">Shipping</div>
+                                                <div class="orders-popup__value col"></div>
+                                            </div>
+                                            <div class="orders-popup__row row-flex j-between">
+                                                <div class="orders-popup__key col">Tax</div>
+                                                <div class="orders-popup__value col">Calculated at next step</div>
                                             </div>
                                         </div>
 
-                                    </div>
-
-                                    <div class="orders-popup__order">
-                                        <!-- Image -->
-                                        <a href='#' class="orders-popup__order-image">
-                                            <img src="<?php print get_theme_file_uri(); ?>/img/temp/product-2.png"
-                                                 alt="">
-                                        </a>
-
-                                        <!-- Info -->
-                                        <div class="orders-popup__order-info">
-                                            <a href='#' class="orders-popup__order-title">Towel ‘Christmas Toys”</a>
-                                            <div class="orders-popup__order-params flex a-end j-between">
-                                                <div class="orders-popup__order-options">
-                                                    <div class="orders-popup__order-option">Size 25*55</div>
-                                                    <div class="orders-popup__order-option">Qty: 1</div>
+                                        <!-- Total -->
+                                        <div class="orders-popup__total">
+                                            <div class="orders-popup__row row-flex j-between">
+                                                <div class="orders-popup__key col">Total</div>
+                                                <div class="orders-popup__value orders-popup__total-price col">
+                                                    <?php echo get_cart_total(); ?><?php echo get_woocommerce_currency_symbol(); ?>
                                                 </div>
-                                                <div class="orders-popup__order-price">$100</div>
                                             </div>
                                         </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Prices -->
-                                <div class="orders-popup__prices">
-                                    <div class="orders-popup__row row-flex j-between">
-                                        <div class="orders-popup__key col">Subtotal</div>
-                                        <div class="orders-popup__value col">$100</div>
-                                    </div>
-                                    <div class="orders-popup__row row-flex j-between">
-                                        <div class="orders-popup__key col">Shipping</div>
-                                        <div class="orders-popup__value col">$50</div>
-                                    </div>
-                                    <div class="orders-popup__row row-flex j-between">
-                                        <div class="orders-popup__key col">Tax</div>
-                                        <div class="orders-popup__value col">Calculated at next step</div>
-                                    </div>
-                                </div>
-
-                                <!-- Total -->
-                                <div class="orders-popup__total">
-                                    <div class="orders-popup__row row-flex j-between">
-                                        <div class="orders-popup__key col">Total</div>
-                                        <div class="orders-popup__value orders-popup__total-price col">$170</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
 
                 <!-- Steps list -->
@@ -128,10 +138,10 @@
                                         <img
                                                 src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt="">
                                     </button>
-                                    <button class="btn btn_trans pdp__buttons-payment  w-100 step-express__buttons-item">
+                                    <!--<button class="btn btn_trans pdp__buttons-payment  w-100 step-express__buttons-item">
                                         <img
                                                 src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt="">
-                                    </button>
+                                    </button>-->
                                 </div>
                             </div>
 
@@ -141,14 +151,20 @@
                             <form class='step-one__form col' action="">
                                 <div class="step__title text-center">What’s your contact information?</div>
                                 <div class="group">
-                                    <input class='input w-100' type="email">
+                                    <input class='input w-100' name="billing_email" type="email">
                                     <label class='label' for="">Email Address</label>
                                 </div>
 
                                 <div class="group">
-                                    <input class='input w-100' type="text">
-                                    <label class='label' for="">Full Name</label>
+                                    <input class='input w-100' name="billing_first_name" type="text">
+                                    <label class='label' for="">First Name</label>
                                 </div>
+
+                                <div class="group">
+                                    <input class='input w-100' name="billing_last_name" type="text">
+                                    <label class='label' for="">Last Name</label>
+                                </div>
+
 
                                 <div class="step__divider group"></div>
 
@@ -160,52 +176,49 @@
 
                     <!-- Step -->
                     <div class="step step-two" data-step='2'>
-                        <?php
-                        $checkout = WC()->checkout();
-                        do_action('woocommerce_before_checkout_form', $checkout);
-                        do_action('woocommerce_checkout_billing');
-                        do_action('woocommerce_checkout_shipping');
-                        do_action('woocommerce_checkout_after_order_review');
-                        ?>
                         <div class="step__inner step-two__first active" style='display: block;'>
                             <div class="step__title text-center">Where should we send your order?</div>
                             <form class='step-two__first-form' action="">
+                                <input type="hidden" name="security" value="<?php echo wp_create_nonce('update-order-review'); ?>">
+
+                                <div class="select select_out group">
+                                    <select class=''>
+                                        <?php echo WC()->countries->country_dropdown_options();?>
+                                    </select>
+                                    <label class='label' for="">Country/Region</label>
+                                </div>
+
                                 <div class="group error">
-                                    <input class='input w-100' type="text" value='Error example'>
+                                    <input class='input w-100' name="address" type="text">
                                     <label class='label' for="">Street Address</label>
                                     <div class="error__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit
                                     </div>
                                 </div>
 
                                 <div class="group">
-                                    <input class='input w-100' type="text">
+                                    <input class='input w-100' name="address_2" type="text">
                                     <label class='label' for="">Apt, Suite, Building (Optional)</label>
                                 </div>
 
                                 <div class="group__row">
                                     <div class="group group__col">
-                                        <input class='input w-100' type="text">
+                                        <input class='input w-100' name="postcode" type="text">
                                         <label class='label' for="">Zip Code</label>
                                     </div>
 
                                     <div class="group group__col">
-                                        <input class='input w-100' type="text">
-                                        <label class='label' for="">City, State</label>
+                                        <input class='input w-100' name="city" type="text">
+                                        <label class='label' for="">City</label>
+                                    </div>
+
+                                    <div class="group group__col">
+                                        <input class='input w-100' name="state" type="text">
+                                        <label class='label' for="">State</label>
                                     </div>
                                 </div>
 
-                                <div class="select select_out group disabled">
-                                    <select class=''>
-                                        <option value="">Choose</option>
-                                        <option value="1">200x240x12 cm</option>
-                                        <option value="2">200x240x33 cm</option>
-                                        <option value="3">200x240x50 cm</option>
-                                    </select>
-                                    <label class='label' for="">Country/Region</label>
-                                </div>
-
                                 <div class="group">
-                                    <input class='input w-100' type="tel">
+                                    <input class='input w-100' name="billing_phone" type="tel">
                                     <label class='label' for="">Phone Number</label>
                                 </div>
 
@@ -221,14 +234,14 @@
                         <div class="step__inner step-two__second">
                             <div class="step__title text-center">Choose a delivery option:</div>
                             <form class='step-two__second-form' action="">
-                                <label class="step__radio radio">
+                                <!--<label class="step__radio radio">
                                     <input class='radio__input' type="radio" name="radio">
                                     <span class="radio__mark"></span>
 
                                     <span class="step__radio-info">
-                    <span class="step__radio-title">November,10. Till 12:00</span>
-                    <span class="step__radio-caption">Express Delivery</span>
-                  </span>
+                                        <span class="step__radio-title">November,10. Till 12:00</span>
+                                        <span class="step__radio-caption">Express Delivery</span>
+                                      </span>
 
                                     <span class="step__radio-price">$50</span>
                                 </label>
@@ -238,12 +251,12 @@
                                     <span class="radio__mark"></span>
 
                                     <span class="step__radio-info">
-                    <span class="step__radio-title">November,10. Till 23:59</span>
-                    <span class="step__radio-caption">Standard Delivery</span>
-                  </span>
+                                        <span class="step__radio-title">November,10. Till 23:59</span>
+                                        <span class="step__radio-caption">Standard Delivery</span>
+                                      </span>
 
                                     <span class="step__radio-price">$30</span>
-                                </label>
+                                </label>-->
 
                                 <div class="step__divider group"></div>
 
@@ -257,7 +270,7 @@
                     <div class="step step-three" data-step='3'>
                         <div class="step__title text-center">How do you want to pay?</div>
                         <form class='step-three__form' action="">
-                            <label class="step__radio radio">
+                            <!--<label class="step__radio radio">
                                 <input class='radio__input' type="radio" name="radio">
                                 <span class="radio__mark"></span>
 
@@ -272,8 +285,8 @@
                                 <span class="radio__mark"></span>
 
                                 <span class="step__radio-info">
-                  <img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt="">
-                </span>
+                                  <img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt="">
+                                </span>
                             </label>
 
                             <label class="step__radio radio">
@@ -281,9 +294,9 @@
                                 <span class="radio__mark"></span>
 
                                 <span class="step__radio-info">
-                  <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt="">
-                </span>
-                            </label>
+                                  <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt="">
+                                </span>
+                            </label>-->
 
                             <div class="step__divider group"></div>
 

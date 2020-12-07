@@ -241,6 +241,14 @@ function get_cart_total() {
     return false;
 }
 
+function get_items_total() {
+    if (function_exists('WC')) {
+        $cart = WC()->cart;
+        return number_format($cart->get_cart_contents_total('woocommerce_cart_(__FUNCTION__)'), 2, ',', ' ');
+    }
+    return false;
+}
+
 function add_to_cart($product_id, $quantity = 1, $variation_id = false, $item_data = []) {
     if (function_exists('WC')) {
         $cart = WC()->cart;

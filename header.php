@@ -264,7 +264,7 @@
                                         <?php foreach ($attributes as $att_key => $attribute) { ?>
                                             <?php if (!empty($attribute['options'])) { ?>
                                                 <div class="pdp__size">
-                                                    <div class="pdp-look__caption hidden-sm">Size:</div>
+                                                    <div class="pdp-look__caption hidden-sm"><?php echo $attribute['name']; ?>:</div>
                                                     <div class="pdp__size-select select">
                                                         <select>
                                                             <?php foreach ($attribute['options'] as $slug => $option) { ?>
@@ -309,7 +309,10 @@
 
             <div class="cart__products-total">
                 <div class="cart__products-caption">Total:</div>
-                <div class="cart__products-price"><?php echo get_cart_total(); ?>€</div>
+                <div class="cart__products-price">
+                    <?php echo get_cart_total(); ?>
+                    <?php echo get_woocommerce_currency_symbol(); ?>
+                </div>
             </div>
 
             <div class="cart__footer">
