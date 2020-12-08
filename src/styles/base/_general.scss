@@ -12,6 +12,9 @@ body {
   color: $font-color;
   font-size: 16px;
   line-height: 1.4;
+  &.scroll-off {
+    overflow: hidden;
+  }
 }
 
 .container {
@@ -515,8 +518,14 @@ textarea {
 .group {
   position: relative;
   margin-bottom: 20px;
+  &_no-margin {
+    margin-bottom: 0;
+  }
   @include sm-block {
     margin-bottom: 12px;
+    &_no-margin {
+      margin-bottom: 0;
+    }
   }
   &.disabled {
     background-color: #f3f3f3;
@@ -526,11 +535,19 @@ textarea {
     display: flex;
     margin-left: -10px;
     margin-right: -10px;
+    @include sm-block {
+      margin-left: -5px;
+      margin-right: -5px;
+    }
   }
   &__col {
     margin-left: 10px;
     margin-right: 10px;
     flex: 1;
+    @include sm-block {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -546,6 +563,7 @@ textarea {
   transition: $trans;
   font-weight: 700;
   pointer-events: none;
+
   .error & {
     color: #cd2c2c;
   }
@@ -588,6 +606,7 @@ textarea {
     max-width: 100%;
     color: #cd2c2c;
     margin-top: 2px;
+    margin-bottom: 0;
     // position: absolute;
     // top: 104%;
     // white-space: nowrap;
@@ -707,6 +726,19 @@ textarea {
       font-size: 11px;
     }
   }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    margin: 1px 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
   &__selected {
     font-weight: 700;
     font-size: 13px;
@@ -757,16 +789,21 @@ textarea {
     left: 0;
     right: 0;
     z-index: 99;
+    border: 1px solid #c2c1c5;
+    border-radius: 2px;
+    max-height: 300px;
+    overflow-y: auto;
     div {
       font-weight: 700;
       font-size: 13px;
       padding: 10px 30px 10px 10px;
       background: #ffffff;
-      border: 1px solid #c2c1c5;
-      border-radius: 2px;
       line-height: 1;
       transition: 0.5s;
       cursor: pointer;
+      & + div {
+        border-top: 1px solid #c2c1c5;
+      }
       &:hover,
       &.same-as-selected {
         background-color: #ccc;
@@ -1573,14 +1610,8 @@ ul.page-numbers {
 
 .count {
   display: inline-flex;
-  border-radius: 2px;
-  border: 1px solid #c2c1c5;
-  &__minus {
-    border-right: 1px solid #c2c1c5;
-  }
-  &__plus {
-    border-left: 1px solid #c2c1c5;
-  }
+  // border-radius: 2px;
+  // border: 1px solid #c2c1c5;
   &__btn {
     display: flex;
     align-items: center;
@@ -1593,21 +1624,37 @@ ul.page-numbers {
     font-size: 22px;
     line-height: 26px;
     font-family: $main-font;
+    // border-radius: 2px;
+    border: 1px solid #c2c1c5;
     &_small {
       height: 25px;
       width: 25px;
       font-size: 18px;
       line-height: 22px;
+      & + .count__value {
+        height: 25px;
+      }
     }
     &:hover {
       color: #fff;
       background-color: $blue;
     }
   }
+  &__minus {
+    border-right: none;
+    border-radius: 2px 0 0 2px;
+  }
+  &__plus {
+    border-left: none;
+    border-radius: 0 2px 2px 0;
+  }
   &__value {
     text-align: center;
     border: none;
     pointer-events: none;
+    height: 38px;
+    padding: 4px 0 1px;
+    border: 1px solid #c2c1c5;
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -2835,6 +2882,9 @@ ul.page-numbers {
     border-radius: 2px;
     padding: 20px 25px;
     transition: 0.3s;
+    a {
+      display: none;
+    }
     @include sm-block {
       margin-bottom: 10px;
       padding: 20px;
@@ -2966,6 +3016,7 @@ ul.page-numbers {
       line-height: 18px;
       color: $gray;
       text-transform: uppercase;
+      cursor: pointer;
       img {
         position: relative;
         top: -2px;
@@ -3249,4 +3300,13 @@ ul.page-numbers {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "×";
+}
+
+.woocommerce-checkout-payment {
+  p {
+    font-size: 12px;
+    color: gray;
+    position: relative;
+    top: -5px;
+  }
 }

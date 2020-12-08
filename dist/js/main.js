@@ -208,7 +208,9 @@ $(".nav__list-item").hover(function () {
 });
 
 if ($('.pdp__collection-options').length) {
-  $('.pdp__price').text($('.pdp__price').text().replace(/[\d\.]*/, 0));
+  var firstEl = $('.pdp__collection-row').first();
+  firstEl.find('.pdp__collection-checkbox').click();
+  $('.pdp__price').text(firstEl.find('.pdp__collection-price').text());
 } // Utils  **START**
 // Count
 
@@ -223,10 +225,6 @@ $(document).on("click", ".count__btn", function (e) {
   } else if ($(this).hasClass("count__plus")) {
     inputEL.val(currentValue + 1);
   }
-}); // Step Radio
-
-$(".step__radio").on("click", function () {
-  $(this).addClass("active").siblings(".active").removeClass("active");
 }); // Tooltip
 
 $(".tooltip").on("click", function (e) {
@@ -397,7 +395,7 @@ $(".navbar-link__direction_dropdown").on("click", function (e) {
 });
 $(".header__basket").on("click", function (e) {
   e.preventDefault();
-  $(".cart").addClass("cart_open");
+  openCart();
 });
 $(".cart").on("click", function (e) {
   if ($(e.target).hasClass("cart_open")) {
@@ -411,6 +409,12 @@ $(".cart__head-close, .cart__head-title").on("click", function (e) {
 
 function closeCart() {
   $(".cart").removeClass("cart_open");
+  $("body").removeClass('scroll-off');
+}
+
+function openCart() {
+  $(".cart").addClass("cart_open");
+  $("body").addClass('scroll-off');
 } // Header **END**
 // SORT **START**
 
@@ -443,19 +447,109 @@ $(".checkout-nav__step").on("click", function (e) {
     $(this).toggleClass("pass active").nextAll().removeClass("active pass");
     toggleStep(stepTarget);
   }
+}); // Step Radio
+
+$(document).on("click", ".step__radio", function () {
+  $(this).addClass("active").siblings(".active").removeClass("active");
+  $(this).closest('ul').find('.radio.active').removeClass('active');
 });
 $(".step-next").on("click", function (e) {
   e.preventDefault();
   var stepTarget;
 
-  if ($(this).hasClass("step-next_inner")) {
-    stepTarget = $(".step.active .step__inner.active").next();
-    toggleStep(stepTarget);
+  if ($(".step-one.active").length) {
+    var check = checkCheckoutInputs($(this).closest('form'));
+
+    if (check) {
+      stepTarget = $(".step.active").next();
+      toggleStep(stepTarget, true);
+    }
+  } else if ($(this).hasClass("step-next_inner")) {
+    var _check = checkCheckoutInputs($(this).closest('form'));
+
+    if (_check) {
+      var settings = {
+        "url": location.origin + "/?wc-ajax=update_order_review",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "data": {
+          "payment_method": "",
+          "country": $('.step__countries').find('select').val(),
+          "state": $("input[name='state']").val(),
+          "postcode": $("input[name='postcode']").val(),
+          "city": $("input[name='city']").val(),
+          "address": $("input[name='address']").val(),
+          "address_2": $("input[name='address_2']").val(),
+          "has_full_address": "true",
+          "security": $("input[name='security']").val()
+        }
+      };
+      $.ajax(settings).done(function (response) {
+        window.resultStep = response;
+
+        if (response.result == "success") {
+          $('.woocommerce-shipping-methods').remove();
+          var payment = $(response.fragments[".woocommerce-checkout-payment"]);
+          var shipping = $(response.fragments[".woocommerce-checkout-review-order-table"]).find('.woocommerce-shipping-methods');
+          $('.step-two__second-form').prepend(shipping);
+          shipping.find('input').addClass('radio__input');
+          shipping.find('label').each(function (i, el) {
+            $(el).addClass('step__radio radio');
+            $(el).prepend($(el).siblings('input').addClass('radio__input'));
+            $(el).append("<span class='radio__mark'></span>");
+          });
+          $('.step-three__form').prepend(payment);
+          payment.find('input').addClass('radio__input');
+          payment.find('label').each(function (i, el) {
+            $(el).addClass('step__radio radio');
+            $(el).prepend($(el).siblings('input').addClass('radio__input'));
+            $(el).append("<span class='radio__mark'></span>");
+          });
+          payment.find(".button").addClass("step-two__btn btn btn_blue w-100").before('<div class="step__divider group"></div>');
+          stepTarget = $(".step.active .step__inner.active").next();
+          toggleStep(stepTarget);
+        } else {
+          $('.step.active').append($(response.massages));
+        }
+      });
+    }
   } else {
     stepTarget = $(".step.active").next();
-    toggleStep(stepTarget, true);
+
+    if (stepTarget) {
+      toggleStep(stepTarget, true);
+    } else {
+      console.log('finish');
+    }
   }
 });
+
+function checkCheckoutInputs(parent) {
+  var check = true;
+  parent.find('.input').each(function (index, el) {
+    if ($(el).val()) {
+      if ($(el).siblings('.error__text').length) {
+        $(el).siblings('.error__text').remove();
+      }
+
+      if ($(el).parents('.group.error').length) {
+        $(el).parents('.group.error').removeClass('error');
+      }
+
+      return;
+    }
+
+    if (!$(el).parents('.group.error').length) {
+      $(el).parents('.group').addClass('error').append($('<p>').addClass('error__text').text('Required*'));
+    }
+
+    check = false;
+  });
+  return check;
+}
 
 function toggleStep(stepEL) {
   var toggleNav = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -579,6 +673,7 @@ $(document).on('click', '.modal-trigger, .pdp__guide', function (e) {
 
   $(".modal").hasClass("modal_active") ? $(".modal__body").slideUp() : $(".modal").addClass("modal_active");
   $(target).delay(500).slideDown();
+  $('body').addClass('scroll-off');
 });
 $(".modal__close, .modal__close-btn").click(function (e) {
   e.preventDefault();
@@ -593,6 +688,7 @@ $(".modal").on('click', function (e) {
 function modalClose() {
   $(".modal").hasClass("modal_active") ? $(".modal").removeClass("modal_active") : $(".modal").addClass("modal_active");
   $(".modal__body").slideUp();
+  $('body.scroll-off').removeClass('scroll-off');
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
@@ -848,6 +944,7 @@ function updateAjax(action, ajaxData, cb) {
       $('.cart .cart__body').remove();
       $('.cart .cart__head').after($(htmlDoc).find('.cart .cart__body'));
       $(".cart").addClass("cart_open");
+      $("body").addClass('scroll-off');
       initSelect($('.cart')[0]);
     }
 

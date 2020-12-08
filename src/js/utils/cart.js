@@ -204,6 +204,7 @@ function updateAjax(action, ajaxData, cb) {
       $('.cart .cart__body').remove();
       $('.cart .cart__head').after($(htmlDoc).find('.cart .cart__body'));
       $(".cart").addClass("cart_open");
+      $("body").addClass('scroll-off');
       initSelect($('.cart')[0]);
     }
     updateTotal($(htmlDoc).find('.cart .cart__products-price').text());
