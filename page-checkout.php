@@ -173,6 +173,7 @@
                     </div>
                 </div>
 
+
                 <!-- Step -->
                 <div class="step step-two" data-step='2'>
                     <div class="step__inner step-two__first active" style='display: block;'>
@@ -181,8 +182,13 @@
                             <input type="hidden" name="security" value="<?php echo wp_create_nonce('update-order-review'); ?>">
 
                             <div class="select select_out group step__countries">
+                                <?php $countries = WC()->countries->get_allowed_countries(); ?>
                                 <select class=''>
-                                    <?php echo WC()->countries->country_dropdown_options(); ?>
+                                    <?php if (!empty($countries)) { ?>
+                                        <?php foreach ($countries as $key => $country) { ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $country; ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
                                 </select>
                                 <label class='label' for="">Country/Region</label>
                             </div>
@@ -265,8 +271,8 @@
                 <!-- Step -->
                 <div class="step step-three" data-step='3'>
                     <div class="step__title text-center">How do you want to pay?</div>
-                    <form class='step-three__form' action="">
-                        <!--
+                    <form name="checkout" method="post" class="step-three__form checkout woocommerce-checkout" action="/checkout/" enctype="multipart/form-data" novalidate="novalidate">
+                    <!--
                             <label class="step__radio radio">
                                 <input class='radio__input' type="radio" name="radio">
                                 <span class="radio__mark"></span>
@@ -299,7 +305,7 @@
                         <!-- <a href="" type='submit' class="step-two__btn btn btn_blue w-100">Continue
                             to
                             payment</a> -->
-                    </form>
+                    </form> */ ?>
                 </div>
             </div>
         </div>
