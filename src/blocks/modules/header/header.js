@@ -213,21 +213,21 @@ $(".sort").on("click", function (e) {
 // SORT **END**
 
 // CHECKOUT **START**
-$(".checkout-nav__step").on("click", function (e) {
-  e.preventDefault();
-  let checkoutStepNum = $(this).data("step-target");
-  let stepTarget = $('.step[data-step="' + checkoutStepNum + '"]');
+// $(".checkout-nav__step").on("click", function (e) {
+//   e.preventDefault();
+//   let checkoutStepNum = $(this).data("step-target");
+//   let stepTarget = $('.step[data-step="' + checkoutStepNum + '"]');
 
-  if ($(this).prev().hasClass("active")) {
-    $(this).addClass("active").prev().toggleClass("active pass");
-    toggleStep(stepTarget);
-  }
+//   if ($(this).prev().hasClass("active")) {
+//     $(this).addClass("active").prev().toggleClass("active pass");
+//     toggleStep(stepTarget);
+//   }
 
-  if ($(this).hasClass("pass")) {
-    $(this).toggleClass("pass active").nextAll().removeClass("active pass");
-    toggleStep(stepTarget);
-  }
-});
+//   if ($(this).hasClass("pass")) {
+//     $(this).toggleClass("pass active").nextAll().removeClass("active pass");
+//     toggleStep(stepTarget);
+//   }
+// });
 
 // Step Radio
 $(document).on("click", ".step__radio", function () {

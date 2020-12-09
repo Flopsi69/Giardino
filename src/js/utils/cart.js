@@ -104,18 +104,8 @@ $(document).on("click", ".towel-colors__item", function () {
 
 // Сhange
 $(document).on('click', '.cart__product .towel-colors__item, .cart__product .select__items>div', function (e) {
-  console.log('changes');
   let productTargetParent = $(this).closest('.cart__product');
   const productKey = productTargetParent.data('item-key');
-  function callbackChange(newDoc) {
-    let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
-    let newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
-    // let newActiveProduct = newDoc.find(`.cart__product`).first();
-    currentActiveProduct.after(newActiveProduct);
-    currentActiveProduct.remove();
-    initSelect(newActiveProduct[0]);
-  }
-
   let ajaxData = {
     "data[item_key]": productKey
   }
@@ -128,12 +118,25 @@ $(document).on('click', '.cart__product .towel-colors__item, .cart__product .sel
   }
 
   if (productTargetParent.find('.towel-colors__list').length) {
-    // checkColor(productTargetParent.find('.towel-colors__list'));
     ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
   }
 
+  function callbackChange(newDoc) {
+    let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
+    let elPosition = currentActiveProduct.index();
+    let newActiveProduct = newDoc.find(".cart__product").not((i, el) => {
+      console.log($(`.cart__product[data-item-key='${$(el).data('item-key')}'`).length);
+      if ($(`.cart__product[data-item-key='${$(el).data('item-key')}'`).length) {
+        return true;
+      }
+    })
+    currentActiveProduct.after(newActiveProduct);
+    currentActiveProduct.remove();
+    initSelect(newActiveProduct[0]);
+  }
+
   setTimeout(() => {
-    updateAjax('change', ajaxData);
+    updateAjax('change', ajaxData, callbackChange);
   }, 100);
 })
 
@@ -169,6 +172,7 @@ function checkColor(parentEl) {
 }
 
 function updateAjax(action, ajaxData, cb) {
+  $('.cart__inner').addClass('cart__inner_load');
   if (Array.isArray(ajaxData)) {
     ajaxData = {
       "data": ajaxData,
@@ -208,6 +212,8 @@ function updateAjax(action, ajaxData, cb) {
       initSelect($('.cart')[0]);
     }
     updateTotal($(htmlDoc).find('.cart .cart__products-price').text());
+    $('.cart__inner').removeClass('cart__inner_load');
+
   });
 }
 

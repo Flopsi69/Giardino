@@ -2553,10 +2553,9 @@ ul.page-numbers {
     &__step {
       position: relative;
       transition: $trans;
-      cursor: pointer;
-      &:hover {
-        opacity: 0.8;
-      }
+      // &:hover {
+      //   opacity: 0.8;
+      // }
       & + & {
         &:before {
           content: "";
@@ -2680,6 +2679,8 @@ ul.page-numbers {
     right: 0;
     transform: translateY(100%);
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+    max-height: 300px;
+    overflow-y: auto;
     @include md-block {
       bottom: 0;
       border-top: 1px solid $gray;
@@ -2733,6 +2734,8 @@ ul.page-numbers {
         margin-right: 10px;
         img {
           width: 60px;
+          height: 60px;
+          object-fit: cover;
         }
       }
       &-info {
@@ -2767,6 +2770,19 @@ ul.page-numbers {
     line-height: 12px;
     letter-spacing: 0.1em;
     color: $gray;
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      margin: 1px 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 2px;
+    }
   }
   &__caption {
     text-transform: uppercase;
@@ -3003,6 +3019,52 @@ ul.page-numbers {
       left: 50px;
       width: auto;
     }
+    &:before {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: rgba(#fff, 0);
+      z-index: 10;
+    }
+    &:after {
+      content: " ";
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 11;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin-top: -32px;
+      margin-left: -32px;
+      border-radius: 50%;
+      border: 6px solid $blue;
+      border-color: $blue transparent $blue transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+    &_load {
+      pointer-events: none;
+      &:before {
+        background: rgba(#fff, 0.6);
+      }
+      &:after {
+        opacity: 1;
+      }
+      @keyframes lds-dual-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    }
     .cart_open & {
       transform: translateX(0);
     }
@@ -3132,6 +3194,7 @@ ul.page-numbers {
     &-preview {
       margin-right: 20px;
       flex-shrink: 0;
+      line-height: 0;
       @include sm-block {
         margin-right: 10px;
       }

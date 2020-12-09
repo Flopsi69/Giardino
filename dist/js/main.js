@@ -432,22 +432,20 @@ $(".sort").on("click", function (e) {
   }
 }); // SORT **END**
 // CHECKOUT **START**
-
-$(".checkout-nav__step").on("click", function (e) {
-  e.preventDefault();
-  var checkoutStepNum = $(this).data("step-target");
-  var stepTarget = $('.step[data-step="' + checkoutStepNum + '"]');
-
-  if ($(this).prev().hasClass("active")) {
-    $(this).addClass("active").prev().toggleClass("active pass");
-    toggleStep(stepTarget);
-  }
-
-  if ($(this).hasClass("pass")) {
-    $(this).toggleClass("pass active").nextAll().removeClass("active pass");
-    toggleStep(stepTarget);
-  }
-}); // Step Radio
+// $(".checkout-nav__step").on("click", function (e) {
+//   e.preventDefault();
+//   let checkoutStepNum = $(this).data("step-target");
+//   let stepTarget = $('.step[data-step="' + checkoutStepNum + '"]');
+//   if ($(this).prev().hasClass("active")) {
+//     $(this).addClass("active").prev().toggleClass("active pass");
+//     toggleStep(stepTarget);
+//   }
+//   if ($(this).hasClass("pass")) {
+//     $(this).toggleClass("pass active").nextAll().removeClass("active pass");
+//     toggleStep(stepTarget);
+//   }
+// });
+// Step Radio
 
 $(document).on("click", ".step__radio", function () {
   $(this).addClass("active").siblings(".active").removeClass("active");
@@ -841,19 +839,8 @@ $(document).on("click", ".towel-colors__item", function () {
 }); // Сhange
 
 $(document).on('click', '.cart__product .towel-colors__item, .cart__product .select__items>div', function (e) {
-  console.log('changes');
   var productTargetParent = $(this).closest('.cart__product');
   var productKey = productTargetParent.data('item-key');
-
-  function callbackChange(newDoc) {
-    var currentActiveProduct = $(".cart__product[data-item-key = ".concat(productKey, "]"));
-    var newActiveProduct = newDoc.find(".cart__product[data-item-key = ".concat(productKey, "]")); // let newActiveProduct = newDoc.find(`.cart__product`).first();
-
-    currentActiveProduct.after(newActiveProduct);
-    currentActiveProduct.remove();
-    initSelect(newActiveProduct[0]);
-  }
-
   var ajaxData = {
     "data[item_key]": productKey
   };
@@ -866,12 +853,26 @@ $(document).on('click', '.cart__product .towel-colors__item, .cart__product .sel
   }
 
   if (productTargetParent.find('.towel-colors__list').length) {
-    // checkColor(productTargetParent.find('.towel-colors__list'));
     ajaxData["data[pa_color]"] = productTargetParent.find('.towel-colors__item.active').data('value');
   }
 
+  function callbackChange(newDoc) {
+    var currentActiveProduct = $(".cart__product[data-item-key = ".concat(productKey, "]"));
+    var elPosition = currentActiveProduct.index();
+    var newActiveProduct = newDoc.find(".cart__product").not(function (i, el) {
+      console.log($(".cart__product[data-item-key='".concat($(el).data('item-key'), "'")).length);
+
+      if ($(".cart__product[data-item-key='".concat($(el).data('item-key'), "'")).length) {
+        return true;
+      }
+    });
+    currentActiveProduct.after(newActiveProduct);
+    currentActiveProduct.remove();
+    initSelect(newActiveProduct[0]);
+  }
+
   setTimeout(function () {
-    updateAjax('change', ajaxData);
+    updateAjax('change', ajaxData, callbackChange);
   }, 100);
 }); // Change Quantity
 
@@ -909,6 +910,8 @@ function checkColor(parentEl) {
 }
 
 function updateAjax(action, ajaxData, cb) {
+  $('.cart__inner').addClass('cart__inner_load');
+
   if (Array.isArray(ajaxData)) {
     ajaxData = {
       "data": ajaxData,
@@ -949,6 +952,7 @@ function updateAjax(action, ajaxData, cb) {
     }
 
     updateTotal($(htmlDoc).find('.cart .cart__products-price').text());
+    $('.cart__inner').removeClass('cart__inner_load');
   });
 }
 
