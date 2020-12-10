@@ -137,9 +137,7 @@ $category_data = get_category_data($product_parent);
                                                                 <input class='checkbox__input' type="checkbox">
                                                                 <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
                                                                 <span class="checkbox__mark"></span>
-                                                                <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
-                                                                <?php if (!empty($includes)) { ?>
-                                                                    <div class="tooltip">
+                                                                <div class="tooltip">
                                                                         <div class="tooltip__icon">
                                                                             <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
                                                                         </div>
@@ -171,7 +169,6 @@ $category_data = get_category_data($product_parent);
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                <?php } ?>
                                                             </label>
                                                             <?php $attributes = get_product_attributes($collection_product); ?>
                                                             <?php if (!empty($attributes)) { ?>
@@ -184,6 +181,9 @@ $category_data = get_category_data($product_parent);
                                                                                 <?php } ?>
                                                                             </select>
                                                                         </div>
+                                                                        <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
+                                                                            <div data-image="<?php echo $category_data['size_guide']; ?>" data-mobile="<?php echo $category_data['size_guide_mobile']; ?>" class="pdp__guide">Size guide</div>
+                                                                        <?php } ?>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             <?php } ?>
