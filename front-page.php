@@ -57,13 +57,17 @@
                         <a href="<?php echo get_term_link($category); ?>" class="products__more more-btn col hidden-sm">See all <?php echo $category->name; ?></a>
                     </div>
                     <?php
-                    $args = array(
-                        'limit' => 8,
-                        'status' => 'publish',
-                        'type' => array('simple', 'variable'),
-                        'category' => $category->slug
-                    );
-                    $products = wc_get_products($args);
+                    $ids = carbon_get_theme_option('fronpage-cat-' . $category->term_id . '-products');
+                    if (!empty($ids)) {
+                        $args = array(
+                            'limit' => 8,
+                            'status' => 'publish',
+                            'type' => array('simple', 'variable'),
+                            'category' => $category->slug,
+                            'include' => array_column($ids, 'id')
+                        );
+                        $products = wc_get_products($args);
+                    }
                     ?>
                     <?php if ($products) { ?>
                         <!-- List -->
@@ -95,7 +99,7 @@
                             <?php } ?>
                         </div>
                     <?php } ?>
-
+                    <?php unset($products); ?>
                     <!-- Show more Mobile -->
                     <a href="<?php echo get_term_link($category); ?>" class="products__more more-btn more-btn_mobile">See all bed linen</a>
                 </div>

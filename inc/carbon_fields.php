@@ -65,7 +65,7 @@ if (class_exists('Carbon_Fields\Container')) {
                 ->set_classes('size-guide-mobile'),
         ));
 
-    Container::make('theme_options', ('Giardino'))
+    $options = Container::make('theme_options', ('Giardino'))
         ->set_page_file('giardino')
         ->set_page_menu_position(2)
         ->set_icon('dashicons-edit')
@@ -77,17 +77,55 @@ if (class_exists('Carbon_Fields\Container')) {
             Field::make('text', 'grd-frontpage-hero-category-button-link', 'Category Button link'),
             Field::make('text', 'grd-frontpage-hero-collection-button-title', 'Collection Button title'),
             Field::make('text', 'grd-frontpage-hero-collection-button-link', 'Collection Button link'),
-            Field::make('separator', 'grd-ymal-separate', 'You may also like'),
-            Field::make('association', 'grd-ymal-products', 'Products')
-                ->set_types(array(
-                    array(
-                        'type' => 'post',
-                        'post_type' => 'product',
-                    )
-                ))
-                ->set_duplicates_allowed(false),
-            Field::make('separator', 'grd-delret-separate', 'Delivery & returns'),
-            Field::make('rich_text', 'grd-delret-text', 'Text')
-        ));
 
+        ));
+    $args = array(
+        'taxonomy' => array('product_cat'),
+        'parent' => 0,
+        'hide_empty' => true,
+        'exclude' => 15
+    );
+    $categories = new WP_Term_Query($args);
+    if (!empty($categories)) {
+        foreach ($categories->terms as $category) {
+            $options->add_fields(array(
+                Field::make('association', 'fronpage-cat-' . $category->term_id . '-products', $category->name . ' products')
+                    ->set_types(array(
+                        array(
+                            'type' => 'post',
+                            'post_type' => 'product'
+                        )
+                    ))
+                    ->set_duplicates_allowed(false)
+            ));
+            $filter_name = 'carbon_fields_association_field_options_fronpage-cat-' . $category->term_id . '-products_post_product';
+            add_filter($filter_name, function ($args) use ($category) {
+                $args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'product_cat',
+                        'field' => 'id',
+                        'terms' => $category->term_id,
+                        'include_children' => false
+                    )
+                );
+                return $args;
+            });
+        }
+    }
+
+
+
+    $options->add_fields(array(
+        Field::make('separator', 'grd-ymal-separate', 'You may also like'),
+        Field::make('association', 'grd-ymal-products', 'Products')
+            ->set_types(array(
+                array(
+                    'type' => 'post',
+                    'post_type' => 'product',
+                )
+            ))
+            ->set_duplicates_allowed(false),
+        Field::make('separator', 'grd-delret-separate', 'Delivery & returns'),
+        Field::make('rich_text', 'grd-delret-text', 'Text')
+    ));
 }
