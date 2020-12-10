@@ -2278,8 +2278,6 @@ ul.page-numbers {
     border-radius: 2px;
     border: 1px solid $blue;
     margin-left: 10px;
-    filter: grayscale(100%);
-    pointer-events: none;
     &__btn {
       font-weight: bold;
       font-size: 13px;

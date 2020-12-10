@@ -63,6 +63,14 @@
                     <li class='footer-nav__item'>
                         <a class='footer-nav__link' href="/care-guide/">Care guide</a>
                     </li>
+                    <li class='footer-socials'>
+                        <a target="_blank" href=' https://www.instagram.com/giardino_collection' class="footer-socials__item">
+                            <img src="<?php print get_theme_file_uri(); ?>/img/icon-instagram.png" alt="">
+                        </a>
+                        <a target="_blank" href='https://www.facebook.com/Giardino-Collection-1262520017183555/' class="footer-socials__item">
+                            <img src="<?php print get_theme_file_uri(); ?>/img/icon-fb.png" alt="">
+                        </a>
+                    </li>
                     <!-- <li class='footer-nav__item'>
                         <a class='footer-nav__link' href="<?php print get_theme_file_uri(); ?>/pdf/pillowcase.pdf">Care guide</a>
                     </li> -->

@@ -194,7 +194,7 @@
 
                             <div class="group">
                                 <input class='input w-100' name="address_2" type="text">
-                                <label class='label' for="">Apt, Suite, Building (Optional)</label>
+                                <label class='label' for="">Apt, Suite, Building</label>
                             </div>
 
                             <div class="group__row">

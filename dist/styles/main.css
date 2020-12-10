@@ -2621,8 +2621,6 @@ a.active .products-subcat__name {
   border-radius: 2px;
   border: 1px solid #0b2358;
   margin-left: 10px;
-  filter: grayscale(100%);
-  pointer-events: none;
 }
 
 .pdp-measure__btn {
@@ -3981,6 +3979,35 @@ a.active .products-subcat__name {
 
 .footer-nav__col {
   width: calc(33.33333% - 1.875rem);
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  margin-top: 75px;
+}
+
+.footer-socials__item {
+  background: rgba(255, 255, 255, 0.1);
+  width: 39px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: 0.5s;
+}
+
+.footer-socials__item:hover {
+  transform: scale(1.1);
+}
+
+.footer-socials__item img {
+  height: 18px;
+}
+
+.footer-socials__item + .footer-socials__item {
+  margin-left: 22px;
 }
 
 .modal {

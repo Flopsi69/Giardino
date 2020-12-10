@@ -267,6 +267,23 @@ $(".step-next").on("click", function (e) {
           }
         };
 
+//         security: 6a93f4368b
+// payment_method: cheque
+// country: MC
+// state: 
+// postcode: 
+// city: 
+// address: 
+// address_2: 
+// s_country: MC
+// s_state: 
+// s_postcode: 
+// s_city: 
+// s_address: 
+// s_address_2: 
+// has_full_address: false
+// post_data: billing_first_name=&billing_last_name=&billing_company=&billing_country=MC&billing_address_1=&billing_address_2=&billing_city=&billing_state=&billing_postcode=&billing_phone=&billing_email=v_zol%40ukr.net&shipping_first_name=&shipping_last_name=&shipping_company=&shipping_country=MC&shipping_address_1=&shipping_address_2=&shipping_city=&shipping_state=&shipping_postcode=&order_comments=&payment_method=cheque&woocommerce-process-checkout-nonce=0c75cdcf1e&_wp_http_referer=%2Fcheckout%2F%3Fpayment_method%3Dppec_paypal%26woocommerce_checkout_place_order%3DPlace%2Border%26woocommerce-process-checkout-nonce%3D0c75cdcf1e%26_wp_http_referer%3D%252F%253Fwc-ajax%253Dupdate_order_review
+
         $.ajax(settings).done(function (response) {
           window.resultStep = response;
           if (response.result == "success") {
