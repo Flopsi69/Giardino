@@ -1900,8 +1900,16 @@ a.active .products-subcat__name {
   margin: 0 -10px;
 }
 
+.products-slider__list .slick-arrow {
+  border: 1px solid #ccc;
+}
+
 .products-slider__item {
   padding: 0 10px;
+}
+
+.products-slider__item .product__label {
+  left: 15px;
 }
 
 .products__item {
@@ -4671,6 +4679,10 @@ a.active .products-subcat__name {
     flex-wrap: wrap;
   }
 
+  .products-slider__item .product__label {
+    left: 10px;
+  }
+
   .products-slider__item {
     width: 50%;
     margin-bottom: 15px;
@@ -4689,6 +4701,7 @@ a.active .products-subcat__name {
 
   .product__label {
     right: 10px;
+    left: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

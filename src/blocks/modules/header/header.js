@@ -355,9 +355,9 @@ function toggleStep(stepEL, toggleNav = false) {
   }
   stepEL
     .addClass("active")
-    .slideToggle()
+    .show()
     .siblings(".active")
-    .slideToggle()
+    .hide()
     .removeClass("active");
 }
 // CHECKOUT **END**

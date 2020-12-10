@@ -572,7 +572,7 @@ function toggleStep(stepEL) {
     $(".checkout-nav__step.active").toggleClass("active pass").next().addClass("active");
   }
 
-  stepEL.addClass("active").slideToggle().siblings(".active").slideToggle().removeClass("active");
+  stepEL.addClass("active").show().siblings(".active").hide().removeClass("active");
 } // CHECKOUT **END**
 // SLIDERS **START**
 // Same products
