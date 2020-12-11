@@ -244,7 +244,23 @@ function get_cart_total() {
 function get_items_total() {
     if (function_exists('WC')) {
         $cart = WC()->cart;
-        return number_format($cart->get_cart_contents_total('woocommerce_cart_(__FUNCTION__)'), 2, ',', ' ');
+        return number_format($cart->get_cart_contents_total(), 2, ',', ' ');
+    }
+    return false;
+}
+
+function get_shipping_total() {
+    if (function_exists('WC')) {
+        $cart = WC()->cart;
+        return number_format($cart->get_shipping_total(), 2, ',', ' ');
+    }
+    return false;
+}
+
+function get_tax_total() {
+    if (function_exists('WC')) {
+        $cart = WC()->cart;
+        return number_format($cart->get_total_tax(), 2, ',', ' ');
     }
     return false;
 }

@@ -310,7 +310,7 @@
             <div class="cart__products-total">
                 <div class="cart__products-caption">Total:</div>
                 <div class="cart__products-price">
-                    <?php echo get_cart_total(); ?>
+                    <?php echo get_items_total(); ?>
                     <?php echo get_woocommerce_currency_symbol(); ?>
                 </div>
             </div>
