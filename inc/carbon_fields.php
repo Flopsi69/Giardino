@@ -100,12 +100,26 @@ if (class_exists('Carbon_Fields\Container')) {
             ));
             $filter_name = 'carbon_fields_association_field_options_fronpage-cat-' . $category->term_id . '-products_post_product';
             add_filter($filter_name, function ($args) use ($category) {
+//                $terms[] = $category->term_id;
+//                $cat_args = array(
+//                    'taxonomy' => array('product_cat'),
+//                    'parent' => $category->term_id,
+//                    'exclude' => 15
+//                );
+//                $children_categories = new WP_Term_Query($cat_args);
+//                if (!empty($children_categories)) {
+//                    foreach ($children_categories->terms as $children_category) {
+//                        $terms[] = $children_category->term_id;
+//                    }
+//                }
                 $args['tax_query'] = array(
                     array(
                         'taxonomy' => 'product_cat',
                         'field' => 'id',
+                        //'operator' => 'in',
+                        //'terms' => $terms,
                         'terms' => $category->term_id,
-                        'include_children' => false
+                        'include_children' => true
                     )
                 );
                 return $args;
