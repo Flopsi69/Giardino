@@ -515,7 +515,8 @@ textarea {
   }
 }
 
-.group {
+.group,
+.form-row {
   position: relative;
   margin-bottom: 20px;
   &_no-margin {
@@ -551,11 +552,14 @@ textarea {
   }
 }
 
-.label {
+.label,
+.form-row label {
   display: block;
   cursor: pointer;
   position: absolute;
-  top: 19px;
+  z-index: 1;
+  // top: 19px;
+  top: 4px;
   left: 10px;
   font-size: 13px;
   line-height: 16px;
@@ -563,13 +567,20 @@ textarea {
   transition: $trans;
   font-weight: 700;
   pointer-events: none;
-
   .error & {
     color: #cd2c2c;
   }
 }
 
-.input {
+.create-account label {
+  pointer-events: auto;
+}
+.woocommerce-form__label-for-checkbox {
+  position: static !important;
+}
+
+.input,
+.input-text {
   position: relative;
   border: none;
   background: none;
@@ -584,8 +595,7 @@ textarea {
   font-weight: bold;
   font-size: 13px;
   line-height: 16px;
-  &:focus + label,
-  &.filled + label {
+  .input-focused & {
     top: 9px;
     font-size: 11px;
   }
@@ -1162,6 +1172,8 @@ ul.page-numbers {
   }
   @include sm-block {
     padding: 45px 0;
+    background: url("../img/bg-jumb-mob.jpg") center no-repeat;
+    background-size: cover;
   }
   &__title {
     font-size: 34px;
@@ -2479,7 +2491,7 @@ ul.page-numbers {
 }
 
 .checkout {
-  padding-top: 35px;
+  // padding-top: 35px;
   @include md-block {
     padding-top: 20px;
     position: static;
@@ -2502,9 +2514,15 @@ ul.page-numbers {
   }
   &-success {
     padding-top: 70px;
-    padding-bottom: 70px;
+    padding-bottom: 23vw;
+    margin-bottom: 80px;
+    background: url("../img/checkout-flowers.png") bottom no-repeat;
+    background-size: contain;
     @include md-block {
       padding-top: 30px;
+    }
+    @include sm-block {
+      padding-bottom: 35vw;
     }
     &__title {
       font-weight: bold;
@@ -2529,6 +2547,8 @@ ul.page-numbers {
       line-height: 1.6;
       @include sm-block {
         line-height: 30px;
+        max-width: 200px;
+        margin: auto;
       }
     }
     &__note {
@@ -2542,7 +2562,10 @@ ul.page-numbers {
       }
     }
     &__btn {
-      max-width: 420px;
+      max-width: 300px;
+      @include sm-block {
+        width: auto;
+      }
     }
   }
   &-nav {
@@ -2561,9 +2584,10 @@ ul.page-numbers {
     &__step {
       position: relative;
       transition: $trans;
-      // &:hover {
-      //   opacity: 0.8;
-      // }
+      &.pass:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
       & + & {
         &:before {
           content: "";
@@ -2645,6 +2669,9 @@ ul.page-numbers {
     margin-bottom: 50px;
     border-bottom: 1px solid $black;
     margin-top: 25px;
+    h1 {
+      margin-bottom: 0;
+    }
     @include md-block {
       position: fixed;
       z-index: 10;
@@ -2665,6 +2692,71 @@ ul.page-numbers {
       font-size: 18px;
       line-height: 22px;
       color: $gray;
+    }
+  }
+}
+
+.checkout {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+  @include md-block {
+    margin: 0;
+    display: block;
+  }
+  .woocommerce-NoticeGroup, .woocommerce-NoticeGroup-checkout {
+    margin: 0 15px;
+    width: 100%;
+    @include md-block {
+      margin: 0;
+    }
+  }
+  &-country__caption {
+    font-size: 12px;
+    color: #565555;
+  }
+  .select2-container .select2-selection--single {
+    height: 50px;
+    margin: 0;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    margin-top: 20px;
+    color: #1b1726;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 45px;
+  }
+  .col-2 {
+    display: none;
+  }
+  .col-1 {
+    max-width: 650px;
+    float: none;
+    margin: auto;
+  }
+  h3 {
+    display: none;
+  }
+  .col2-set {
+    width: 50%;
+    padding: 0 15px;
+    @include md-block {
+      width: 100%;
+      padding: 0;
+    }
+  }
+  .woocommerce-checkout-review-order {
+    width: 50%;
+    padding: 0 15px;
+    @include md-block {
+      width: 100%;
+      padding: 0;
     }
   }
 }
@@ -2824,9 +2916,9 @@ ul.page-numbers {
 }
 
 .step {
-  display: none;
+  // display: none;
   &__inner {
-    display: none;
+    // display: none;
   }
   &-one {
     max-width: 1080px;
@@ -3379,5 +3471,107 @@ ul.page-numbers {
     color: gray;
     position: relative;
     top: -5px;
+  }
+}
+
+.contacts {
+  &-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    &__item {
+      background: rgba($blue, 0.4);
+      width: 39px;
+      height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: 0.5s;
+      &:hover {
+        transform: scale(1.1);
+      }
+      img {
+        height: 18px;
+      }
+      & + & {
+        margin-left: 22px;
+      }
+    }
+  }
+}
+
+.about-us {
+  margin: 0 auto;
+  max-width: 1300px;
+  padding: 0 15px;
+  text-align: center;
+  & > img {
+    width: 200px;
+  }
+  h1,
+  h2 {
+    font-size: 32px;
+    color: #1b1726;
+    font-weight: 300;
+    @include sm-block {
+      font-size: 22px;
+    }
+  }
+  &_info-block {
+    width: 100%;
+    display: flex;
+    margin: 35px 0;
+    background-color: #f7f3f1;
+    @include md-block {
+      flex-wrap: wrap;
+    }
+    & > div {
+      width: 50%;
+      @include md-block {
+        width: 100%;
+      }
+    }
+    &_text {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 45px 80px;
+      @include sm-block {
+        padding: 40px 15px 20px;
+      }
+      p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        line-height: 1.5;
+        color: #66646e;
+        @include sm-block {
+          font-size: 14px;
+        }
+      }
+    }
+    &_img {
+      @include md-block {
+        order: -1;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+  &_credentials {
+    padding-top: 30px;
+    @include sm-block {
+      padding: 0;
+    }
+    p {
+      font-size: 16px;
+      color: #66646e;
+    }
   }
 }

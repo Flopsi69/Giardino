@@ -2,36 +2,51 @@
 add_theme_support('woocommerce');
 
 add_action('init', 'start_session');
-function start_session() {
+function start_session()
+{
     if (!session_id()) {
         session_start();
     }
 }
 
 add_action('wp_loaded', 'close_session');
-function close_session() {
+function close_session()
+{
     if (session_status() === PHP_SESSION_ACTIVE) {
         session_write_close();
     }
 }
 
 add_action('admin_enqueue_scripts', 'admin_style');
-function admin_style() {
-    wp_enqueue_style('admin-styles', get_template_directory_uri(). '/styles/admin-custom.css');
+function admin_style()
+{
+    wp_enqueue_style('admin-styles', get_template_directory_uri() . '/styles/admin-custom.css');
+}
+
+add_filter('woocommerce_enqueue_styles', 'magik_dequeue_styles');
+function magik_dequeue_styles($enqueue_styles)
+{
+    // unset($enqueue_styles['woocommerce-general']);    // Remove the gloss
+    unset($enqueue_styles['woocommerce-layout']);        // Remove the layout
+    unset($enqueue_styles['woocommerce-smallscreen']);    // Remove the smallscreen optimisation
+    return $enqueue_styles;
 }
 
 add_action('carbon_fields_register_fields', 'register_custom_fields');
-function register_custom_fields() {
+function register_custom_fields()
+{
     require_once 'inc/carbon_fields.php';
 }
 
 add_filter('query_vars', 'add_query_vars_filter');
-function add_query_vars_filter($vars){
+function add_query_vars_filter($vars)
+{
     $vars[] = "sort";
     return $vars;
 }
 
-function get_carbon_field($name, $id = false) {
+function get_carbon_field($name, $id = false)
+{
     if (!empty($id)) {
         $field = carbon_get_post_meta($id, $name);
     } else {
@@ -43,7 +58,8 @@ function get_carbon_field($name, $id = false) {
     return '';
 }
 
-function get_product_attributes($product) {
+function get_product_attributes($product)
+{
     if ($product->get_parent_id() !== 0) {
         $product = wc_get_product($product->get_parent_id());
     }
@@ -90,7 +106,8 @@ function get_product_url($product)
     return get_permalink($product_id);
 }
 
-function get_product_variation_colors($product) {
+function get_product_variation_colors($product)
+{
     if ($product->get_parent_id() !== 0) {
         $product = wc_get_product($product->get_parent_id());
     }
@@ -121,7 +138,8 @@ function get_product_variation_colors($product) {
     return $data ?? [];
 }
 
-function get_product_collections($product, $limit = -1) {
+function get_product_collections($product, $limit = -1)
+{
     $product_id = $product;
     if (is_object($product)) {
         $product_id = $product->get_id();
@@ -138,7 +156,8 @@ function get_product_collections($product, $limit = -1) {
     return $collections ?? [];
 }
 
-function get_parent_grouped_post($children_id, $limit = -1){
+function get_parent_grouped_post($children_id, $limit = -1)
+{
     $args = array(
         'post_type' => 'product',
         'posts_per_page' => $limit,
@@ -165,7 +184,8 @@ function get_parent_grouped_post($children_id, $limit = -1){
     return [];
 }
 
-function get_collection_products_without_current($collection, $without_id = 0) {
+function get_collection_products_without_current($collection, $without_id = 0)
+{
     $products_ids = $collection->get_children();
     if (!empty($products_ids)) {
         foreach ($products_ids as $product_id) {
@@ -216,7 +236,8 @@ function get_product_by_attributes($params)
     if (!empty($attributes)) {
         $data_store = WC_Data_Store::load('product');
         $variation_id = $data_store->find_matching_product_variation(
-            new \WC_Product($product), $attributes
+            new \WC_Product($product),
+            $attributes
         );
     }
     if (!empty($variation_id)) {
@@ -225,7 +246,8 @@ function get_product_by_attributes($params)
     return $product->get_data();
 }
 
-function get_cart_items() {
+function get_cart_items()
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return $cart->get_cart();
@@ -233,7 +255,8 @@ function get_cart_items() {
     return false;
 }
 
-function get_cart_total() {
+function get_cart_total()
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return number_format($cart->get_total('woocommerce_cart_(__FUNCTION__)'), 2, ',', ' ');
@@ -241,7 +264,8 @@ function get_cart_total() {
     return false;
 }
 
-function get_items_total() {
+function get_items_total()
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return number_format($cart->get_cart_contents_total(), 2, ',', ' ');
@@ -249,7 +273,8 @@ function get_items_total() {
     return false;
 }
 
-function get_shipping_total() {
+function get_shipping_total()
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return number_format($cart->get_shipping_total(), 2, ',', ' ');
@@ -257,7 +282,8 @@ function get_shipping_total() {
     return false;
 }
 
-function get_tax_total() {
+function get_tax_total()
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return number_format($cart->get_total_tax(), 2, ',', ' ');
@@ -265,7 +291,8 @@ function get_tax_total() {
     return false;
 }
 
-function add_to_cart($product_id, $quantity = 1, $variation_id = false, $item_data = []) {
+function add_to_cart($product_id, $quantity = 1, $variation_id = false, $item_data = [])
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         $attributes = $item_data;
@@ -284,7 +311,8 @@ function add_to_cart($product_id, $quantity = 1, $variation_id = false, $item_da
     return false;
 }
 
-function remove_from_cart($item_key) {
+function remove_from_cart($item_key)
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return $cart->remove_cart_item($item_key);
@@ -292,7 +320,8 @@ function remove_from_cart($item_key) {
     return false;
 }
 
-function change_item_cart_quantity($item_key, $quantity = 1) {
+function change_item_cart_quantity($item_key, $quantity = 1)
+{
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return $cart->set_quantity($item_key, $quantity);
@@ -300,7 +329,8 @@ function change_item_cart_quantity($item_key, $quantity = 1) {
     return false;
 }
 
-function get_category_data($product) {
+function get_category_data($product)
+{
     $size_guide = '';
     $size_guide_mobile = '';
     $category_name = '';
@@ -322,7 +352,8 @@ function get_category_data($product) {
     return ['category_name' => $category_name, 'size_guide' => $size_guide, 'size_guide_mobile' => $size_guide_mobile];
 }
 
-function cart_control() {
+function cart_control()
+{
     if (!empty($_POST['action'])) {
         $quantity = 1;
         $action = filter_var($_POST['action'], FILTER_SANITIZE_STRING);

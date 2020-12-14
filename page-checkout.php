@@ -1,10 +1,12 @@
 <?php get_header(); ?>
-    <main class="main">
-        <section class="section text-page">
-            <div class="container">
-                <?php if (!(is_page('checkout') && !empty(is_wc_endpoint_url('order-received')))) { ?>
+<main class="main">
+    <section class="section text-page">
+        <div class="container">
+            <?php if (!(is_page('checkout') && !empty(is_wc_endpoint_url('order-received')))) { ?>
                 <!-- Head -->
                 <div class="checkout__head flex a-center j-between">
+                    <h1 class="checkout__title"><?php the_title(); ?></h1>
+
                     <?php $cart_items = get_cart_items(); ?>
                     <?php if (!empty($cart_items)) { ?>
                         <div class="checkout__orders orders">
@@ -68,18 +70,20 @@
                                     <div class="orders-popup__prices">
                                         <div class="orders-popup__row row-flex j-between">
                                             <div class="orders-popup__key col">Subtotal</div>
-                                            <div class="orders-popup__value col">
+                                            <div class="orders-popup__subtotal orders-popup__value col">
                                                 <?php echo get_items_total(); ?><?php echo get_woocommerce_currency_symbol(); ?>
                                             </div>
                                         </div>
                                         <div class="orders-popup__row row-flex j-between">
                                             <div class="orders-popup__key col">Shipping</div>
-                                            <div class="orders-popup__value col"><?php echo get_shipping_total(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                            <div class="orders-popup__shipping orders-popup__value col"><?php echo get_shipping_total(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                         </div>
                                         <div class="orders-popup__row row-flex j-between">
                                             <div class="orders-popup__key col">Tax</div>
                                             <?php $total_tax = get_tax_total(); ?>
-                                            <div class="orders-popup__value col"><?php if ($total_tax > 0) { echo $total_tax . get_woocommerce_currency_symbol(); } else { ?>Calculated at next step<?php } ?></div>
+                                            <div class="orders-popup__tax orders-popup__value col"><?php if ($total_tax > 0) {
+                                                                                                        echo $total_tax . get_woocommerce_currency_symbol();
+                                                                                                    } else { ?>Calculated at next step<?php } ?></div>
                                         </div>
                                     </div>
 
@@ -97,10 +101,9 @@
                         </div>
                     <?php } ?>
                 </div>
-                <h1><?php the_title(); ?></h1>
-                <?php } ?>
-                <?php the_content(); ?>
-            </div>
-        </section>
-    </main>
+            <?php } ?>
+            <?php the_content(); ?>
+        </div>
+    </section>
+</main>
 <?php get_footer(); ?>

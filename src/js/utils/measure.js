@@ -54,6 +54,13 @@ function countMeasure(type) {
     });
 
     let newVal = measureValue.join(" ").replace(/(cm|inc)/, type);
+
+    let additional = newVal.match(/\+(\d+)\b/);
+    if (additional) {
+      additional = additional[1] * coef;
+    }
+    
+    newVal = newVal.replace(/\+(\d+)\b/, "+"+additional);
     $(element).text(newVal);
   })
 }

@@ -123,13 +123,14 @@ $(document).on('click', '.cart__product .towel-colors__item, .cart__product .sel
 
   function callbackChange(newDoc) {
     let currentActiveProduct = $(`.cart__product[data-item-key = ${productKey}]`);
-    let elPosition = currentActiveProduct.index();
     let newActiveProduct = newDoc.find(".cart__product").not((i, el) => {
-      console.log($(`.cart__product[data-item-key='${$(el).data('item-key')}'`).length);
       if ($(`.cart__product[data-item-key='${$(el).data('item-key')}'`).length) {
         return true;
       }
     })
+    if (!newActiveProduct.length) {
+      newActiveProduct = newDoc.find(`.cart__product[data-item-key = ${productKey}]`);
+    }
     currentActiveProduct.after(newActiveProduct);
     currentActiveProduct.remove();
     initSelect(newActiveProduct[0]);

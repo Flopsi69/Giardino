@@ -213,21 +213,50 @@ $(".sort").on("click", function (e) {
 // SORT **END**
 
 // CHECKOUT **START**
-// $(".checkout-nav__step").on("click", function (e) {
-//   e.preventDefault();
-//   let checkoutStepNum = $(this).data("step-target");
-//   let stepTarget = $('.step[data-step="' + checkoutStepNum + '"]');
+if ($('.checkout').length) {
+  let totalPrice;
+  let shippingPrice;
+  setInterval(() => {;
+    totalPrice = $(".order-total .amount").first().text();
+    $(".checkout__head .orders__value").text(totalPrice);
+    $(".orders-popup__total-price").text(totalPrice);
+    $(".orders-popup__tax").text($(".order-total .includes_tax .amount").text());
 
-//   if ($(this).prev().hasClass("active")) {
-//     $(this).addClass("active").prev().toggleClass("active pass");
-//     toggleStep(stepTarget);
-//   }
+    
+    shippingPrice = parseNumPrice(totalPrice) - parseNumPrice($(".orders-popup__tax").text()) - parseNumPrice($(".orders-popup__subtotal").text());
+    
+    if(shippingPrice && shippingPrice > 0) {
+      $(".orders-popup__shipping").text(shippingPrice.toFixed(2).toString().replace(/\./, ",") + '€');
+    } else {
+      $(".orders-popup__shipping").text('0'.toString() + '€');
+    }
 
-//   if ($(this).hasClass("pass")) {
-//     $(this).toggleClass("pass active").nextAll().removeClass("active pass");
-//     toggleStep(stepTarget);
-//   }
-// });
+  }, 5000);
+
+  function parseNumPrice(price) {
+    return price.replace(/(\d+)(.|,)(\d+)./, "$1.$3");
+  }
+
+  $(".thwcfd-field-country ").append("<span class='checkout-country__caption'>If you place an order from Monaco, please select France and put your ZIP Code</span>");
+}
+
+$(".checkout-nav__step").on("click", function (e) {
+  e.preventDefault();
+  if ($(this).hasClass('pass')) {
+    let checkoutStepNum = $(this).data("step-target");
+    let stepTarget = $('.step[data-step="' + checkoutStepNum + '"]');
+
+    if ($(this).prev().hasClass("active")) {
+      $(this).addClass("active").prev().toggleClass("active pass");
+      toggleStep(stepTarget);
+    }
+
+    if ($(this).hasClass("pass")) {
+      $(this).toggleClass("pass active").nextAll().removeClass("active pass");
+      toggleStep(stepTarget);
+    }
+  }
+});
 
 // Step Radio
 $(document).on("click", ".step__radio", function () {
@@ -235,8 +264,10 @@ $(document).on("click", ".step__radio", function () {
   $(this).closest('ul').find('.radio.active').removeClass('active');
 });
 
+
 $(".step-next").on("click", function (e) {
   e.preventDefault();
+  updateGiardinoCheckout();
   let stepTarget;
   if ($(".step-one.active").length) {
     let check = checkCheckoutInputs($(this).closest('form'));
@@ -247,72 +278,7 @@ $(".step-next").on("click", function (e) {
   } else if ($(this).hasClass("step-next_inner")) {
     let check = checkCheckoutInputs($(this).closest('form'));
     if (check) {
-        let settings = {
-          "url": location.origin + "/?wc-ajax=update_order_review",
-          "method": "POST",
-          "timeout": 0,
-          "headers": {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          "data": {
-            "payment_method": "",
-            "country": $('.step__countries').find('select').val(),
-            "state": $("input[name='state']").val(),
-            "postcode": $("input[name='postcode']").val(),
-            "city": $("input[name='city']").val(),
-            "address": $("input[name='address']").val(),
-            "address_2": $("input[name='address_2']").val(),
-            "has_full_address": "true",
-            "security": $("input[name='security']").val()
-          }
-        };
-
-//         security: 6a93f4368b
-// payment_method: cheque
-// country: MC
-// state: 
-// postcode: 
-// city: 
-// address: 
-// address_2: 
-// s_country: MC
-// s_state: 
-// s_postcode: 
-// s_city: 
-// s_address: 
-// s_address_2: 
-// has_full_address: false
-// post_data: billing_first_name=&billing_last_name=&billing_company=&billing_country=MC&billing_address_1=&billing_address_2=&billing_city=&billing_state=&billing_postcode=&billing_phone=&billing_email=v_zol%40ukr.net&shipping_first_name=&shipping_last_name=&shipping_company=&shipping_country=MC&shipping_address_1=&shipping_address_2=&shipping_city=&shipping_state=&shipping_postcode=&order_comments=&payment_method=cheque&woocommerce-process-checkout-nonce=0c75cdcf1e&_wp_http_referer=%2Fcheckout%2F%3Fpayment_method%3Dppec_paypal%26woocommerce_checkout_place_order%3DPlace%2Border%26woocommerce-process-checkout-nonce%3D0c75cdcf1e%26_wp_http_referer%3D%252F%253Fwc-ajax%253Dupdate_order_review
-
-        $.ajax(settings).done(function (response) {
-          window.resultStep = response;
-          if (response.result == "success") {
-            $('.woocommerce-shipping-methods').remove();
-            let payment = $(response.fragments[".woocommerce-checkout-payment"]);
-            let shipping = $(response.fragments[".woocommerce-checkout-review-order-table"]).find('.woocommerce-shipping-methods');
-            $('.step-two__second-form').prepend(shipping);
-            shipping.find('input').addClass('radio__input');
-            shipping.find('label').each((i, el) => {
-              $(el).addClass('step__radio radio');
-              $(el).prepend($(el).siblings('input').addClass('radio__input'));
-              $(el).append("<span class='radio__mark'></span>");
-            })
-
-            $('.step-three__form').prepend(payment);
-            payment.find('input').addClass('radio__input');
-            payment.find('label').each((i, el) => {
-              $(el).addClass('step__radio radio');
-              $(el).prepend($(el).siblings('input').addClass('radio__input'));
-              $(el).append("<span class='radio__mark'></span>");
-            })
-            payment.find(".button").addClass("step-two__btn btn btn_blue w-100").before('<div class="step__divider group"></div>');
-            stepTarget = $(".step.active .step__inner.active").next();
-            toggleStep(stepTarget);
-          } else {
-            $('.step.active').append($(response.massages));
-          }
-        });
-        
+      updateGiardinoCheckout();
     }
   } else {
     stepTarget = $(".step.active").next();
@@ -345,7 +311,6 @@ function checkCheckoutInputs(parent) {
   return check;
 }
 
-
 function toggleStep(stepEL, toggleNav = false) {
   if (toggleNav) {
     $(".checkout-nav__step.active")
@@ -355,10 +320,14 @@ function toggleStep(stepEL, toggleNav = false) {
   }
   stepEL
     .addClass("active")
-    .show()
     .siblings(".active")
-    .hide()
     .removeClass("active");
+  // stepEL
+  //   .addClass("active")
+  //   .show()
+  //   .siblings(".active")
+  //   .hide()
+  //   .removeClass("active");
 }
 // CHECKOUT **END**
 
