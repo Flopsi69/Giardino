@@ -200,12 +200,28 @@ function get_collection_products_without_current($collection, $without_id = 0)
     return $products ?? [];
 }
 
-add_action('rest_api_init', function () {
-    register_rest_route('giardino', '/product/', array(
-        'methods' => 'GET',
-        'callback' => 'get_product_by_attributes'
-    ));
-});
+add_action('init', 'endpoint_product');
+function endpoint_product() {
+    flush_rewrite_rules();
+    add_rewrite_rule('^products/variations/json/?$', 'index.php?action=get_json', 'top');
+    add_filter('query_vars', function ($vars) {
+        $vars[] = 'action';
+        return $vars;
+    });
+    add_filter('wp', function () {
+        global $wp_query;
+        if ($wp_query->query_vars['action'] === 'get_json') {
+            wp_send_json(get_product_by_attributes([]));
+        }
+    });
+}
+
+//add_action('rest_api_init', function () {
+//    register_rest_route('giardino', '/product/', array(
+//        'methods' => 'GET',
+//        'callback' => 'get_product_by_attributes'
+//    ));
+//});
 
 function get_product_by_attributes($params)
 {
@@ -225,6 +241,7 @@ function get_product_by_attributes($params)
     if (!empty($product->get_parent_id())) {
         $product = wc_get_product($product->get_parent_id());
     }
+    $product_tax_class = $product->get_tax_class();
     $availableAttributes = $product->get_attributes();
     if (!empty($availableAttributes)) {
         foreach ($availableAttributes as $key => $availableAttribute) {
@@ -243,7 +260,9 @@ function get_product_by_attributes($params)
     if (!empty($variation_id)) {
         $product = wc_get_product($variation_id);
     }
-    return $product->get_data();
+    $return = $product->get_data();
+    $return['price_with_tax'] = wc_get_price_including_tax($product);
+    return $return;
 }
 
 function get_cart_items()
