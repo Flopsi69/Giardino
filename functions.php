@@ -268,7 +268,7 @@ function get_items_total()
 {
     if (function_exists('WC')) {
         $cart = WC()->cart;
-        return number_format($cart->get_cart_contents_total(), 2, ',', ' ');
+        return $cart->get_cart_contents_total();
     }
     return false;
 }
@@ -287,6 +287,15 @@ function get_tax_total()
     if (function_exists('WC')) {
         $cart = WC()->cart;
         return number_format($cart->get_total_tax(), 2, ',', ' ');
+    }
+    return false;
+}
+
+function get_tax_total_without_shipping()
+{
+    if (function_exists('WC')) {
+        $cart = WC()->cart;
+        return $cart->get_cart_contents_tax();
     }
     return false;
 }

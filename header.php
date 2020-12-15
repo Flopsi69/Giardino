@@ -295,7 +295,7 @@
                                             <input class="count__value" type="number" value="<?php echo $item['quantity']; ?>" min="1" max="1000">
                                             <button class="btn count__btn count__btn_small count__plus">+</button>
                                         </div>
-                                        <div class="cart__product-price pdp-look__caption"><?php echo $item['line_total']; ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                        <div class="cart__product-price pdp-look__caption"><?php echo ($item['line_total'] + $item['line_tax']); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                         <a href="#" class="cart__product-cancel">
                                             <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-close.svg" alt="">
                                         </a>
@@ -310,7 +310,7 @@
             <div class="cart__products-total">
                 <div class="cart__products-caption">Total:</div>
                 <div class="cart__products-price">
-                    <?php echo get_items_total(); ?>
+                    <?php echo number_format((get_items_total() + get_tax_total_without_shipping()), 2, ',', ' '); ?>
                     <?php echo get_woocommerce_currency_symbol(); ?>
                 </div>
             </div>

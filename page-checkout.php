@@ -58,7 +58,7 @@
                                                             <div class="orders-popup__order-option">Qty: <?php echo $item['quantity']; ?></div>
                                                         </div>
                                                         <div class="orders-popup__order-price">
-                                                            <?php echo $item['line_total']; ?><?php echo get_woocommerce_currency_symbol(); ?>
+                                                            <?php echo ($item['line_total'] + $item['line_tax']); ?><?php echo get_woocommerce_currency_symbol(); ?>
                                                         </div>
                                                     </div>
                                                 </div>

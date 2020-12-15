@@ -142,7 +142,7 @@ $product_parent = $product;
                                                         <?php } ?>
                                                     <?php } ?>
                                                 <?php } ?>
-                                                <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                                <div class="pdp__collection-price"><?php echo $collection_product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                             </div>
                                             <?php $colors = get_product_variation_colors($collection_product); ?>
                                             <?php if (!empty($colors)) { ?>
@@ -163,7 +163,7 @@ $product_parent = $product;
                             </div>
                         <?php } ?>
 
-                        <div class="pdp__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                        <div class="pdp__price"><?php echo $product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
 
                         <div class="pdp__buttons row-flex">
                             <button class="btn btn_blue pdp__buttons-item btn-to-cart col">Add to CART</button>
@@ -247,7 +247,7 @@ $product_parent = $product;
 
                                         <div class="pdp-look__descr"><?php echo $upsell->get_short_description(); ?></div>
 
-                                        <div class="pdp-look__buy-price visible-md"><?php echo $upsell->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                        <div class="pdp-look__buy-price visible-md"><?php echo $upsell->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                     </div>
 
                                     <div class="pdp-look__info-body">
@@ -340,7 +340,7 @@ $product_parent = $product;
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             <?php } ?>
-                                                            <div class="pdp__collection-price"><?php echo $collection_product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                                            <div class="pdp__collection-price"><?php echo $collection_product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                         </div>
                                                         <?php $colors = get_product_variation_colors($collection_product); ?>
                                                         <?php if (!empty($colors)) { ?>
@@ -385,7 +385,7 @@ $product_parent = $product;
                                                     <input class='count__value' type="number" value='1' min='1' max='1000'>
                                                     <button class="btn count__btn count__plus">+</button>
                                                 </div>
-                                                <div class="pdp-look__buy-price hidden-md"><?php echo $upsell->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                                <div class="pdp-look__buy-price hidden-md"><?php echo $upsell->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                 <button class="btn btn_blue pdp-look__buy-btn">Add to CART</button>
                                             </div>
                                         </div>
