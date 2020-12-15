@@ -76,12 +76,14 @@ $category_data = get_category_data($product_parent);
                         <div class="pdp__options">
                             <div class="pdp__options-product">
                                 <input type="hidden" name="product_id" value="<?php echo $product_parent->get_id(); ?>">
+                                <?php $price_params[$product_parent->get_id()]['id'] = $product_parent->get_id(); ?>
                                 <?php $colors = get_product_variation_colors($product); ?>
                                 <?php if (!empty($colors)) { ?>
                                     <div class="pdp__color pdp-look__color pdp__option">
                                         <div class="pdp-look__caption">Color:</div>
                                         <div class="pdp-look__color-list text-center">
                                             <?php foreach ($colors as $color) { ?>
+                                                <?php if (reset($colors) === $color) { $price_params[$product->get_id()]['pa_color'] = $color['slug']; } ?>
                                                 <div class="pdp-look__color-option <?php echo (reset($colors) === $color ? 'active' : ''); ?>">
                                                     <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
                                                     <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
@@ -100,6 +102,7 @@ $category_data = get_category_data($product_parent);
                                                     <div class="pdp__size-select select">
                                                         <select>
                                                             <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                <?php if (reset($attribute['options']) === $option) { $price_params[$product->get_id()][$att_key] = $slug; } ?>
                                                                 <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                             <?php } ?>
                                                         </select>
@@ -136,6 +139,7 @@ $category_data = get_category_data($product_parent);
                                                                 <a class='pdp__collection-link' href="<?php echo get_product_url($collection_product); ?>" target='_blank'><?php echo $collection_product->get_name(); ?></a>
                                                                 <input class='checkbox__input' type="checkbox">
                                                                 <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
+                                                                <?php $price_params[$collection_product->get_id()]['id'] = $collection_product->get_id(); ?>
                                                                 <span class="checkbox__mark"></span>
                                                                 <div class="tooltip">
                                                                     <div class="tooltip__icon">
@@ -177,6 +181,7 @@ $category_data = get_category_data($product_parent);
                                                                         <div class="pdp__collection-size pdp__size-select select">
                                                                             <select>
                                                                                 <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                                    <?php if (reset($attribute['options']) === $option) { $price_params[$collection_product->get_id()][$att_key] = $slug; } ?>
                                                                                     <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                                                 <?php } ?>
                                                                             </select>
@@ -188,7 +193,7 @@ $category_data = get_category_data($product_parent);
                                                                 <?php } ?>
                                                             <?php } ?>
 
-                                                            <div class="pdp__collection-price"><?php echo $collection_product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                                            <div class="pdp__collection-price"><?php echo get_product_by_attributes($price_params[$collection_product->get_id()])['price_with_tax']; ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                         </div>
                                                         <?php $colors = get_product_variation_colors($collection_product); ?>
                                                         <?php if (!empty($colors)) { ?>
@@ -198,6 +203,7 @@ $category_data = get_category_data($product_parent);
                                                                 </div>
                                                                 <div class="towel-colors__list">
                                                                     <?php foreach ($colors as $variation_id => $color) { ?>
+                                                                        <?php if (reset($colors) === $color) { $price_params[$collection_product->get_id()]['pa_color'] = $color['slug']; } ?>
                                                                         <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo (reset($colors) === $color ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
                                                                     <?php } ?>
                                                                 </div>
@@ -212,7 +218,7 @@ $category_data = get_category_data($product_parent);
                             <?php } ?>
                         </div>
 
-                        <div class="pdp__price"><?php echo $product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                        <div class="pdp__price"><?php echo get_product_by_attributes($price_params[$product->get_id()])['price_with_tax']; ?><?php echo get_woocommerce_currency_symbol(); ?></div>
 
                         <div class="pdp__buttons row-flex">
                             <button class="btn btn_blue pdp__buttons-item col btn-to-cart">Add to CART</button>
@@ -299,6 +305,7 @@ $category_data = get_category_data($product_parent);
 
                                     <div class="pdp-look__info-body">
                                         <input type="hidden" name="product_id" value="<?php echo $upsell->get_id(); ?>">
+                                        <?php $price_params[$upsell->get_id()]['id'] = $upsell->get_id(); ?>
                                         <?php $attributes = get_product_attributes($upsell); ?>
                                         <?php if (!empty($attributes)) { ?>
                                             <?php foreach ($attributes as $att_key => $attribute) { ?>
@@ -307,6 +314,7 @@ $category_data = get_category_data($product_parent);
                                                     <?php if (!empty($attribute['options'])) { ?>
                                                         <div class="pdp-look__size-list">
                                                             <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                <?php if (reset($attribute['options']) === $option) { $price_params[$upsell->get_id()][$att_key] = $slug; } ?>
                                                                 <div data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" class="pdp-look__size-option <?php echo (reset($attribute['options']) === $option ? 'active' : ''); ?>"><?php echo $option; ?></div>
                                                             <?php } ?>
                                                             <?php if ($att_key === 'pa_size' && !empty($category_data['size_guide']) && !empty($category_data['size_guide_mobile'])) { ?>
@@ -363,6 +371,8 @@ $category_data = get_category_data($product_parent);
                                                                 </div>
                                                             <?php } ?>
                                                         </label>
+                                                        <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
+                                                        <?php $price_params[$collection_product->get_id()]['id'] = $collection_product->get_id(); ?>
                                                         <?php $attributes = get_product_attributes($collection_product); ?>
                                                         <?php if (!empty($attributes)) { ?>
                                                             <?php foreach ($attributes as $att_key => $attribute) { ?>
@@ -370,6 +380,7 @@ $category_data = get_category_data($product_parent);
                                                                     <div class="pdp__collection-size pdp__size-select select">
                                                                         <select>
                                                                             <?php foreach ($attribute['options'] as $slug => $option) { ?>
+                                                                                <?php if (reset($attribute['options']) === $option) { $price_params[$collection_product->get_id()][$att_key] = $slug; } ?>
                                                                                 <option data-key="<?php echo $att_key; ?>" data-value="<?php echo $slug; ?>" value="<?php echo $slug; ?>"><?php echo $option; ?></option>
                                                                             <?php } ?>
                                                                         </select>
@@ -380,7 +391,7 @@ $category_data = get_category_data($product_parent);
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         <?php } ?>
-                                                        <div class="pdp__collection-price"><?php echo $collection_product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                                        <div class="pdp__collection-price"><?php echo get_product_by_attributes($price_params[$collection_product->get_id()])['price_with_tax']; ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                     </div>
                                                     <?php $colors = get_product_variation_colors($collection_product); ?>
                                                     <?php if (!empty($colors)) { ?>
@@ -390,6 +401,7 @@ $category_data = get_category_data($product_parent);
                                                             </div>
                                                             <div class="towel-colors__list">
                                                                 <?php foreach ($colors as $variation_id => $color) { ?>
+                                                                    <?php if (reset($colors) === $color) { $price_params[$collection_product->get_id()]['pa_color'] = $color['slug']; } ?>
                                                                     <div data-name="<?php echo $color['name']; ?>" data-value="<?php echo $color['slug']; ?>" data-key="pa_color" class="towel-colors__item <?php echo (reset($colors) === $color ? 'active' : ''); ?>" style="<?php echo $color['background']; ?>"></div>
                                                                 <?php } ?>
                                                             </div>
@@ -407,6 +419,7 @@ $category_data = get_category_data($product_parent);
                                                         <div class="pdp-look__caption">Color:</div>
                                                         <div class="pdp-look__color-list text-center">
                                                             <?php foreach ($colors as $variation_id => $color) { ?>
+                                                                <?php if (reset($colors) === $color) { $price_params[$upsell->get_id()]['pa_color'] = $color['slug']; } ?>
                                                                 <div class="pdp-look__color-option <?php echo (reset($colors) === $color ? 'active' : ''); ?>">
                                                                     <div class="pdp-look__color-preview" style="<?php echo $color['background']; ?>"></div>
                                                                     <div data-key="pa_color" data-value="<?php echo $color['slug']; ?>" class="pdp-look__color-name"><?php echo $color['name']; ?></div>
@@ -424,7 +437,7 @@ $category_data = get_category_data($product_parent);
                                                     <input class='count__value' type="number" value='1' min='1' max='1000'>
                                                     <button class="btn count__btn count__plus">+</button>
                                                 </div>
-                                                <div class="pdp-look__buy-price hidden-md"><?php echo $upsell->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                                <div class="pdp-look__buy-price hidden-md"><?php echo get_product_by_attributes($price_params[$upsell->get_id()])['price_with_tax']; ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                                                 <button class="btn btn_blue pdp-look__buy-btn">Add to CART</button>
                                             </div>
                                         </div>
