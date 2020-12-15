@@ -289,7 +289,8 @@ function updatePrice(productId, sizeValue, priceEl) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.prev = 0;
-              url = "/wp-json/giardino/product/?id=".concat(productId, "&pa_size=").concat(sizeValue);
+              // https://giardino-collection.com/products/variations/json/?id=321
+              url = "/products/variations/json/?id=".concat(productId, "&pa_size=").concat(sizeValue);
               _context.next = 4;
               return fetch(url);
 
@@ -301,14 +302,14 @@ function updatePrice(productId, sizeValue, priceEl) {
             case 7:
               data = _context.sent;
 
-              if (!data.price) {
+              if (!data.price_with_tax) {
                 _context.next = 12;
                 break;
               }
 
               _context.next = 11;
               return priceEl.each(function (index, el) {
-                var price = quantity == 1 ? data.price : data.price * quantity;
+                var price = quantity == 1 ? data.price_with_tax : data.price_with_tax * quantity;
                 $(el).text($(el).text().replace(/[\d\.]*/, price));
 
                 if ($(el).hasClass('pdp__price')) {
