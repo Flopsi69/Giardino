@@ -168,9 +168,9 @@ $product_parent = $product;
                         <div class="pdp__buttons row-flex">
                             <button class="btn btn_blue pdp__buttons-item btn-to-cart col">Add to CART</button>
                             <div class="pdp__buttons-divider pdp__buttons-item pdp__buttons-mob col">Or</div>
-                            <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></button>
-                            <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item pdp__buttons-mob col">
-                                <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt=""></button>
+                            <a href='/checkout/' class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></a>
+                            <!-- <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item pdp__buttons-mob col">
+                                <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt=""></button> -->
 
                         </div>
 

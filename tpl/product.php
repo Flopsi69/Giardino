@@ -138,37 +138,37 @@ $category_data = get_category_data($product_parent);
                                                                 <input type="hidden" name="product_id" value="<?php echo $collection_product->get_id(); ?>">
                                                                 <span class="checkbox__mark"></span>
                                                                 <div class="tooltip">
-                                                                        <div class="tooltip__icon">
-                                                                            <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
+                                                                    <div class="tooltip__icon">
+                                                                        <img src="<?php print get_theme_file_uri(); ?>/img/svg/icon-tooltip.svg" alt="">
+                                                                    </div>
+                                                                    <div class="tooltip__info">
+                                                                        <div class="tooltip__image">
+                                                                            <img src="<?php echo get_product_image($collection_product) ?>" alt="">
                                                                         </div>
-                                                                        <div class="tooltip__info">
-                                                                            <div class="tooltip__image">
-                                                                                <img src="<?php echo get_product_image($collection_product) ?>" alt="">
-                                                                            </div>
-                                                                            <div class="tooltip__body">
-                                                                                <table>
-                                                                                    <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
-                                                                                    <?php if (!empty($includes)) { ?>
-                                                                                        <tr>
-                                                                                            <td>What’s included:</td>
-                                                                                            <td><?php echo $includes; ?></td>
-                                                                                        </tr>
-                                                                                    <?php } ?>
-                                                                                    <?php $options = get_carbon_field('options'); ?>
-                                                                                    <?php if (!empty($options)) { ?>
-                                                                                        <?php foreach ($options as $option) { ?>
-                                                                                            <?php if (!empty($option['option_key'])) { ?>
-                                                                                                <tr>
-                                                                                                    <td><?php echo $option['option_key']; ?>:</td>
-                                                                                                    <td><?php echo $option['option_value']; ?></td>
-                                                                                                </tr>
-                                                                                            <?php } ?>
+                                                                        <div class="tooltip__body">
+                                                                            <table>
+                                                                                <?php $includes = get_carbon_field('includes', $collection_product->get_id()); ?>
+                                                                                <?php if (!empty($includes)) { ?>
+                                                                                    <tr>
+                                                                                        <td>What’s included:</td>
+                                                                                        <td><?php echo $includes; ?></td>
+                                                                                    </tr>
+                                                                                <?php } ?>
+                                                                                <?php $options = get_carbon_field('options'); ?>
+                                                                                <?php if (!empty($options)) { ?>
+                                                                                    <?php foreach ($options as $option) { ?>
+                                                                                        <?php if (!empty($option['option_key'])) { ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $option['option_key']; ?>:</td>
+                                                                                                <td><?php echo $option['option_value']; ?></td>
+                                                                                            </tr>
                                                                                         <?php } ?>
                                                                                     <?php } ?>
-                                                                                </table>
-                                                                            </div>
+                                                                                <?php } ?>
+                                                                            </table>
                                                                         </div>
                                                                     </div>
+                                                                </div>
                                                             </label>
                                                             <?php $attributes = get_product_attributes($collection_product); ?>
                                                             <?php if (!empty($attributes)) { ?>
@@ -217,9 +217,9 @@ $category_data = get_category_data($product_parent);
                         <div class="pdp__buttons row-flex">
                             <button class="btn btn_blue pdp__buttons-item col btn-to-cart">Add to CART</button>
                             <div class="pdp__buttons-divider pdp__buttons-item pdp__buttons-mob col">Or</div>
-                            <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></button>
-                            <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item pdp__buttons-mob col">
-                                <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt=""></button>
+                            <a href='/checkout/' class="btn btn_trans pdp__buttons-payment pdp__buttons-item col"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></a>
+                            <!-- <button class="btn btn_trans pdp__buttons-payment pdp__buttons-item pdp__buttons-mob col">
+                                <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt=""></button> -->
                         </div>
 
                     </div>

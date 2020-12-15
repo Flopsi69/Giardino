@@ -89,12 +89,14 @@ function updatePrice(productId, sizeValue, priceEl, quantity = 1) {
 
   const productInfo = async() => {
     try {
-      const url = `/wp-json/giardino/product/?id=${productId}&pa_size=${sizeValue}`;
+      // https://giardino-collection.com/products/variations/json/?id=321
+      const url = `/products/variations/json/?id=${productId}&pa_size=${sizeValue}`;
       const res = await fetch(url);
       const data = await res.json()
-      if (data.price) {
+      // console.log(data);
+      if (data.price_with_tax) {
         await priceEl.each((index, el) => {
-          let price = quantity == 1 ? data.price : data.price * quantity;
+          let price = quantity == 1 ? data.price_with_tax : data.price_with_tax * quantity;
           $(el).text($(el).text().replace(/[\d\.]*/, price));
           if ($(el).hasClass('pdp__price')) {
             $(el).attr("data-main-price", price);

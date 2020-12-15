@@ -319,10 +319,10 @@
                 <a href="/checkout/" class="cart__footer-checkout btn btn_blue w-100">Checkout</a>
                 <div class="cart__footer-divider text-center hidden-md">Or</div>
                 <div class="cart__footer-buttons flex j-between">
-                    <button class="cart__footer-pay btn btn_trans w-100"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></button>
-                    <button class="cart__footer-pay cart__footer-applepay btn btn_trans w-100">
+                    <a href='/checkout/' class="cart__footer-pay btn btn_trans w-100"><img src="<?php print get_theme_file_uri(); ?>/img/paypal.png" alt=""></a>
+                    <!-- <button class="cart__footer-pay cart__footer-applepay btn btn_trans w-100">
                         <img src="<?php print get_theme_file_uri(); ?>/img/applepay.png" alt="">
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>

@@ -1166,14 +1166,15 @@ ul.page-numbers {
   background: #e8e6e7 url("../img/bg-jumb.jpg") center no-repeat;
   background-size: cover;
   // background: #efefef;
-  padding: 70px 0;
+  padding: 150px 0;
   @include md-block {
     background-position-x: 72%;
+    padding: 70px 0;
   }
   @include sm-block {
-    padding: 45px 0;
-    background: url("../img/bg-jumb-mob.jpg") center no-repeat;
-    background-size: cover;
+    padding: 55px 0;
+    // background: url("../img/bg-jumb-mob.jpg") center no-repeat;
+    // background-size: cover;
   }
   &__title {
     font-size: 34px;
@@ -2704,7 +2705,8 @@ ul.page-numbers {
     margin: 0;
     display: block;
   }
-  .woocommerce-NoticeGroup, .woocommerce-NoticeGroup-checkout {
+  .woocommerce-NoticeGroup,
+  .woocommerce-NoticeGroup-checkout {
     margin: 0 15px;
     width: 100%;
     @include md-block {
