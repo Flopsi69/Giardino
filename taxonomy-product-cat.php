@@ -145,7 +145,7 @@ get_header();
                                 </a>
                                 <a href="<?php echo get_product_url($product); ?>" class="product__name products-page__product-name"><?php echo $product->get_name(); ?></a>
                                 <div class="product__descr"><?php echo $product->get_short_description(); ?></div>
-                                <div class="product__price"><?php echo $product->get_price(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
+                                <div class="product__price"><?php echo $product->get_price_including_tax(); ?><?php echo get_woocommerce_currency_symbol(); ?></div>
                             </div>
                         <?php } ?>
                     </div>
