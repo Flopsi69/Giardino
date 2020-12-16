@@ -1166,15 +1166,15 @@ ul.page-numbers {
   background: #e8e6e7 url("../img/bg-jumb.jpg") center no-repeat;
   background-size: cover;
   // background: #efefef;
-  padding: 150px 0;
+  padding: 170px 0;
   @include md-block {
     background-position-x: 72%;
-    padding: 70px 0;
+    padding: 100px 0;
   }
   @include sm-block {
-    padding: 55px 0;
-    // background: url("../img/bg-jumb-mob.jpg") center no-repeat;
-    // background-size: cover;
+    padding: 70px 0;
+    background: url("../img/bg-jumb-mob.jpg") center no-repeat;
+    background-size: cover;
   }
   &__title {
     font-size: 34px;

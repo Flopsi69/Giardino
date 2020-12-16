@@ -1762,7 +1762,7 @@ ul.page-numbers .page-numbers.next:hover:after {
 .jumb {
   background: #e8e6e7 url("../img/bg-jumb.jpg") center no-repeat;
   background-size: cover;
-  padding: 150px 0;
+  padding: 170px 0;
 }
 
 .jumb__title {
@@ -4488,7 +4488,7 @@ a.active .products-subcat__name {
 
   .jumb {
     background-position-x: 72%;
-    padding: 70px 0;
+    padding: 100px 0;
   }
 
   .direction__preview img {
@@ -4820,7 +4820,9 @@ a.active .products-subcat__name {
   }
 
   .jumb {
-    padding: 55px 0;
+    padding: 70px 0;
+    background: url("../img/bg-jumb-mob.jpg") center no-repeat;
+    background-size: cover;
   }
 
   .jumb__title {
