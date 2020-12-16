@@ -1,7 +1,10 @@
-<?php get_header(); ?>
+<?php get_header('checkout'); ?>
 <main class="main">
     <section class="section text-page">
         <div class="container">
+            <a class='checkout__logo-link' href="/">
+                <img class='checkout__logo' src="<?php print get_theme_file_uri(); ?>/img/logo.png" alt="">
+            </a>
             <?php if (!(is_page('checkout') && !empty(is_wc_endpoint_url('order-received')))) { ?>
                 <!-- Head -->
                 <div class="checkout__head flex a-center j-between">
