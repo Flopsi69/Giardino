@@ -183,6 +183,7 @@
     justify-content: space-between;
     padding: 15px 0;
     &__second {
+      justify-content: flex-start;
       & + & {
         border-top: 1px solid rgba($gray, 0.4);
       }

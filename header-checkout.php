@@ -25,7 +25,7 @@
     <link rel="apple-touch-icon" sizes="167x167" href="<?php print get_theme_file_uri(); ?>/img/favicons/apple-touch-icon-167x167.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<?php print get_theme_file_uri(); ?>/img/favicons/apple-touch-icon-180x180.png">
     <link rel="apple-touch-icon" sizes="1024x1024" href="<?php print get_theme_file_uri(); ?>/img/favicons/apple-touch-icon-1024x1024.png">
-    <link rel="stylesheet" href="<?php print get_theme_file_uri(); ?>/styles/main.css">
+    <link rel="stylesheet" href="<?php print get_theme_file_uri(); ?>/styles/main.min.css">
     <?php wp_head(); ?>
 </head>
 

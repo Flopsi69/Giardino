@@ -716,7 +716,7 @@ body.scroll-off {
 }
 
 .container {
-  max-width: 83.125rem;
+  max-width: 79.5rem;
   margin: 0 auto;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
@@ -2268,7 +2268,7 @@ a.active .products-subcat__name {
 }
 
 .pdp__col-left {
-  width: 750px;
+  width: 700px;
   margin-right: 60px;
   flex-shrink: 0;
 }
@@ -3953,6 +3953,10 @@ a.active .products-subcat__name {
   padding: 15px 0;
 }
 
+.navbar-link__second {
+  justify-content: flex-start;
+}
+
 .navbar-link__second + .navbar-link__second {
   border-top: 1px solid rgba(102, 100, 110, 0.4);
 }
@@ -4262,7 +4266,7 @@ a.active .products-subcat__name {
   }
 }
 
-@media screen and (max-width: 85rem) {
+@media screen and (max-width: 80rem) {
   .container {
     max-width: 58.125rem;
   }

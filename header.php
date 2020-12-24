@@ -25,26 +25,25 @@
     <link rel="apple-touch-icon" sizes="167x167" href="<?php print get_theme_file_uri(); ?>/img/favicons/apple-touch-icon-167x167.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<?php print get_theme_file_uri(); ?>/img/favicons/apple-touch-icon-180x180.png">
     <link rel="apple-touch-icon" sizes="1024x1024" href="<?php print get_theme_file_uri(); ?>/img/favicons/apple-touch-icon-1024x1024.png">
-    <link rel="stylesheet" href="<?php print get_theme_file_uri(); ?>/styles/main.css">
+    <link rel="stylesheet" href="<?php print get_theme_file_uri(); ?>/styles/main.min.css">
     <?php wp_head(); ?>
-    <!-- Google Tag Manager -->
+    <!-- Hotjar Tracking Code for https://giardino-collection.com/ -->
     <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-M2SRX6G');
+        (function(h, o, t, j, a, r) {
+            h.hj = h.hj || function() {
+                (h.hj.q = h.hj.q || []).push(arguments)
+            };
+            h._hjSettings = {
+                hjid: 2160413,
+                hjsv: 6
+            };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
     </script>
-    <!-- End Google Tag Manager -->
 </head>
 
 <body>
