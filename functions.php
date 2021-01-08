@@ -87,12 +87,12 @@ function get_product_attributes($product)
     return $values ?? [];
 }
 
-function get_product_image($product)
+function get_product_image($product, $size = 'medium')
 {
     $product_id = $product->get_id();
-    $image = get_the_post_thumbnail_url($product_id, 'large');
+    $image = get_the_post_thumbnail_url($product_id, $size);
     if (empty($image) && $product->get_parent_id() !== 0) {
-        $image = get_the_post_thumbnail_url($product->get_parent_id(), 'large');
+        $image = get_the_post_thumbnail_url($product->get_parent_id(), $size);
     }
     return $image ?? '';
 }
@@ -437,3 +437,5 @@ function cart_control()
     }
     return false;
 }
+
+add_filter('ry_wei_load_geonames_org', '__return_true');
