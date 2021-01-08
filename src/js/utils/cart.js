@@ -2,7 +2,13 @@
 // Add product
 $(document).on('click', '.btn-to-cart', function (e) {
   const productParent = $(this).closest('.pdp__row');
-  console.log(productParent);
+
+  const isToCheckout = $(this).hasClass("btn-to-cart_paypal") ? true : false;
+
+  function toCheckout() {
+    location = location.origin + "/checkout/";
+  }
+
   if (productParent.find('.pdp__collection-inner').length) {
     let ajaxData = [];
     productParent.find('.pdp__collection-inner').each((index, element) => {
@@ -13,10 +19,18 @@ $(document).on('click', '.btn-to-cart', function (e) {
     if ($('.pdp__options-product').length) {
       ajaxData.push(prepareToAdd($('.pdp__options-product'), true));
     }
-    updateAjax('add', ajaxData);
+    if (isToCheckout) {
+      updateAjax('add', ajaxData, toCheckout);
+    } else {
+      updateAjax('add', ajaxData);
+    }
   } else {
-    let ajaxData = prepareToAdd($('.pdp__options-product'))
-    updateAjax('add', ajaxData);
+    let ajaxData = prepareToAdd($('.pdp__options-product'));
+    if (isToCheckout) {
+      updateAjax('add', ajaxData, toCheckout);
+    } else {
+      updateAjax('add', ajaxData);
+    }
   }
 })
 

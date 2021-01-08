@@ -34,17 +34,17 @@ function countMeasure(type) {
         if (val.split('x').length > 1) {
           val = val.split('x').map(val => {
             if (val.split('+').length > 1) {
-              return val.split('+')[0] * coef + "+" + val.split('+')[1];
+              return parseFloat((val.split('+')[0] * coef).toFixed(2)) + "+" + val.split('+')[1];
             } else {
-              return val * coef;
+              return parseFloat((val * coef).toFixed(2));
             }
           })
         } else {
           val = val.split('х').map(val => {
             if (val.split('+').length > 1) {
-              return val.split('+')[0] * coef + val.split('+')[1];
+              return parseFloat((val.split('+')[0] * coef).toFixed(2)) + val.split('+')[1];
             } else {
-              return val * coef;
+              return parseFloat((val * coef).toFixed(2));
             }
           })
         }
@@ -57,7 +57,7 @@ function countMeasure(type) {
 
     let additional = newVal.match(/\+(\d+)\b/);
     if (additional) {
-      additional = additional[1] * coef;
+      additional = parseFloat((additional[1] * coef).toFixed(2));
     }
     
     newVal = newVal.replace(/\+(\d+)\b/, "+"+additional);

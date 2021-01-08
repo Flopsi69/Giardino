@@ -339,6 +339,7 @@ $(".products-slider__list").slick({
   slidesToShow: 4,
   slidesToScroll: 1,
   autoplay: true,
+  lazyLoad: true,
   dots: true,
   responsive: [
     {
@@ -361,6 +362,7 @@ $(".products-slider__list").slick({
 $(".pdp__slider-for").slick({
   slidesToShow: 1,
   slidesToScroll: 1,
+  lazyLoad: true,
   arrows: false,
   fade: true,
   asNavFor: ".pdp__slider-nav",
@@ -370,6 +372,7 @@ $(".pdp__slider-nav").slick({
   slidesToScroll: 1,
   asNavFor: ".pdp__slider-for",
   focusOnSelect: true,
+  lazyLoad: true,
   vertical: true,
   verticalSwiping: true,
   responsive: [
