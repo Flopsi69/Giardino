@@ -1,5 +1,6 @@
 <?php
 add_theme_support('woocommerce');
+add_image_size('medium_300x400', 300, 400, true);
 
 add_action('init', 'start_session');
 function start_session()
@@ -87,7 +88,7 @@ function get_product_attributes($product)
     return $values ?? [];
 }
 
-function get_product_image($product, $size = 'medium')
+function get_product_image($product, $size = 'medium_300x400')
 {
     $product_id = $product->get_id();
     $image = get_the_post_thumbnail_url($product_id, $size);
