@@ -11,7 +11,7 @@ $category_data = get_category_data($product_parent);
             <!-- About Product -->
             <div class="pdp__row">
                 <?php
-                $photo = get_product_image($product);
+                $photo = get_product_image($product, 'large');
                 $image_ids = $product_parent->get_gallery_image_ids();
                 if (!empty($photo)) {
                 ?>
