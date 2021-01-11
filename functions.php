@@ -1,6 +1,7 @@
 <?php
 add_theme_support('woocommerce');
 add_image_size('medium_300x400', 300, 400, true);
+add_image_size('medium_600x400', 600, 400, true);
 
 add_action('init', 'start_session');
 function start_session()

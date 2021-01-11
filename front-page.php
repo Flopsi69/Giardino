@@ -140,7 +140,7 @@
                                     </div>
                                 <?php } ?>
                             </div>
-                            <img class="collection__image" src="<?php echo get_product_image($collection); ?>" alt="<?php echo $collection->get_name(); ?>">
+                            <img class="collection__image" src="<?php echo get_product_image($collection, 'medium_600x400'); ?>" alt="<?php echo $collection->get_name(); ?>">
                             <div class="collection__inner text-center">
                                 <div class="collection__title"><?php echo $collection->get_name(); ?></div>
                                 <div class="collection__more more-btn">Explore the collection</div>
